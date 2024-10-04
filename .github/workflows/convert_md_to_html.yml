@@ -3,7 +3,7 @@ name: Convert Markdown to HTML
 on:
   push:
     branches:
-      - main  # main branch'e push yapıldığında tetiklenecek
+      - main
 
 jobs:
   build:
@@ -28,9 +28,11 @@ jobs:
         python convert_md_to_html.py
 
     - name: Commit and Push HTML changes
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         git add *.html
         git commit -m "Update HTML files for CTF writeups"
-        git push
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/onurcangnc/ctf_writeups.git
