@@ -11,8 +11,12 @@
             "id": "83b84ce3b01e3a75",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md"
+              }
             }
           }
         ]
@@ -138,8 +146,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7b54e1151f4829d1",
+  "active": "83b84ce3b01e3a75",
   "lastOpenFiles": [
+    "Screen Shot 2024-10-04 at 11.46.43 1.png",
+    "Screen Shot 2024-10-04 at 11.46.43.png",
+    "README.md",
+    "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.11.31.png",
     "version.txt"
   ]
 }
