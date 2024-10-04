@@ -28,7 +28,7 @@ jobs:
         for file in *.md; do
           if [ -f "$file" ]; then
             html_file="${file%.md}.html"
-            python <<EOF
+            python << EOF
 import markdown2
 with open('$file', 'r', encoding='utf-8') as f:
     markdown_content = f.read()
