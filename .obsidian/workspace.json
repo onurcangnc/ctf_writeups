@@ -4,16 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "086e5f6b2d796a9d",
+        "id": "1c74bd3d8cf629b6",
         "type": "tabs",
         "children": [
           {
-            "id": "83b84ce3b01e3a75",
+            "id": "dedd6729b9edb9f0",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.26.39.png"
+                "file": "TryHackMe/Kibana - TryHackMe.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -83,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.26.39.png",
+                "file": "TryHackMe/Kibana - TryHackMe.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.26.39.png",
+                "file": "TryHackMe/Kibana - TryHackMe.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.26.39.png"
+                "file": "TryHackMe/Kibana - TryHackMe.md"
               }
             }
           }
@@ -146,17 +148,23 @@
   },
   "active": "7b54e1151f4829d1",
   "lastOpenFiles": [
-    "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.26.39.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.16.39.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.15.29.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.01.43.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.06.13.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 13.58.40.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.46.43 1.png",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.46.43.png",
+    "sync_to_github.ps1",
+    "sync_to_github.bat",
     "README.md",
-    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.11.31.png",
+    "TryHackMe/Kibana - TryHackMe.md",
+    "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
+    "TryHackMe/attachment/93756ad44bea650fa9d6eff977b07209.png",
+    "TryHackMe/attachment/a20b149b5028537d238919c11e7979b7.png",
+    "TryHackMe/attachment/c53a369d6204c98af36def3009c7b52d.png",
+    "TryHackMe/attachment/c59ebbaa12eec0413d0a11bff25962e1.png",
+    "TryHackMe/attachment/11df5f7c7c9ac5dfcab4d51099732301.png",
+    "TryHackMe/attachment/eaaad08b9760b6b943ea9af458e1c8cd.png",
+    "TryHackMe/attachment/d24a174170333ddd84070e2414595cc2.png",
+    "TryHackMe/attachment/c01fde4a727b62e56d674dae6346ddbf.png",
+    "TryHackMe/attachment/729ac78be8e9db4f7c4fed3c058becbc.png",
+    "TryHackMe/attachment/f63b01787e995edea417abe07af45384.png",
+    "TryHackMe/attachment",
+    "output",
     "version.txt"
   ]
 }
