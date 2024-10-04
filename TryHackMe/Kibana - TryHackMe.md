@@ -2,7 +2,7 @@ Before you begin, always add your ip address to hosts file so as to avoid burden
 
 How to apply ?
 
-![](cf3a2e5dd2d551b8640a2d493f3ee36f.png)
+![](attachment/cf3a2e5dd2d551b8640a2d493f3ee36f.png)
 
 ## Reconnaissance
  nmap payload:
@@ -10,12 +10,12 @@ How to apply ?
 
 Unusual port number:
 
-![](e8a15745496651c4b5b275912f8c037d.png)
+![](attachment/e8a15745496651c4b5b275912f8c037d.png)
 
-![](c449e8ca809ba166e891781ff3d6294a.png)
+![](attachment/c449e8ca809ba166e891781ff3d6294a.png)
 
 What is Kibana ?
-![](f63b01787e995edea417abe07af45384.png)
+![](attachment/f63b01787e995edea417abe07af45384.png)
 
 Suspicious path:
 http://kiba.thm:5601/app/timelion#
