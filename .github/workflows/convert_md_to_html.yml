@@ -23,22 +23,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install markdown2
 
-    - name: Convert All Markdown Files to HTML
+    - name: Run Python script to convert Markdown to HTML
       run: |
-        for file in *.md; do
-          if [ -f "$file" ]; then
-            html_file="${file%.md}.html"
-            python << EOF
-import markdown2
-with open('$file', 'r', encoding='utf-8') as f:
-    markdown_content = f.read()
-html_content = markdown2.markdown(markdown_content)
-with open('$html_file', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-print(f'{html_file} başarıyla güncellendi.')
-EOF
-          fi
-        done
+        python convert_md_to_html.py
 
     - name: Commit and Push HTML changes
       run: |
