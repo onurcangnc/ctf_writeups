@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Kibana - TryHackMe.md",
+                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Kibana - TryHackMe.md",
+                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Kibana - TryHackMe.md",
+                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Kibana - TryHackMe.md"
+                "file": "TryHackMe/Blueprint/Blueprint.md"
               }
             }
           }
@@ -146,8 +146,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7b54e1151f4829d1",
+  "active": "dedd6729b9edb9f0",
   "lastOpenFiles": [
+    "TryHackMe/Kibana/Kibana.md",
+    "TryHackMe/Blueprint/Blueprint.md",
     "sync_to_github.ps1",
     "sync_to_github.bat",
     "README.md",
