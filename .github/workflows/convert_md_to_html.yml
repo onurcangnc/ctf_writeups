@@ -29,14 +29,14 @@ jobs:
           if [ -f "$file" ]; then
             html_file="${file%.md}.html"
             python <<EOF
-            import markdown2
-            with open('$file', 'r', encoding='utf-8') as f:
-                markdown_content = f.read()
-            html_content = markdown2.markdown(markdown_content)
-            with open('$html_file', 'w', encoding='utf-8') as f:
-                f.write(html_content)
-            print(f'{html_file} başarıyla güncellendi.')
-            EOF
+import markdown2
+with open('$file', 'r', encoding='utf-8') as f:
+    markdown_content = f.read()
+html_content = markdown2.markdown(markdown_content)
+with open('$html_file', 'w', encoding='utf-8') as f:
+    f.write(html_content)
+print(f'{html_file} başarıyla güncellendi.')
+EOF
           fi
         done
 
