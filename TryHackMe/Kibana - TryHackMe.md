@@ -155,5 +155,43 @@ chmod +x linpeas.sh
 
 ![](./attachment/93756ad44bea650fa9d6eff977b07209.png)
 
+- The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.
+
+![](./attachment/1.png)
+
+![](./attachment/sudo.png)
+
+We have a possible privilege escalation vector known as Sudo Privileges:
+
+Since Kiba is in the sudo group, check what commands you can run with sudo -l.
+
+It did not work in this scenario:
+
+```
+  whoami
+  kiba
+  sudo -l
+  sudo: no tty present and no askpass program specified
+```
+
+Furthermore, we have a binary named /home/kiba/.hackmeplease/python3, which has the capability cap_setuid+ep, which means that this Python binary can change user IDs (setuid). This is a potential privilege escalation vector since it allows the Python process to execute with elevated privileges.
+
+![alt text](./attachment/2.png)
+
+Let me pay attention on .hackmeplease :D
+
+![alt text](./attachment/3.png)
 
 
+Since we have the python3 binary and its vulnerability. In binary exploitation, we trust GFTOBins to escalate privileges:
+
+https://gtfobins.github.io/gtfobins/python/
+
+
+- On GFTOBins, we have many binaries available to elevate our privileges. However, today, we should look for Python binary. After a deep dive attempt, I recognized that I was dealing with cap_setuid+ep capability. Therefore, using this payload to escalate my privileges will be suitable.
+
+
+![alt text](./attachment/4.png)
+
+### Conclusion
+All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement
