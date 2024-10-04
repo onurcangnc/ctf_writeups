@@ -12,7 +12,7 @@ while ($true) {
             git add .
             git commit -m "Auto commit on $(Get-Date)"
             git push origin main
-            "[$(Get-Date)] Git işlemleri başarıyla gerçekleştirildi." | Out-File -Append $logFile
+            "[$(Get-Date)] Git Process has been completed." | Out-File -Append $logFile
         }
     }
     catch {

