@@ -1,3 +1,8 @@
+Before you begin, always add your ip address to hosts file so as to avoid burden especially ip address related operations, while you are actively pentesting.
+
+How to apply ?
+
+![[Screen Shot 2024-10-04 at 13.58.40.png]]
 
 ## Reconnaissance
  nmap payload:
@@ -23,6 +28,15 @@ Useful resources about vulnerability:
 -  https://github.com/LandGrey/CVE-2019-7609
 - https://github.com/mpgn/CVE-2019-7609
 
+For the exploitation phase we have two ways to compromise the target.
+- Manual payload execution on 
+### Manual Exploitation - 1
+
+After a couple of research process, I discovered the vulnerability itself which is **Prototype Pollusion** on **Timelion** feature of the **Kibana** - ElasticSearch supported and opensource data visualization platform.
+
+![[Screen Shot 2024-10-04 at 14.06.13.png]]
+
+
 Initial compromise:
 - Used Payload:
 
@@ -41,7 +55,10 @@ Reverse Shell PoC:
 ![[Screen Shot 2024-10-04 at 09.16.33.png]]
 
 
-Although I have taken reverse shell connection back, I will also try a python script that handles RCE automatically.
+
+### Manual Exploitation - 2
+
+Although I have taken reverse shell connection properly, trying a python script where I discovered the vulnerability that trigger RCE automatically.
 
 ```
 # python2 CVE-2019-7609-kibana-rce.py -h
@@ -74,6 +91,47 @@ Now it works ! After I restarted the machine, I was able to get my reverse shell
 
 ![[Screen Shot 2024-10-04 at 11.11.31.png]]
 
+
+### Automated Exploitation
+
+Metasploit Framework offers only three modules for **Kibana** platform. However, first approach was suitable for me. You can reach out the related module in below.
+
+![[Screen Shot 2024-10-04 at 14.15.29.png]]
+
+To interact with correlated module:
+
+```
+use 0
+```
+
+Now you are ready to configure module specific settings.
+
+In order to show options required by the module, use the below command:
+
+```
+show options
+```
+
+![[Screen Shot 2024-10-04 at 14.16.39.png]]
+
+Modifying the *RHOSTS*, *TARGETURI* and *RPORT* is enough to execute our exploit.
+
+To add necessary information to script settings:
+
+```
+set [needed attribute]
+
+Example: set RHOSTS or set RPORT
+```
+
+For this scenario, do not forget to modify *RHOSTS*, *LHOST* and *LPORT*.
+
+![[Screen Shot 2024-10-04 at 14.26.39.png]]
+
+Since I forgot to give *LHOST* and *LPORT* option, I was not able to run the script appropriately.
+
+
+
 I have tried to run linpeas on tmp folder which allows users to run many scripts here ,but in this scenario it does not work. Therefore, I uploaded my files through /home/kiba
 
 1. Deploy python server from local
@@ -95,5 +153,6 @@ chmod +x linpeas.sh
 - I found really useful evidence to escalate our privileges
 
 ![[Screen Shot 2024-10-04 at 11.46.43 1.png]]
+
 
 
