@@ -1,16 +1,26 @@
 import markdown2
 import os
+import re
 
 # Base directory for your TryHackMe Markdown files
 base_dir = './TryHackMe'
 
-# Function to replace image paths in Markdown content
-def replace_image_paths(markdown_content, md_dir):
+# Function to replace Obsidian image links with proper Markdown image syntax
+def replace_obsidian_links(markdown_content):
     """
-    Replace 'images/' with the relative path from the Markdown file's directory.
-    This will point to the 'images' folder inside the same folder as the Markdown file.
+    This function replaces Obsidian-style image links ![[...]] with standard
+    Markdown image syntax ![alt text](path_to_image), ensuring that no extra
+    directories are added in the process.
     """
-    return markdown_content.replace("images/", f"{md_dir}/images/")
+    # Regex to find Obsidian image links like ![[path_to_image]]
+    obsidian_link_pattern = r'!\[\[(.*?)\]\]'
+    
+    # Replace them with standard Markdown image syntax
+    # The lambda function inside re.sub formats the Obsidian link properly
+    # Ensures that extra directories are not appended
+    markdown_content = re.sub(obsidian_link_pattern, r'![alt text](\1)', markdown_content)
+    
+    return markdown_content
 
 # Walk through the TryHackMe directory and convert .md files to HTML
 for root, dirs, files in os.walk(base_dir):
@@ -22,14 +32,11 @@ for root, dirs, files in os.walk(base_dir):
             with open(md_file, 'r', encoding='utf-8') as f:
                 markdown_content = f.read()
 
-            # Get the directory where the Markdown file is located
-            md_dir = os.path.basename(root)
-
-            # Replace local image paths with the correct paths from the 'images' folder inside the same directory
-            markdown_content_with_images = replace_image_paths(markdown_content, md_dir)
+            # Convert Obsidian-style links to standard Markdown syntax
+            markdown_content = replace_obsidian_links(markdown_content)
 
             # Convert the updated Markdown content to HTML
-            html_content = markdown2.markdown(markdown_content_with_images)
+            html_content = markdown2.markdown(markdown_content)
 
             # Write the HTML content to a file
             with open(html_file, 'w', encoding='utf-8') as f:
