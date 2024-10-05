@@ -167,9 +167,7 @@ chmod +x linpeas.sh
 
 - I found really useful evidence to escalate our privileges
 
-<<<<<<< Updated upstream:TryHackMe/Kibana/Kibana.md
 ![](./images/privilege.PNG)
-=======
 - The crontab shows that the user `kiba` has a cron job scheduled to run every minute. This job navigates to the directory `/home/kiba/kibana/bin` and runs the `bash kibana` command.
 
 ![[Screen Shot 2024-10-04 at 11.53.47.png]]
@@ -177,11 +175,9 @@ chmod +x linpeas.sh
 
 
 ![[Screen Shot 2024-10-04 at 11.46.43 1.png]]
->>>>>>> Stashed changes:TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md
 
 - The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.
 
-<<<<<<< Updated upstream:TryHackMe/Kibana/Kibana.md
 ![](./images/1.png)
 
 ![](./images/sudo.png)
@@ -220,7 +216,6 @@ https://gtfobins.github.io/gtfobins/python/
 
 ### Conclusion
 All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement
-=======
 We have possible privilege escalation vector known as Sudo Privileges: 
 Since `kiba` is in the `sudo` group, check what commands you can run with `sudo -l`.
 
@@ -262,4 +257,3 @@ On `GFTOBins` we have a lot of binaries available to elevate our privileges. How
 All in all, this writeup demonstrates how different methodologies can be used at once. Through reconnaissance to post-exploitation, I provided 3 strong pathway you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to `exploiting vulnerability` and `escalating privilege`, show the significance of understanding each phase deeply. It's crucial not only to follow the steps meticulously but also to apply knowledge practically and adapt to challenges as they arise. Always remember, careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you a lot of trouble during the engagement.
 
 May The Pentest Be With You ! !
->>>>>>> Stashed changes:TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md
