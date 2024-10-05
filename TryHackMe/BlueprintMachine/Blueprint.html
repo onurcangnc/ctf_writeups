@@ -9,7 +9,7 @@ ping 10.10.118.119
 
 <p>The output should look like:</p>
 
-<p><img src="./images/TryHackMe/BlueprintMachine/images/1.png" alt="alt text" /></p>
+<p><img src="./images/1.png" alt="alt text" /></p>
 
 <p>Add your ip address to <code>/etc/hosts</code> file.</p>
 
@@ -19,7 +19,7 @@ nano /etc/host
 
 <p>Include your ip address the format provided below:</p>
 
-<p><img src="./images/TryHackMe/BlueprintMachine/images/2.png" alt="alt text" /></p>
+<p><img src="./images/2.png" alt="alt text" /></p>
 
 <p>Before move on, I highly recommend you to check manually whether <code>web application</code> runs on <code>port 80/443</code> via browser. In most scenarios, we will not have https protocol.</p>
 
@@ -30,11 +30,11 @@ http://blueprint.thm
 
 <p>This route automatically interact with HTTP protocol. Most of the time browsers have default routing mechanism directing to port 443. We should always try to route port 80 by just manually adding <code>http://</code></p>
 
-<p><img src="./images/TryHackMe/BlueprintMachine/images/3.png" alt="alt text" /></p>
+<p><img src="./images/3.png" alt="alt text" /></p>
 
 <p>Recently, I also tried to check <code>Apache</code> commonly running on port 8080:</p>
 
-<p><img src="./images/TryHackMe/BlueprintMachine/images/4.png" alt="alt text" /></p>
+<p><img src="./images/4.png" alt="alt text" /></p>
 
 <p>As you can see above, we have an directory named <code>oscommerce-2.3.4</code>. I was curious about it ,so I searched about our Operating System commerce app.</p>
 
@@ -130,7 +130,7 @@ enum4linux -a 10.10.118.119
 <p>Firstly, edit the 
 <code>url</code> part of the script:</p>
 
-<p><img src="./images/TryHackMe/BlueprintMachine/images/15.png" alt="alt text" /></p>
+<p><img src="./images/15.png" alt="alt text" /></p>
 
 <p>As you can see below, it did not work because the script automatically tried to execute <code>system('ls')</code> command on the OS.</p>
 
