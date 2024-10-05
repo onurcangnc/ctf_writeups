@@ -9,7 +9,7 @@ ping 10.10.118.119
 
 <p>The output should look like:</p>
 
-<p>![[TryHackMe/BlueprintMachine/BlueprintMachine/images/1.png]]</p>
+<p><img src="TryHackMe/BlueprintMachine/images/1.png" alt="alt text" /></p>
 
 <p>Add your ip address to <code>/etc/hosts</code> file.</p>
 
@@ -19,7 +19,7 @@ nano /etc/host
 
 <p>Include your ip address the format provided below:</p>
 
-<p>![[TryHackMe/BlueprintMachine/BlueprintMachine/images/2.png]]</p>
+<p><img src="TryHackMe/BlueprintMachine/images/2.png" alt="alt text" /></p>
 
 <p>Before move on, I highly recommend you to check manually whether <code>web application</code> runs on <code>port 80/443</code> via browser. In most scenarios, we will not have https protocol.</p>
 
@@ -30,15 +30,15 @@ http://blueprint.thm
 
 <p>This route automatically interact with HTTP protocol. Most of the time browsers have default routing mechanism directing to port 443. We should always try to route port 80 by just manually adding <code>http://</code></p>
 
-<p>![[TryHackMe/BlueprintMachine/BlueprintMachine/images/3.png]]</p>
+<p><img src="TryHackMe/BlueprintMachine/images/3.png" alt="alt text" /></p>
 
 <p>Recently, I also tried to check <code>Apache</code> commonly running on port 8080:</p>
 
-<p>![[TryHackMe/BlueprintMachine/BlueprintMachine/images/4.png]]</p>
+<p><img src="TryHackMe/BlueprintMachine/images/4.png" alt="alt text" /></p>
 
 <p>As you can see above, we have an directory named <code>oscommerce-2.3.4</code>. I was curious about it ,so I searched about our Operating System commerce app.</p>
 
-<p>![[5.png]]</p>
+<p><img src="5.png" alt="alt text" /></p>
 
 <p>It is clear that we should trigger RCE through web app. However, further reconnaissance is not harmful :) I also wanted to <code>fuzz</code> this route <code>http://blueprint:8080</code></p>
 
@@ -50,15 +50,15 @@ http://blueprint.thm
 dirsearch -u http://blueprint.thm:8080
 </code></p>
 
-<p>![[6.png]]</p>
+<p><img src="6.png" alt="alt text" /></p>
 
 <p>I just got <code>/server-status/</code>, <code>/server-info</code> paths. Capturing server data is useful for the architectural understanding. Let me extract what we have so far !</p>
 
-<p>![[7.png]]</p>
+<p><img src="7.png" alt="alt text" /></p>
 
 <p>I was dealing with <code>Win32</code> architecture, <code>Apache</code> as a web server and for the backend <code>PHP</code> working on the machine. Furthermore, on <code>/oscommerce-2.3.4/docs/</code> path, there was a database dump. However, I could not reach any juicy information.</p>
 
-<p>![[8.png]]</p>
+<p><img src="8.png" alt="alt text" /></p>
 
 <p>The <code>database scheme</code> pattern looks like <code>ER diagram</code>.</p>
 
@@ -73,11 +73,11 @@ sudo nmap -sV -sC blueprint.thm</p>
 
 <p>Since I have already get what we need especially architecture of the application. I preferred to use only <code>default script</code> scan. Moreover, full port scan was not compatible on this scenario because it ran really slow. Anyway, let's check the <code>network mapper</code> output.</p>
 
-<p>![[9.png]]</p>
+<p><img src="9.png" alt="alt text" /></p>
 
 <p>The results depicted that I did not check only the port <code>445</code> as known as <code>SMB</code> (Server Message Block).</p>
 
-<p>![[10.png]]</p>
+<p><img src="10.png" alt="alt text" /></p>
 
 <p><code>Nmap</code> script engine automatically run <code>default smb scripts</code> against on target. Lastly, checking the SMB will be crucial to get initial compromise since <code>nmap</code> script result revealed the potential discovery on <code>SMB</code>.</p>
 
@@ -85,7 +85,7 @@ sudo nmap -sV -sC blueprint.thm</p>
 
 <p><a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-smb">Pentesting SMB</a></p>
 
-<p>![[11.png]]</p>
+<p><img src="11.png" alt="alt text" /></p>
 
 <p><code>
 enum4linux -a 10.10.118.119
@@ -93,11 +93,11 @@ enum4linux -a 10.10.118.119
 
 <p>The most identical part of the <code>enum4linux</code> output was the <code>nbtstat information</code>.</p>
 
-<p>![[12.png]]</p>
+<p><img src="12.png" alt="alt text" /></p>
 
 <p>Script could get the <code>Domain/Workgroup</code> named <code>WORKGROUP</code>. Let me try to authenticate it through without giving credentials.</p>
 
-<p>![[13.png]]</p>
+<p><img src="13.png" alt="alt text" /></p>
 
 <p><code>
     //IPC$ did not allow me to run any commands
@@ -117,24 +117,24 @@ enum4linux -a 10.10.118.119
 
 <p><a href="https://www.exploit-db.com/exploits/44374">RCE</a></p>
 
-<p>![[14.png]]</p>
+<p><img src="14.png" alt="alt text" /></p>
 
 <p>There was a web app based vulnerability occurs ,so let me apply this manually before I demonstrate all the ways to compromise machine.</p>
 
 <p>Specifically, <code>PHP engine</code> shows an error the path <code>/install.php?step=4</code>. DB configuration error occured.</p>
 
-<p>![[15.png]]</p>
+<p><img src="15.png" alt="alt text" /></p>
 
 <p>I intended to do directly manual without any tool ,but it did not work. That's why, lets run `manual exploit</p>
 
 <p>Firstly, edit the 
 <code>url</code> part of the script:</p>
 
-<p>![[TryHackMe/BlueprintMachine/BlueprintMachine/images/15.png]]</p>
+<p><img src="TryHackMe/BlueprintMachine/images/15.png" alt="alt text" /></p>
 
 <p>As you can see below, it did not work because the script automatically tried to execute <code>system('ls')</code> command on the OS.</p>
 
-<p>![[16.png]]</p>
+<p><img src="16.png" alt="alt text" /></p>
 
 <p>However, the web app disabled such commands by default ,so lets run another payload from <a href="https://github.com/nobodyatall648/osCommerce-2.3.4-Remote-Command-Execution">Github</a></p>
 
