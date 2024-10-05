@@ -205,11 +205,6 @@ https://gtfobins.github.io/gtfobins/python/
 
 ![alt text](./images/4.PNG)
 
-### Conclusion
-All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement
-We have possible privilege escalation vector known as Sudo Privileges: 
-Since `kiba` is in the `sudo` group, check what commands you can run with `sudo -l`.
-
 It did not work on this scenario:
 
 ```
