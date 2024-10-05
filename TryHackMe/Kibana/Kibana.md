@@ -167,15 +167,6 @@ chmod +x linpeas.sh
 
 - I found really useful evidence to escalate our privileges
 
-![](./images/privilege.PNG)
-- The crontab shows that the user `kiba` has a cron job scheduled to run every minute. This job navigates to the directory `/home/kiba/kibana/bin` and runs the `bash kibana` command.
-
-![[Screen Shot 2024-10-04 at 11.53.47.png]]
-
-
-
-![[Screen Shot 2024-10-04 at 11.46.43 1.png]]
-
 - The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.
 
 ![](./images/1.png)
