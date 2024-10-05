@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "27894b8a785760e5",
+        "id": "e0e1b2bd0d266c67",
         "type": "tabs",
         "children": [
           {
-            "id": "a69df57c4b00b043",
+            "id": "37f560fb2b68a9a1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "TryHackMe/BlueprintMachine/Blueprint.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/BlueprintMachine/Blueprint.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/BlueprintMachine/Blueprint.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "TryHackMe/BlueprintMachine/Blueprint.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -146,21 +138,32 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "be490efddf21fff0",
+  "active": "37f560fb2b68a9a1",
   "lastOpenFiles": [
-    "TryHackMe/BlueprintMachine/images/23.png",
-    "TryHackMe/BlueprintMachine/images/22.png",
+    "TryHackMe/Blueprint/images/f19c9085129709ee14d013be869df69b.png",
+    "TryHackMe/Blueprint/images/e256c9ecc71b6a629d2932ab628f67d2.png",
+    "TryHackMe/Blueprint/images/dcab54bce716923eec702c7e99121b0c.png",
+    "TryHackMe/Blueprint/images/c9baca3cda1c39194c04fe2170c3da65.png",
+    "TryHackMe/Blueprint/images/c068cd371cefeebe4fea0d6d0d2a2ca3.png",
+    "TryHackMe/Blueprint/images/c00b57557743e709b8b96933432e0dfa.png",
+    "TryHackMe/Blueprint/images/ba6beb7ae28ef0a97d7a0a038feb5060.png",
+    "TryHackMe/Blueprint/images/9eb9cd58b9ea5e04c890326b5c1f471f.png",
+    "TryHackMe/Blueprint/images/9eb60bc8bf2b004e4db7d1cc0d5f1d8c.png",
+    "TryHackMe/Blueprint/images/93fa92bdae1981a20d355379e140e730.png",
+    "TryHackMe/Blueprint/images/9.png",
+    "TryHackMe/Blueprint/images",
+    "TryHackMe/Blueprint/Blueprint.md",
+    "TryHackMe/Blueprint/Blueprint.html",
+    "TryHackMe/Blueprint",
+    "Blueprint/Blueprint.md",
+    "Blueprint/images",
+    "Blueprint/Blueprint.html",
+    "Blueprint",
     "TryHackMe/BlueprintMachine/Blueprint.md",
-    "TryHackMe/BlueprintMachine/images/21.png",
-    "TryHackMe/BlueprintMachine/images/20.png",
-    "TryHackMe/BlueprintMachine/images/19.png",
-    "TryHackMe/BlueprintMachine/images/18.png",
-    "TryHackMe/BlueprintMachine/Blueprint.html",
-    "TryHackMe/BlueprintMachine/images/17.png",
-    "TryHackMe/BlueprintMachine/images/16.png",
-    "TryHackMe/BlueprintMachine/images/15.png",
-    "15.png",
-    "TryHackMe/BlueprintMachine/images/14.png",
-    "TryHackMe/BlueprintMachine/images"
+    "output/Blueprint.html",
+    "output/Blueprint.md",
+    "output/images",
+    "output",
+    "output/attachment"
   ]
 }
