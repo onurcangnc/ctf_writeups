@@ -1,20 +1,68 @@
-name: Deploy to GitHub Pages
+name: Deploy and Update Index
 
 on:
   push:
     branches:
-      - main  # Change to your branch name if necessary
+      - main  # or your preferred branch
 
 jobs:
-  deploy:
+  update-index:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout the repository
+    - name: Checkout repository
       uses: actions/checkout@v3
+
+    - name: Generate index.html with CTF links
+      run: |
+        # Create the index.html file
+        echo "<!DOCTYPE html>" > index.html
+        echo "<html lang='en'>" >> index.html
+        echo "<head>" >> index.html
+        echo "    <meta charset='UTF-8'>" >> index.html
+        echo "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" >> index.html
+        echo "    <title>CTF Writeups</title>" >> index.html
+        echo "    <style>" >> index.html
+        echo "        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }" >> index.html
+        echo "        .container { max-width: 800px; padding: 20px; margin: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; text-align: center; }" >> index.html
+        echo "        h1 { color: #0367A6; font-size: 2.5em; margin-bottom: 20px; }" >> index.html
+        echo "        ul { list-style-type: none; padding: 0; }" >> index.html
+        echo "        ul li { margin: 15px 0; }" >> index.html
+        echo "        a { font-size: 1.2em; text-decoration: none; color: #0367A6; padding: 10px 20px; border: 2px solid #0367A6; border-radius: 5px; transition: background-color 0.3s, color 0.3s; }" >> index.html
+        echo "        a:hover { background-color: #0367A6; color: #fff; }" >> index.html
+        echo "    </style>" >> index.html
+        echo "</head>" >> index.html
+        echo "<body>" >> index.html
+        echo "    <div class='container'>" >> index.html
+        echo "        <h1>CTF Writeups</h1>" >> index.html
+        echo "        <ul>" >> index.html
+
+        # Automatically detect directories with .html files and add links to the index
+        for dir in */ ; do
+          if [ -f "$dir/*.html" ]; then
+            # Get the directory name and generate a link to its HTML file
+            dir_name=$(basename "$dir")
+            html_file=$(find "$dir" -name '*.html' -print -quit)
+            html_filename=$(basename "$html_file")
+            echo "        <li><a href='$dir_name/$html_filename'>$dir_name Writeup</a></li>" >> index.html
+          fi
+        done
+
+        echo "        </ul>" >> index.html
+        echo "    </div>" >> index.html
+        echo "</body>" >> index.html
+        echo "</html>" >> index.html
+
+    - name: Commit and Push updated index.html
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add index.html
+        git commit -m "Update index.html with new CTF writeups"
+        git push
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./  # This points to the root directory of your repository
+        publish_dir: ./  # Points to the root directory

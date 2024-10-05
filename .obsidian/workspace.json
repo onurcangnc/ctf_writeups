@@ -140,6 +140,7 @@
   },
   "active": "be490efddf21fff0",
   "lastOpenFiles": [
+    "TryHackMe/TryHackMe.html",
     "index.html",
     "TryHackMe/Blueprint/images/f19c9085129709ee14d013be869df69b.png",
     "TryHackMe/Blueprint/images/e256c9ecc71b6a629d2932ab628f67d2.png",
@@ -163,7 +164,6 @@
     "output/Blueprint.html",
     "output/Blueprint.md",
     "output/images",
-    "output",
-    "output/attachment"
+    "output"
   ]
 }
