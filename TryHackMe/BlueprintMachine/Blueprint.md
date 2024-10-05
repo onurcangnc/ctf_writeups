@@ -100,5 +100,49 @@ The most identical part of the `enum4linux` output was the `nbtstat information`
 
 ![[12.png]]
 
-Script could get the `Domain/Workgroup` named `WORKGROUP`. Let me try to authenticate it.
+Script could get the `Domain/Workgroup` named `WORKGROUP`. Let me try to authenticate it through without giving credentials.
+
+![[13.png]]
+
+```
+	//IPC$ did not allow me to run any commands
+	──(root㉿kali)-[/home/kali]
+	└─# smbclient -U '%' -N \\\\10.10.118.119\\IPC$  
+	Try "help" to get a list of possible commands.
+	smb: \> dir
+	NT_STATUS_ACCESS_DENIED listing \*
+	smb: \> whoami
+	whoami: command not found
+	smb: \> ls
+	NT_STATUS_ACCESS_DENIED listing \*
+	smb: \> 
+```
+
+SMB did not give me useful findings. Therefore, I switched on exploitdb to get initial compromise.
+
+[RCE](https://www.exploit-db.com/exploits/44374)
+
+
+![[14.png]]
+
+There was a web app based vulnerability occurs ,so let me apply this manually before I demonstrate all the ways to compromise machine.
+
+Specifically, `PHP engine` shows an error the path `/install.php?step=4`. DB configuration error occured.
+
+![[15.png]]
+
+I intended to do directly manual without any tool ,but it did not work. That's why, lets run `manual exploit
+
+Firstly, edit the `url` part of the script:
+
+![[TryHackMe/BlueprintMachine/images/15.png]]
+
+
+As you can see below, it did not work because the script automatically tried to execute `system('ls')` command on the OS.
+
+![[16.png]]
+
+However, the web app disabled such commands by default ,so lets run another payload from [Github](https://github.com/nobodyatall648/osCommerce-2.3.4-Remote-Command-Execution)
+
+To understand how the script works, I initially run it just by no parameters and inputs.
 

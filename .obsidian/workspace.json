@@ -4,16 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "2ad1cb93822c6a8f",
+        "id": "27894b8a785760e5",
         "type": "tabs",
         "children": [
           {
-            "id": "7a2a0f24e7bb4845",
+            "id": "a69df57c4b00b043",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "TryHackMe/BlueprintMachine/images/12.png"
+                "file": "TryHackMe/BlueprintMachine/Blueprint.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -83,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/BlueprintMachine/images/12.png",
+                "file": "TryHackMe/BlueprintMachine/Blueprint.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/BlueprintMachine/images/12.png",
+                "file": "TryHackMe/BlueprintMachine/Blueprint.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/BlueprintMachine/images/12.png"
+                "file": "TryHackMe/BlueprintMachine/Blueprint.md"
               }
             }
           }
@@ -144,19 +146,19 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7a2a0f24e7bb4845",
+  "active": "a69df57c4b00b043",
   "lastOpenFiles": [
+    "TryHackMe/BlueprintMachine/images/17.png",
     "TryHackMe/BlueprintMachine/Blueprint.md",
-    "TryHackMe/BlueprintMachine/images/12.png",
+    "TryHackMe/BlueprintMachine/images/16.png",
+    "TryHackMe/BlueprintMachine/images/15.png",
+    "15.png",
+    "TryHackMe/BlueprintMachine/images/14.png",
+    "TryHackMe/BlueprintMachine/images/13.png",
+    "TryHackMe/BlueprintMachine/images/6.png",
     "TryHackMe/BlueprintMachine/images/11.png",
     "TryHackMe/BlueprintMachine/images/10.png",
-    "TryHackMe/BlueprintMachine/images/9.png",
-    "TryHackMe/BlueprintMachine/images/8.png",
-    "TryHackMe/BlueprintMachine/images/7.png",
-    "TryHackMe/BlueprintMachine/images/6.png",
-    "TryHackMe/BlueprintMachine/images/5.png",
-    "TryHackMe/BlueprintMachine/images/4.png",
-    "TryHackMe/BlueprintMachine/images/3.png",
+    "TryHackMe/BlueprintMachine/images/12.png",
     "TryHackMe/BlueprintMachine/images"
   ]
 }
