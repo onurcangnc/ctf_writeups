@@ -165,40 +165,18 @@ chmod +x linpeas.sh
 <li>I found really useful evidence to escalate our privileges</li>
 </ul>
 
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream:TryHackMe/Kibana/Kibana.md</p>
-
-<h1><img src="./images/privilege.PNG" alt="" /></h1>
-
-<ul>
-<li>The crontab shows that the user <code>kiba</code> has a cron job scheduled to run every minute. This job navigates to the directory <code>/home/kiba/kibana/bin</code> and runs the <code>bash kibana</code> command.</li>
-</ul>
+<p><img src="./images/privilege.PNG" alt="" />
+- The crontab shows that the user <code>kiba</code> has a cron job scheduled to run every minute. This job navigates to the directory <code>/home/kiba/kibana/bin</code> and runs the <code>bash kibana</code> command.</p>
 
 <p>![[Screen Shot 2024-10-04 at 11.53.47.png]]</p>
 
 <p>![[Screen Shot 2024-10-04 at 11.46.43 1.png]]</p>
 
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>Stashed changes:TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
-
 <ul>
 <li>The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.</li>
 </ul>
 
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream:TryHackMe/Kibana/Kibana.md
-<img src="./images/1.png" alt="" /></p>
+<p><img src="./images/1.png" alt="" /></p>
 
 <p><img src="./images/sudo.png" alt="" /></p>
 
@@ -235,9 +213,8 @@ chmod +x linpeas.sh
 
 <h3>Conclusion</h3>
 
-<h1>All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement</h1>
-
-<p>We have possible privilege escalation vector known as Sudo Privileges: 
+<p>All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement
+We have possible privilege escalation vector known as Sudo Privileges: 
 Since <code>kiba</code> is in the <code>sudo</code> group, check what commands you can run with <code>sudo -l</code>.</p>
 
 <p>It did not work on this scenario:</p>
@@ -280,19 +257,3 @@ Since <code>kiba</code> is in the <code>sudo</code> group, check what commands y
 <p>All in all, this writeup demonstrates how different methodologies can be used at once. Through reconnaissance to post-exploitation, I provided 3 strong pathway you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to <code>exploiting vulnerability</code> and <code>escalating privilege</code>, show the significance of understanding each phase deeply. It's crucial not only to follow the steps meticulously but also to apply knowledge practically and adapt to challenges as they arise. Always remember, careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you a lot of trouble during the engagement.</p>
 
 <p>May The Pentest Be With You ! !</p>
-
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>Stashed changes:TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
