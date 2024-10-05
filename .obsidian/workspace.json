@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "1c74bd3d8cf629b6",
+        "id": "547bb67861163aa3",
         "type": "tabs",
         "children": [
           {
-            "id": "dedd6729b9edb9f0",
+            "id": "ec4cec4a9ddc87b8",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -85,7 +85,11 @@
             "state": {
               "type": "backlink",
               "state": {
+<<<<<<< Updated upstream
                 "file": "TryHackMe/Blueprint/Blueprint.md",
+=======
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
+>>>>>>> Stashed changes
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +106,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+<<<<<<< Updated upstream
                 "file": "TryHackMe/Blueprint/Blueprint.md",
+=======
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
+>>>>>>> Stashed changes
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +133,11 @@
             "state": {
               "type": "outline",
               "state": {
+<<<<<<< Updated upstream
                 "file": "TryHackMe/Blueprint/Blueprint.md"
+=======
+                "file": "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md"
+>>>>>>> Stashed changes
               }
             }
           }
@@ -146,6 +158,7 @@
       "command-palette:Open command palette": false
     }
   },
+<<<<<<< Updated upstream
   "active": "dedd6729b9edb9f0",
   "lastOpenFiles": [
     "TryHackMe/Kibana/Kibana.md",
@@ -167,6 +180,23 @@
     "TryHackMe/attachment/f63b01787e995edea417abe07af45384.png",
     "TryHackMe/attachment",
     "output",
+=======
+  "active": "ec4cec4a9ddc87b8",
+  "lastOpenFiles": [
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 15.50.11.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 13.58.40.png",
+    "TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 15.45.17.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.53.47.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.56.02 1.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 11.56.02.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 15.27.38.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.26.39.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.16.39.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.15.29.png",
+    "TryHackMe/Kibana- TryHackMe/Screen Shot 2024-10-04 at 14.01.43.png",
+    "README.md",
+>>>>>>> Stashed changes
     "version.txt"
   ]
 }

