@@ -205,33 +205,6 @@ https://gtfobins.github.io/gtfobins/python/
 
 ![alt text](./images/4.PNG)
 
-It did not work on this scenario:
-
-```
-	whoami
-	kiba
-	sudo -l
-	sudo: no tty present and no askpass program specified
-```
-
-Furthermore, we have a binary named `/home/kiba/.hackmeplease/python3` which has the capability `cap_setuid+ep`, which means that this Python binary has the ability to change `user IDs (setuid)`. This is a potential privilege escalation vector since it allows the Python process to execute with elevated privileges.
-
-![[Screen Shot 2024-10-04 at 11.56.02.png]]
-
-Let me pay attention on `.hackmeplease` :D
-
-![[Screen Shot 2024-10-04 at 15.45.17.png]]
-
-
-Since we have `python3` binary and its vulnerability. In binary we trust `GFTOBins` to escalate privileges:
-
-- GFTOBins[https://gtfobins.github.io/gtfobins/python/]
-
-
-On `GFTOBins` we have a lot of binaries available to elevate our privileges. However, today we should look for `python` binary. After a deep dive attempts, I recognized that I was dealing with `cap_setuid+ep` capability. Therefore, I thought that it will be suitable to use this payload to escalate my privileges.
-
-![[Screen Shot 2024-10-04 at 15.50.11.png]]
-
 - You can execute following command to be `root` on target.
 
 ```
