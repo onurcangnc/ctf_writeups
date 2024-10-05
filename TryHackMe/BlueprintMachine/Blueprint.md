@@ -15,7 +15,7 @@ The output should look like:
 Add your ip address to `/etc/hosts` file.
 
 ```
-nano /etc/hosts
+nano /etc/host
 ```
 
 Include your ip address the format provided below:
