@@ -35,6 +35,9 @@ jobs:
         git config --global user.email 'actions@github.com'
         git add TryHackMe/**/*.html
 
+        # Pull the latest changes before pushing
+        git pull --rebase
+
         # Only commit and push if there are changes
         if git diff --cached --quiet; then
           echo "No changes to commit"
@@ -48,15 +51,14 @@ jobs:
         git fetch
         if ! git diff --quiet; then
           echo "Git pull needed"
-          echo "::set-output name=needs_pull::true"
+          echo "needs_pull=true" >> $GITHUB_ENV
         else
           echo "No git pull needed"
-          echo "::set-output name=needs_pull::false"
-        fi
+          echo "needs_pull=false" >> $GITHUB_ENV
       id: check_pull
 
     - name: Send Telegram notification
-      if: steps.check_pull.outputs.needs_pull == 'true'
+      if: env.needs_pull == 'true'
       run: |
         curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_API }}/sendMessage" \
         -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
