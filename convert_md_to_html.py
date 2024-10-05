@@ -9,16 +9,14 @@ base_dir = './TryHackMe'
 def replace_obsidian_links(markdown_content):
     """
     This function replaces Obsidian-style image links ![[...]] with standard
-    Markdown image syntax ![alt text](path_to_image), ensuring that no extra
-    directories are added in the process.
+    Markdown image syntax ![alt text](./images/path_to_image), ensuring that
+    all image paths follow the ./images/ pattern.
     """
-    # Regex to find Obsidian image links like ![[path_to_image]]
+    # Regex to find Obsidian image links like ![[images/path_to_image]]
     obsidian_link_pattern = r'!\[\[(.*?)\]\]'
     
-    # Replace them with standard Markdown image syntax
-    # The lambda function inside re.sub formats the Obsidian link properly
-    # Ensures that extra directories are not appended
-    markdown_content = re.sub(obsidian_link_pattern, r'![alt text](\1)', markdown_content)
+    # Replace them with standard Markdown image syntax and ensure ./images/ is used
+    markdown_content = re.sub(obsidian_link_pattern, r'![alt text](./images/\1)', markdown_content)
     
     return markdown_content
 
