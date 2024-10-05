@@ -1,1 +1,98 @@
-<p></p>
+<h2>Reconnaissance:</h2>
+
+<p>First of all, to understand whether machine live or not try to
+<code>ping</code> it.</p>
+
+<p><code>
+ping 10.10.118.119
+</code></p>
+
+<p>The output should look like:</p>
+
+<p>![[TryHackMe/BlueprintMachine/images/1.png]]</p>
+
+<p>Add your ip address to <code>/etc/hosts</code> file.</p>
+
+<p><code>
+nano /etc/hosts
+</code></p>
+
+<p>Include your ip address the format provided below:</p>
+
+<p>![[TryHackMe/BlueprintMachine/images/2.png]]</p>
+
+<p>Before move on, I highly recommend you to check manually whether <code>web application</code> runs on <code>port 80/443</code> via browser. In most scenarios, we will not have https protocol.</p>
+
+<p><code>
+//The route that you need to follow is:
+http://blueprint.thm
+</code></p>
+
+<p>This route automatically interact with HTTP protocol. Most of the time browsers have default routing mechanism directing to port 443. We should always try to route port 80 by just manually adding <code>http://</code></p>
+
+<p>![[TryHackMe/BlueprintMachine/images/3.png]]</p>
+
+<p>Recently, I also tried to check <code>Apache</code> commonly running on port 8080:</p>
+
+<p>![[TryHackMe/BlueprintMachine/images/4.png]]</p>
+
+<p>As you can see above, we have an directory named <code>oscommerce-2.3.4</code>. I was curious about it ,so I searched about our Operating System commerce app.</p>
+
+<p>![[5.png]]</p>
+
+<p>It is clear that we should trigger RCE through web app. However, further reconnaissance is not harmful :) I also wanted to <code>fuzz</code> this route <code>http://blueprint:8080</code></p>
+
+<p>For the fuzzing, I thought that <code>dirsearch</code> and <code>dirb</code> will be suitable:</p>
+
+<p><code>Dirsearch</code> payload:</p>
+
+<p><code>
+dirsearch -u http://blueprint.thm:8080
+</code></p>
+
+<p>![[6.png]]</p>
+
+<p>I just got <code>/server-status/</code>, <code>/server-info</code> paths. Capturing server data is useful for the architectural understanding. Let me extract what we have so far !</p>
+
+<p>![[7.png]]</p>
+
+<p>I was dealing with <code>Win32</code> architecture, <code>Apache</code> as a web server and for the backend <code>PHP</code> working on the machine. Furthermore, on <code>/oscommerce-2.3.4/docs/</code> path, there was a database dump. However, I could not reach any juicy information.</p>
+
+<p>![[8.png]]</p>
+
+<p>The <code>database scheme</code> pattern looks like <code>ER diagram</code>.</p>
+
+<p>Nmap was beneficial to get extended data about application:</p>
+
+<p>Nmap Payloads:
+```
+sudo nmap -sV -sC blueprint.thm</p>
+
+<p>sudo nmap -sV -sC -p- blueprint.thm
+```</p>
+
+<p>Since I have already get what we need especially architecture of the application. I preferred to use only <code>default script</code> scan. Moreover, full port scan was not compatible on this scenario because it ran really slow. Anyway, let's check the <code>network mapper</code> output.</p>
+
+<p>![[9.png]]</p>
+
+<p>The results depicted that I did not check only the port <code>445</code> as known as <code>SMB</code> (Server Message Block).</p>
+
+<p>![[10.png]]</p>
+
+<p><code>Nmap</code> script engine automatically run <code>default smb scripts</code> against on target. Lastly, checking the SMB will be crucial to get initial compromise since <code>nmap</code> script result revealed the potential discovery on <code>SMB</code>.</p>
+
+<p>According to <code>HackTricks</code>, we can use <code>enum4linux</code> to enumerate the target:</p>
+
+<p><a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-smb">Pentesting SMB</a></p>
+
+<p>![[11.png]]</p>
+
+<p><code>
+enum4linux -a 10.10.118.119
+</code></p>
+
+<p>The most identical part of the <code>enum4linux</code> output was the <code>nbtstat information</code>.</p>
+
+<p>![[12.png]]</p>
+
+<p>Script could get the <code>Domain/Workgroup</code> named <code>WORKGROUP</code>. Let me try to authenticate it.</p>
