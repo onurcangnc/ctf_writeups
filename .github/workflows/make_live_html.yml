@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Change to your working branch if necessary
+      - main  # Change to your branch name if necessary
 
 jobs:
   deploy:
@@ -13,8 +13,8 @@ jobs:
     - name: Checkout the repository
       uses: actions/checkout@v3
 
-    - name: Deploy HTML files to GitHub Pages
+    - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./  # This points to the root directory containing your CTF folders and HTML files
+        publish_dir: ./  # This points to the root directory of your repository
