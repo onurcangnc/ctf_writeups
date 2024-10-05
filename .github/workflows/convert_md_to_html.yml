@@ -1,4 +1,4 @@
-name: Convert Markdown to HTML
+name: Convert Markdown to HTML and Notify via Telegram
 
 on:
   push:
@@ -42,3 +42,22 @@ jobs:
           git commit -m "Update HTML files for TryHackMe"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/onurcangnc/ctf_writeups.git
         fi
+
+    - name: Check if git pull is needed
+      run: |
+        git fetch
+        if ! git diff --quiet; then
+          echo "Git pull needed"
+          echo "::set-output name=needs_pull::true"
+        else
+          echo "No git pull needed"
+          echo "::set-output name=needs_pull::false"
+        fi
+      id: check_pull
+
+    - name: Send Telegram notification
+      if: steps.check_pull.outputs.needs_pull == 'true'
+      run: |
+        curl -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_API }}/sendMessage" \
+        -d chat_id=${{ secrets.TELEGRAM_CHAT_ID }} \
+        -d text="There are updates in the remote repository. Please perform a git pull."
