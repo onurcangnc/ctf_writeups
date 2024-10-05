@@ -34,5 +34,11 @@ jobs:
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         git add TryHackMe/**/*.html
-        git commit -m "Update HTML files for TryHackMe"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/onurcangnc/ctf_writeups.git
+
+        # Only commit and push if there are changes
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Update HTML files for TryHackMe"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/onurcangnc/ctf_writeups.git
+        fi
