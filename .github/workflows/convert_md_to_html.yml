@@ -59,6 +59,7 @@ jobs:
         else
           echo "No git pull needed"
           echo "needs_pull=false" >> $GITHUB_ENV
+        fi  # Closing the if statement here
       id: check_pull
 
     - name: Send Telegram notification
