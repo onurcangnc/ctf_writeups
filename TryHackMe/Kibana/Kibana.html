@@ -201,33 +201,6 @@ chmod +x linpeas.sh
 
 <p><img src="./images/4.PNG" alt="alt text" /></p>
 
-<p>It did not work on this scenario:</p>
-
-<p><code>
-    whoami
-    kiba
-    sudo -l
-    sudo: no tty present and no askpass program specified
-</code></p>
-
-<p>Furthermore, we have a binary named <code>/home/kiba/.hackmeplease/python3</code> which has the capability <code>cap_setuid+ep</code>, which means that this Python binary has the ability to change <code>user IDs (setuid)</code>. This is a potential privilege escalation vector since it allows the Python process to execute with elevated privileges.</p>
-
-<p>![[Screen Shot 2024-10-04 at 11.56.02.png]]</p>
-
-<p>Let me pay attention on <code>.hackmeplease</code> :D</p>
-
-<p>![[Screen Shot 2024-10-04 at 15.45.17.png]]</p>
-
-<p>Since we have <code>python3</code> binary and its vulnerability. In binary we trust <code>GFTOBins</code> to escalate privileges:</p>
-
-<ul>
-<li>GFTOBins[https://gtfobins.github.io/gtfobins/python/]</li>
-</ul>
-
-<p>On <code>GFTOBins</code> we have a lot of binaries available to elevate our privileges. However, today we should look for <code>python</code> binary. After a deep dive attempts, I recognized that I was dealing with <code>cap_setuid+ep</code> capability. Therefore, I thought that it will be suitable to use this payload to escalate my privileges.</p>
-
-<p>![[Screen Shot 2024-10-04 at 15.50.11.png]]</p>
-
 <ul>
 <li>You can execute following command to be <code>root</code> on target.</li>
 </ul>
