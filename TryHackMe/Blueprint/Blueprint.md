@@ -206,7 +206,32 @@ Since the target is x86 device known as 32bit:
 
 ![](images/7ae5e99a8c2f19cd25f44313293553aa.png)
 
-Using `mimikatz32.exe` is compatible for us. That's all for m today guys ! !
+Using `mimikatz32.exe` is compatible for us. 
 
-May The Pentest Be With Your ! !
+Get the `root flag` from here:
+![[25.png]]
+
+In windows, the registry in a binary file format store in `System32/config/` with name SAM, SECURITY , SYSTEM & Default.
+
+![[26.png]]
+
+To decrypt NTLM hash we need three files: SAM, SYSTEM and SECURITY. So, I copied them.
+
+![[27.png]]
+
+
+After collect those file it need to hash dump to get hash value. Here, `samdump2` is best tool for hash dump.
+
+![[28.png]]
+
+The second portion after `:` colon indicates the NTLM of the user.
+
+![[29.png]]
+[CrackStation]()
+
+
+That's all for me today guys ! !
+
+
+May The Pentest Be With You ! !
 
