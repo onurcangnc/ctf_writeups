@@ -55,9 +55,15 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add index.html
-        git commit -m "Update index.html with new CTF writeups"
-        git push
+
+        # Check if index.html has changed before committing
+        if git diff --quiet index.html; then
+          echo "No changes in index.html, skipping commit."
+        else
+          git add index.html
+          git commit -m "Update index.html with new CTF writeups"
+          git push
+        fi
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
