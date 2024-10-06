@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Check if 'markdown2' is installed, and if not, install it
+if ! python3 -c "import markdown2" &> /dev/null; then
+    echo "markdown2 is not installed. Installing..."
+    pip install markdown2
+    if [ $? -ne 0 ]; then
+        echo "Failed to install markdown2. Aborting commit."
+        exit 1
+    fi
+else
+    echo "markdown2 is already installed."
+fi
+
+# Check if 'os' and 're' are installed (though they are part of Python's standard library)
+if ! python3 -c "import os, re" &> /dev/null; then
+    echo "Error: os or re module is not available. These are part of Python's standard library. Aborting commit."
+    exit 1
+else
+    echo "os and re modules are available."
+fi
+
+# Run the Python script to convert Markdown to HTML
+python3 convert_md_to_html.py
+
+# Stage the generated HTML files
+git add TryHackMe/**/*.html
