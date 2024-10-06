@@ -3,7 +3,7 @@ name: Deploy and Update Index
 on:
   push:
     branches:
-      - main  # or your preferred branch
+      - main
 
 jobs:
   update-index:
@@ -15,7 +15,6 @@ jobs:
 
     - name: Generate index.html with CTF links
       run: |
-        # Create the index.html file
         echo "<!DOCTYPE html>" > index.html
         echo "<html lang='en'>" >> index.html
         echo "<head>" >> index.html
@@ -38,13 +37,12 @@ jobs:
         echo "        <ul>" >> index.html
 
         # Automatically detect directories with .html files and add links to the index
-        for dir in */ ; do
-          if [ -f "$dir/*.html" ]; then
-            # Get the directory name and generate a link to its HTML file
+        for dir in TryHackMe/*/ ; do
+          html_file=$(find "$dir" -name '*.html' -print -quit)
+          if [ -n "$html_file" ]; then
             dir_name=$(basename "$dir")
-            html_file=$(find "$dir" -name '*.html' -print -quit)
             html_filename=$(basename "$html_file")
-            echo "        <li><a href='$dir_name/$html_filename'>$dir_name CTF Writeup</a></li>" >> index.html
+            echo "        <li><a href='TryHackMe/$dir_name/$html_filename'>$dir_name CTF Writeup</a></li>" >> index.html
           fi
         done
 
