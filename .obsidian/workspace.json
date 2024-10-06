@@ -11,8 +11,12 @@
             "id": "37f560fb2b68a9a1",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "TryHackMe/Blueprint/Blueprint.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,6 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +124,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "TryHackMe/Blueprint/Blueprint.md"
+              }
             }
           }
         ]
@@ -140,18 +148,19 @@
   },
   "active": "be490efddf21fff0",
   "lastOpenFiles": [
+    "TryHackMe/Blueprint/images/29.png",
+    "Pasted image 20241007005505.png",
+    "TryHackMe/Blueprint/images/28.png",
+    "27.png",
+    "26.png",
+    "TryHackMe/Blueprint/images/25.png",
+    "1_qOQUNEFw-kxBtkN9fzh3EQ.webp",
     "TryHackMe/TryHackMe.html",
     "index.html",
     "TryHackMe/Blueprint/images/f19c9085129709ee14d013be869df69b.png",
     "TryHackMe/Blueprint/images/e256c9ecc71b6a629d2932ab628f67d2.png",
     "TryHackMe/Blueprint/images/dcab54bce716923eec702c7e99121b0c.png",
     "TryHackMe/Blueprint/images/c9baca3cda1c39194c04fe2170c3da65.png",
-    "TryHackMe/Blueprint/images/c068cd371cefeebe4fea0d6d0d2a2ca3.png",
-    "TryHackMe/Blueprint/images/c00b57557743e709b8b96933432e0dfa.png",
-    "TryHackMe/Blueprint/images/ba6beb7ae28ef0a97d7a0a038feb5060.png",
-    "TryHackMe/Blueprint/images/9eb9cd58b9ea5e04c890326b5c1f471f.png",
-    "TryHackMe/Blueprint/images/9eb60bc8bf2b004e4db7d1cc0d5f1d8c.png",
-    "TryHackMe/Blueprint/images/93fa92bdae1981a20d355379e140e730.png",
     "TryHackMe/Blueprint/images",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Blueprint/Blueprint.html",
@@ -163,7 +172,6 @@
     "TryHackMe/BlueprintMachine/Blueprint.md",
     "output/Blueprint.html",
     "output/Blueprint.md",
-    "output/images",
-    "output"
+    "output/images"
   ]
 }
