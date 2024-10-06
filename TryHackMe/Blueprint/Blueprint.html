@@ -239,7 +239,29 @@ python -m http.server 3131
 
 <p><img src="images/7ae5e99a8c2f19cd25f44313293553aa.png" alt="" /></p>
 
-<p>Using <code>mimikatz32.exe</code> is compatible for us. That's all for m today guys ! !</p>
+<p>Using <code>mimikatz32.exe</code> is compatible for us. </p>
 
-<p>May The Pentest Be With Your ! !</p>
+<p>Get the <code>root flag</code> from here:
+<img src="./images/25.png" alt="alt text" /></p>
+
+<p>In windows, the registry in a binary file format store in <code>System32/config/</code> with name SAM, SECURITY , SYSTEM &amp; Default.</p>
+
+<p><img src="./images/26.png" alt="alt text" /></p>
+
+<p>To decrypt NTLM hash we need three files: SAM, SYSTEM and SECURITY. So, I copied them.</p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p>After collect those file it need to hash dump to get hash value. Here, <code>samdump2</code> is best tool for hash dump.</p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>The second portion after <code>:</code> colon indicates the NTLM of the user.</p>
+
+<p><img src="./images/29.png" alt="alt text" />
+<a href="">CrackStation</a></p>
+
+<p>That's all for me today guys ! !</p>
+
+<p>May The Pentest Be With You ! !</p>
 </body></html>
