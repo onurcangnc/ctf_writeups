@@ -1,0 +1,7 @@
+#!/bin/bash
+# Run the Python script to convert Markdown to HTML
+python convert_md_to_html.py
+
+# Stage the generated HTML files
+git add TryHackMe/**/*.html
+
