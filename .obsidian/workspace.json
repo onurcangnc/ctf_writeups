@@ -11,12 +11,8 @@
             "id": "37f560fb2b68a9a1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -85,7 +81,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +97,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -124,9 +118,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md"
-              }
+              "state": {}
             }
           }
         ]
@@ -146,21 +138,21 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "37f560fb2b68a9a1",
+  "active": "be490efddf21fff0",
   "lastOpenFiles": [
     "pre-commit",
+    "TryHackMe/Blueprint/images/29.png",
+    "TryHackMe/Blueprint/images/28.png",
     "TryHackMe/Blueprint/images/27.png",
     "TryHackMe/Blueprint/images/26.png",
-    "TryHackMe/Blueprint/images/29.png",
-    "Pasted image 20241007005505.png",
-    "TryHackMe/Blueprint/images/28.png",
-    "27.png",
-    "26.png",
     "TryHackMe/Blueprint/images/25.png",
-    "1_qOQUNEFw-kxBtkN9fzh3EQ.webp",
     "TryHackMe/TryHackMe.html",
     "index.html",
     "TryHackMe/Blueprint/images/f19c9085129709ee14d013be869df69b.png",
+    "TryHackMe/Blueprint/images/e256c9ecc71b6a629d2932ab628f67d2.png",
+    "TryHackMe/Blueprint/images/dcab54bce716923eec702c7e99121b0c.png",
+    "TryHackMe/Blueprint/images/c9baca3cda1c39194c04fe2170c3da65.png",
+    "TryHackMe/Blueprint/images/c068cd371cefeebe4fea0d6d0d2a2ca3.png",
     "TryHackMe/Blueprint/images",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Blueprint/Blueprint.html",
