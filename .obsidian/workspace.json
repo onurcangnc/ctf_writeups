@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "e7c0fc12f4d86ef6",
+        "id": "749e1c30df8ff683",
         "type": "tabs",
         "children": [
           {
-            "id": "6d17df17b15011ed",
+            "id": "62ee4f9e7fa53e15",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
+                "file": "TryHackMe/Dogcat/Dogcat.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
+                "file": "TryHackMe/Dogcat/Dogcat.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
+                "file": "TryHackMe/Dogcat/Dogcat.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md"
+                "file": "TryHackMe/Dogcat/Dogcat.md"
               }
             }
           }
@@ -146,32 +146,34 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6d17df17b15011ed",
+  "active": "62ee4f9e7fa53e15",
   "lastOpenFiles": [
+    "TryHackMe/Dogcat/images/10.png",
+    "TryHackMe/Dogcat/images/9.png",
+    "TryHackMe/Dogcat/images/8.png",
+    "Screen Shot 2024-10-07 at 12.50.05.png",
+    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/Dogcat/images/7.png",
+    "TryHackMe/Dogcat/images/6.png",
+    "TryHackMe/Dogcat/images/5.png",
+    "TryHackMe/Dogcat/images/4.png",
+    "TryHackMe/Dogcat/images/3.png",
+    "TryHackMe/Dogcat/images/2.png",
+    "TryHackMe/Dogcat/images/1.png",
+    "TryHackMe/Dogcat/images",
+    "TryHackMe/Blueprint/Blueprint.md",
+    "TryHackMe/Dogcat",
+    "Untitled",
     "TryHackMe/Kibana/Kibana.md",
     "Untitled 1",
     "TryHackMe/CTF",
-    "TryHackMe/Kibana/images/3.PNG",
-    "TryHackMe/Kibana/images/11df5f7c7c9ac5dfcab4d51099732301.png",
     "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md",
     "attachment",
     "pre-commit",
-    "TryHackMe/Blueprint/images/29.png",
-    "TryHackMe/Blueprint/images/28.png",
-    "TryHackMe/Blueprint/images/27.png",
-    "TryHackMe/Blueprint/images/26.png",
-    "TryHackMe/Blueprint/images/25.png",
     "TryHackMe/TryHackMe.html",
     "index.html",
-    "TryHackMe/Blueprint/images/f19c9085129709ee14d013be869df69b.png",
-    "TryHackMe/Blueprint/images/e256c9ecc71b6a629d2932ab628f67d2.png",
-    "TryHackMe/Blueprint/images/dcab54bce716923eec702c7e99121b0c.png",
     "TryHackMe/Blueprint/images",
-    "TryHackMe/Blueprint/Blueprint.md",
-    "TryHackMe/Blueprint/Blueprint.html",
-    "TryHackMe/Blueprint",
     "Blueprint/Blueprint.md",
-    "Blueprint/images",
     "TryHackMe/BlueprintMachine/Blueprint.md",
     "output/Blueprint.md"
   ]

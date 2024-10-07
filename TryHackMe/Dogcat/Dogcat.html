@@ -1,0 +1,124 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone, today I would like to analyze the machine called <code>dogcat</code> on TryHackMe platform. </p>
+
+<p>Let me add my ipv4 address to <code>/etc/hosts</code> file.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<h2>Reconnaissance</h2>
+
+<p>I prefer to divide <code>recon</code> phase into two sub category. I will respectively apply both manual &amp; automated reconnaissance in advance.</p>
+
+<ul>
+<li>Manual </li>
+<li>Automated</li>
+</ul>
+
+<h3>Manual Reconnaissance:</h3>
+
+<p>Without using any tool, we can conduct a scan just by taking advantage of the browser. Furthermore, <code>curl</code> also suitable for diverse HTTP methods plus direct port queries.</p>
+
+<p><img src="./images/2.png" alt="alt text" />
+As you can see, you should always modify the <code>http://</code> part of the url in every time since every time browser redirects the client to the <code>https</code> protocol working on <code>443</code>.</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>In order to verify both the web app instance and web server type, I will check for both web application instance and its type at once through the browser. In this scenario, <code>Apache</code> has been used to make live our application. To understand it, using <code>http</code> with port <code>8080</code> (default Apache port number) is compatible right now.</p>
+
+<ul>
+<li>By requesting through <code>curl</code>, we can reach the same result.</li>
+</ul>
+
+<p>```</p>
+
+<h1>Testing port 80</h1>
+
+<p>curl http://dogcat.thm:80</p>
+
+<h1>Testing port 8080</h1>
+
+<p>curl http://dogcat.thm:8080
+```</p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>Furthermore, you can also get <code>HTTP header</code> info through <code>-I</code> option.</p>
+
+<p><code>
+curl -I http://dogcat.thm:80/8080
+</code></p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>Time reduction is crucial aspect for offensive security operations ,so before you move on conducting port scans via <code>nmap</code>. I highly recommend you to take action on manual part.</p>
+
+<p>Let's check what we have:
+<img src="./images/6.png" alt="alt text" /></p>
+
+<p><code>Image generation</code> web application, without the usage of any <code>persistent storage (Database)</code>. After clicking any image, I recognized that we can temper end point parameter just by giving unusual parameter or trigger <code>LFI</code> or <code>RFI</code>. I intentionally tried to click <code>dog</code> button then try to move parent directory using <code>../</code>.</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>Now let's execute it on browser's URL part:</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p>As you can see here, the behavior of the web app altered, normally it should not render upper directory by default. We just delete the <code>?view=</code> part and reach default page. </p>
+
+<p>Anyway, let me also use automated scan.</p>
+
+<h3>Automating</h3>
+
+<p>Nmap provides significant evidence to our roadmap in every CTF session ,but in this scenario I assumed that I should directly get initial compromise on web app.</p>
+
+<p>Payload:
+<code>
+sudo nmap -sV -sC dogcat.thm
+</code></p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p>Payload:
+<code>
+sudo nmap -sV -sC -p- dogcat.thm
+</code>
+<img src="./images/10.png" alt="alt text" /></p>
+</body></html>
