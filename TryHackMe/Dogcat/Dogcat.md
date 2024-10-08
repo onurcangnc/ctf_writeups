@@ -79,3 +79,38 @@ sudo nmap -sV -sC -p- dogcat.thm
 ```
 ![[TryHackMe/Dogcat/images/10.png]]
 
+Additionally, I wanted to intercept the `view` parameter ,so maybe I can trigger `path traversal` then move on `LFI`. Let me use a `HackTricks`
+
+[HackTricks - File Inclusion](https://book.hacktricks.xyz/pentesting-web/file-inclusion)
+
+![[TryHackMe/Dogcat/images/12.png]]
+
+As you can see below, there was not such file located on correlated path:
+
+![[TryHackMe/Dogcat/images/11.png]]
+
+I understood the occurrence of the `path traversal` since I was able to try to show specific path, `../../../../var/www/html/config.php` ,but the application behaved in a different manner. In contrast, it applied some additions on last part of the path's ending part.
+
+![[TryHackMe/Dogcat/images/13.png]]
+
+To get the idea behind the application (backend), I used really unique file name called `ErkanUcar`. As you can see above, it is clear that application intended to make file extension addition on any file. In this scenario it applied `.php`. Maybe there should also a method for escaping `.php` extension. From that idea, having a bright understanding about `LFI` is possible. Moreover, the error message genuinely explains whether we have `LFI` or not. In every attempt, it was executing file + `.php` extension. 
+
+Thanks to `Medium` known as article publication platform, I easily found what I need especially escaping restrictions on `LFI`. 
+
+![[TryHackMe/Dogcat/images/14.png]]
+
+It suggests that If we apply `NullByte - %00` on last part where url was located, we can directly bypass restriction. On this concept, he or she did not use the advantage of null byte. 
+
+Let me apply it:
+
+Payload:
+
+```
+cat/../../../../etc/erkanucar%00
+```
+
+
+![[TryHackMe/Dogcat/images/15.png]]
+
+
+In every attempt that I made restricted by web application because it was clear that using `whitelist` approach on words like `cat` or `dog` prevents users to inject `LFI` payload. We can still traverse ,but not execute something useful `php` file.
