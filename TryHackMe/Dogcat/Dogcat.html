@@ -154,5 +154,18 @@ cat/../../../../etc/erkanucar%00
 
 <p><img src="./images/15.png" alt="alt text" /></p>
 
-<p>In every attempt that I made restricted by web application because it was clear that using <code>whitelist</code> approach on words like <code>cat</code> or <code>dog</code> prevents users to inject <code>LFI</code> payload. We can still traverse ,but not execute something useful <code>php</code> file.</p>
+<p>In every attempt that I made restricted by web application because it was clear that using <code>whitelist</code> approach on words like <code>cat</code> or <code>dog</code> prevents users to inject <code>LFI</code> payload. We can still traverse ,but not execute something useful <code>php</code> file. Furthermore, web application technology is playing crucial role in such cases. Therefore, I checked the web application technology that is used by our instance using <code>wappalyzer</code> and <code>whatweb</code>.</p>
+
+<h3>Whatweb Output:</h3>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>Payload:
+<code>whatweb dogcat.thm</code></p>
+
+<h3>Wappalyzer Output:</h3>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>I deliberately gave two approach to fullfil the same result with <code>different tools</code>.</p>
 </body></html>

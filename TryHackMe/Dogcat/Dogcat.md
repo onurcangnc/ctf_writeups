@@ -113,4 +113,16 @@ cat/../../../../etc/erkanucar%00
 ![[TryHackMe/Dogcat/images/15.png]]
 
 
-In every attempt that I made restricted by web application because it was clear that using `whitelist` approach on words like `cat` or `dog` prevents users to inject `LFI` payload. We can still traverse ,but not execute something useful `php` file.
+In every attempt that I made restricted by web application because it was clear that using `whitelist` approach on words like `cat` or `dog` prevents users to inject `LFI` payload. We can still traverse ,but not execute something useful `php` file. Furthermore, web application technology is playing crucial role in such cases. Therefore, I checked the web application technology that is used by our instance using `wappalyzer` and `whatweb`.
+
+### Whatweb Output:
+![[TryHackMe/Dogcat/images/16.png]]
+
+Payload:
+`whatweb dogcat.thm`
+
+### Wappalyzer Output:
+![[TryHackMe/Dogcat/images/17.png]]
+
+I deliberately gave two approach to fullfil the same result with `different tools`.
+
