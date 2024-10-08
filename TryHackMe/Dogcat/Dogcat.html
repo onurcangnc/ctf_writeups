@@ -167,5 +167,65 @@ cat/../../../../etc/erkanucar%00
 
 <p><img src="./images/17.png" alt="alt text" /></p>
 
-<p>I deliberately gave two approach to fullfil the same result with <code>different tools</code>.</p>
+<p>I deliberately gave two approach to fulfill the same result with <code>different tools</code>. Lastly, having a strong foundation on web application fuzzing is necessary in order to discovery phase. In my scenario, since I found <code>LFI</code> vulnerability directly. I would like to reach other endpoints of the web application to increase the efficiency of my <code>LFI</code>.</p>
+
+<h3>Dirsearch Output:</h3>
+
+<p>Payload:</p>
+
+<p><code>
+dirsearch -u http://dogcat.thm
+</code></p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p>I only got <code>/flag.php</code> path seems to more weird. Why I need to name my <code>php</code> application as flag :)</p>
+
+<h3>Dirb Output:</h3>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>After I make my fuzzing operation, I decided to move on <code>flag.php</code> path. However, it did not render something. Moreover, it was identical that I found another endpoint on <code>view?=dog</code> parameter resulted in <code>Burpsuite Repeater</code></p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>Now, I will discover them manually. Still I could not reach any useful paths. Now, I prefer to use <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion#wrapper-phpfilter">PayloadAllTheThings</a> repo in order to understand what can I achieve on <code>PHP filters</code>.</p>
+
+<p><img src="./images/21.png" alt="alt text" />
+It was not too complicated to use <code>php://filter</code> ,but we should give the endpoint direction through our <code>resource=</code> part as a payload. Th
+erefore, let me use filters in a legit way.</p>
+
+<p><code>
+http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog
+</code></p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>From my point of view, the application encodes the dog.php via <code>Base64</code> then prompts out the file content. Now it works !</p>
+
+<p>I also wanted to decode it with <code>cyberchef tool</code> to understand what exactly it does.</p>
+
+<p><code>
+PGltZyBzcmM9ImRvZ3MvPD9waHAgZWNobyByYW5kKDEsIDEwKTsgPz4uanBnIiAvPg0K
+</code></p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>First of all, <code>PHP</code> code generated numbers from <code>1 to 10</code> then it concatenates generated number with <code>.jpg</code> extension. As you know, we are in the path where it is in the child directory of root. Let's move on <code>index</code> part.</p>
+
+<p><img src="./images/24.png" alt="alt text" /></p>
+
+<p>Extracting <code>index</code> file will be magnificent to understand the entire structure of our web application especially for the backend part.</p>
+
+<p><code>base64</code> encoded server-side file is such:
+<code>dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../index</code></p>
+
+<p>After you reach the page you will encounter a huge formatted random string:
+<img src="./images/25.png" alt="alt text" /></p>
+
+<p>You can directly extract from browser's rendered html section. This was what I have extracted so far !</p>
+
+<p><img src="./images/26.png" alt="alt text" /></p>
+
+<p>As a software developer, I mentioned about what could do the backend code on server-side.</p>
 </body></html>

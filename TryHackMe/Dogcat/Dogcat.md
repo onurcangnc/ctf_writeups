@@ -124,5 +124,72 @@ Payload:
 ### Wappalyzer Output:
 ![[TryHackMe/Dogcat/images/17.png]]
 
-I deliberately gave two approach to fullfil the same result with `different tools`.
+I deliberately gave two approach to fulfill the same result with `different tools`. Lastly, having a strong foundation on web application fuzzing is necessary in order to discovery phase. In my scenario, since I found `LFI` vulnerability directly. I would like to reach other endpoints of the web application to increase the efficiency of my `LFI`.
+
+### Dirsearch Output:
+
+Payload:
+
+```
+dirsearch -u http://dogcat.thm
+```
+
+
+![[TryHackMe/Dogcat/images/18.png]]
+
+
+I only got `/flag.php` path seems to more weird. Why I need to name my `php` application as flag :)
+
+### Dirb Output:
+
+![[TryHackMe/Dogcat/images/19.png]]
+
+After I make my fuzzing operation, I decided to move on `flag.php` path. However, it did not render something. Moreover, it was identical that I found another endpoint on `view?=dog` parameter resulted in `Burpsuite Repeater`
+
+![[TryHackMe/Dogcat/images/20.png]]
+
+Now, I will discover them manually. Still I could not reach any useful paths. Now, I prefer to use [PayloadAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/File%20Inclusion#wrapper-phpfilter) repo in order to understand what can I achieve on `PHP filters`.
+
+
+![[TryHackMe/Dogcat/images/21.png]]
+It was not too complicated to use `php://filter` ,but we should give the endpoint direction through our `resource=` part as a payload. Th
+erefore, let me use filters in a legit way.
+
+```
+http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog
+```
+
+
+![[TryHackMe/Dogcat/images/22.png]]
+
+From my point of view, the application encodes the dog.php via `Base64` then prompts out the file content. Now it works !
+
+I also wanted to decode it with `cyberchef tool` to understand what exactly it does.
+
+```
+PGltZyBzcmM9ImRvZ3MvPD9waHAgZWNobyByYW5kKDEsIDEwKTsgPz4uanBnIiAvPg0K
+```
+
+![[TryHackMe/Dogcat/images/23.png]]
+
+First of all, `PHP` code generated numbers from `1 to 10` then it concatenates generated number with `.jpg` extension. As you know, we are in the path where it is in the child directory of root. Let's move on `index` part.
+
+![[TryHackMe/Dogcat/images/24.png]]
+
+
+Extracting `index` file will be magnificent to understand the entire structure of our web application especially for the backend part.
+
+`base64` encoded server-side file is such:
+`dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../index`
+
+After you reach the page you will encounter a huge formatted random string:
+![[TryHackMe/Dogcat/images/25.png]]
+
+You can directly extract from browser's rendered html section. This was what I have extracted so far !
+
+![[TryHackMe/Dogcat/images/26.png]]
+
+As a software developer, I mentioned about what could do the backend code on server-side.
+
+
 
