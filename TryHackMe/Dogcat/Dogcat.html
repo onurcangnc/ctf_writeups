@@ -121,4 +121,38 @@ sudo nmap -sV -sC dogcat.thm
 sudo nmap -sV -sC -p- dogcat.thm
 </code>
 <img src="./images/10.png" alt="alt text" /></p>
+
+<p>Additionally, I wanted to intercept the <code>view</code> parameter ,so maybe I can trigger <code>path traversal</code> then move on <code>LFI</code>. Let me use a <code>HackTricks</code></p>
+
+<p><a href="https://book.hacktricks.xyz/pentesting-web/file-inclusion">HackTricks - File Inclusion</a></p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p>As you can see below, there was not such file located on correlated path:</p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>I understood the occurrence of the <code>path traversal</code> since I was able to try to show specific path, <code>../../../../var/www/html/config.php</code> ,but the application behaved in a different manner. In contrast, it applied some additions on last part of the path's ending part.</p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>To get the idea behind the application (backend), I used really unique file name called <code>ErkanUcar</code>. As you can see above, it is clear that application intended to make file extension addition on any file. In this scenario it applied <code>.php</code>. Maybe there should also a method for escaping <code>.php</code> extension. From that idea, having a bright understanding about <code>LFI</code> is possible. Moreover, the error message genuinely explains whether we have <code>LFI</code> or not. In every attempt, it was executing file + <code>.php</code> extension. </p>
+
+<p>Thanks to <code>Medium</code> known as article publication platform, I easily found what I need especially escaping restrictions on <code>LFI</code>. </p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>It suggests that If we apply <code>NullByte - %00</code> on last part where url was located, we can directly bypass restriction. On this concept, he or she did not use the advantage of null byte. </p>
+
+<p>Let me apply it:</p>
+
+<p>Payload:</p>
+
+<p><code>
+cat/../../../../etc/erkanucar%00
+</code></p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>In every attempt that I made restricted by web application because it was clear that using <code>whitelist</code> approach on words like <code>cat</code> or <code>dog</code> prevents users to inject <code>LFI</code> payload. We can still traverse ,but not execute something useful <code>php</code> file.</p>
 </body></html>
