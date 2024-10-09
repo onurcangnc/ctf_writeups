@@ -11,11 +11,9 @@
             "id": "5750071cdfd692fd",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "TryHackMe/Dogcat/Dogcat.md",
-                "mode": "source",
-                "source": false
+                "file": "TryHackMe/Dogcat/images/17.png"
               }
             }
           }
@@ -85,7 +83,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Dogcat/Dogcat.md",
+                "file": "TryHackMe/Dogcat/images/17.png",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +100,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Dogcat/Dogcat.md",
+                "file": "TryHackMe/Dogcat/images/17.png",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +123,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Dogcat/Dogcat.md"
+                "file": "TryHackMe/Dogcat/images/17.png"
               }
             }
           }
@@ -148,18 +146,18 @@
   },
   "active": "5750071cdfd692fd",
   "lastOpenFiles": [
+    "16.png",
+    "TryHackMe/Dogcat/images/17.png",
+    "17.png",
+    "Screen Shot 2024-10-09 at 18.20.19.png",
+    "TryHackMe/Dogcat/images/16.png",
+    "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Dogcat/images/34.png",
     "TryHackMe/Dogcat/images/33.png",
-    "Screen Shot 2024-10-09 at 18.20.19.png",
     "TryHackMe/Dogcat/images/32.png",
     "TryHackMe/Dogcat/images/31.png",
-    "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Dogcat/images/30.png",
     "TryHackMe/Dogcat/images/29.png",
-    "TryHackMe/Dogcat/images/28.png",
-    "TryHackMe/Dogcat/images/27.png",
-    "TryHackMe/Dogcat/images/26.png",
-    "TryHackMe/Dogcat/images/25.png",
     "TryHackMe/Dogcat/Dogcat.html",
     "TryHackMe/Dogcat/images",
     "TryHackMe/Blueprint/Blueprint.md",
