@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "749e1c30df8ff683",
+        "id": "275c490a12e8e6e2",
         "type": "tabs",
         "children": [
           {
-            "id": "62ee4f9e7fa53e15",
+            "id": "5750071cdfd692fd",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -146,20 +146,20 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "62ee4f9e7fa53e15",
+  "active": "5750071cdfd692fd",
   "lastOpenFiles": [
+    "TryHackMe/Dogcat/images/34.png",
+    "TryHackMe/Dogcat/images/33.png",
+    "Screen Shot 2024-10-09 at 18.20.19.png",
+    "TryHackMe/Dogcat/images/32.png",
+    "TryHackMe/Dogcat/images/31.png",
+    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/Dogcat/images/30.png",
+    "TryHackMe/Dogcat/images/29.png",
     "TryHackMe/Dogcat/images/28.png",
     "TryHackMe/Dogcat/images/27.png",
     "TryHackMe/Dogcat/images/26.png",
     "TryHackMe/Dogcat/images/25.png",
-    "TryHackMe/Dogcat/images/24.png",
-    "TryHackMe/Dogcat/images/23.png",
-    "TryHackMe/Dogcat/images/22.png",
-    "TryHackMe/Dogcat/images/21.png",
-    "TryHackMe/Dogcat/images/20.png",
-    "TryHackMe/Dogcat/images/19.png",
-    "TryHackMe/Dogcat/images/18.png",
-    "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Dogcat/Dogcat.html",
     "TryHackMe/Dogcat/images",
     "TryHackMe/Blueprint/Blueprint.md",
