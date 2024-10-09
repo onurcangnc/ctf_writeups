@@ -229,5 +229,19 @@ PGltZyBzcmM9ImRvZ3MvPD9waHAgZWNobyByYW5kKDEsIDEwKTsgPz4uanBnIiAvPg0K
 
 <p>As a software developer, I thought that  what actions should I take on the backend code on <code>server-side</code>.</p>
 
-<p>Using variable without conditional statements mainly cause vulnerability especially in <code>php</code>. That's why, I can  </p>
+<p>Using variable without conditional statements or sanitization mainly causes vulnerability especially in <code>php</code>. That's why, I can tamper the <code>$ext</code> variable so as to modify file extension of the file. I have already verified the usage of <code>php://filter</code> feature then it worked !</p>
+
+<p>Now let me also use variable as a parameter on this scenario:</p>
+
+<p><code>
+http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../../../../etc/passwd&amp;ext
+</code>
+Applying <code>php://filter</code> bypasses <code>cat</code> , <code>dog</code> string and path direction filters ,but not the extension itself. Moreover, <code>null byte</code> also did not work as you know because of the path restrictions. Therefore, it is suitable to use <code>$ext</code> to bypass extension append. Now let's try to move our target route called <code>/etc/passwd</code>.</p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>Now we are ready to reach flag ! ! !
+As far as I remember, we have also <code>SSH</code> port open. That's why, I will try to use unshadow through <code>/etc/passwd</code> and <code>/etc/shadow</code></p>
 </body></html>
