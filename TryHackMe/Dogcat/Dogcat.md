@@ -198,14 +198,47 @@ Now let me also use variable as a parameter on this scenario:
 ```
 http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../../../../etc/passwd&ext
 ```
-Applying `php://filter` bypasses `cat` , `dog` string and path direction filters ,but not the extension itself. Moreover, `null byte` also did not work as you know because of the path restrictions. Therefore, it is suitable to use `$ext` to bypass extension append. Now let's try to move our target route called `/etc/passwd`.
+Applying `php://filter` bypasses `cat` , `dog` string and path direction filters ,but not the extension itself. Moreover, `null byte` also did not work as you know because of the path restrictions. Therefore, it is suitable to use `$ext` to bypass extension append. To pass multiple parameters in each URL, we should use `&` parameter. Now let's try to move our target route called `/etc/passwd`.
 
 ![[TryHackMe/Dogcat/images/27.png]]
 
 ![[TryHackMe/Dogcat/images/28.png]]
 
 Now we are ready to reach flag ! ! !
-As far as I remember, we have also `SSH` port open. That's why, I will try to use unshadow through `/etc/passwd` and `/etc/shadow`.
+As far as I remember, we have also `SSH` port open. That's why, I will try to use unshadow through `/etc/passwd` and `/etc/shadow`. Although I successfully reached the `/etc/passwd` file, there was not any `/etc/shadow` file located on that path ,so let me try to open `flag.php` with `php filter base64` conversion.
 
+```
+http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../flag&ext=.php
+```
+
+Passing extensions through the `$ext` variable may give the result for all files.
+
+![[TryHackMe/Dogcat/images/29.png]]
+
+`View Page Source` option allows us to directly the encoded source file. 
+![[30.png]]
+
+Finding any clues about `flag2` was significantly tough process for me. However, further *reconnaissance* always works in `Offensive Security`. As you know, I have already checked web server version (Apache 2) that we are using. Let's verify the path the default logs stored on web server.
+
+![[31.png]]
+
+Let me try also the `/var/log/apache2/access.log` file to achieve further enumeration.
+
+![[32.png]]
+
+Decoded format:
+![[33.png]]
+
+The application directly gets our user agent as above. After a couple of minutes, I thought that in HackTheBox platform I saw an approach which was very useful especially to catch `RCE` on User Agent part.
+
+![[34.png]]
+
+Bursuite gave me better result. Let me try to user-agent manipulation because  if we can somehow execute `php's system();` command it will also execute on main php file. After I execute such a command:
+
+```
+<?php system("ls")?>
+```
+
+I was no longer access `access.log` file because of the default `Apache2` configuration. Using web shell can be suitable for our condition `&cmd='ls' or ?cmd='ls'`
 
 
