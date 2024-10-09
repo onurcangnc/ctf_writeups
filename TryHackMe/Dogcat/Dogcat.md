@@ -191,7 +191,21 @@ You can directly extract from browser's rendered html section. This was what I h
 
 As a software developer, I thought that  what actions should I take on the backend code on `server-side`.
 
-Using variable without conditional statements mainly cause vulnerability especially in `php`. That's why, I can  
+Using variable without conditional statements or sanitization mainly causes vulnerability especially in `php`. That's why, I can tamper the `$ext` variable so as to modify file extension of the file. I have already verified the usage of `php://filter` feature then it worked !
+
+Now let me also use variable as a parameter on this scenario:
+
+```
+http://dogcat.thm/?view=php://filter/convert.base64-encode/resource=dog/../../../../etc/passwd&ext
+```
+Applying `php://filter` bypasses `cat` , `dog` string and path direction filters ,but not the extension itself. Moreover, `null byte` also did not work as you know because of the path restrictions. Therefore, it is suitable to use `$ext` to bypass extension append. Now let's try to move our target route called `/etc/passwd`.
+
+![[TryHackMe/Dogcat/images/27.png]]
+
+![[TryHackMe/Dogcat/images/28.png]]
+
+Now we are ready to reach flag ! ! !
+As far as I remember, we have also `SSH` port open. That's why, I will try to use unshadow through `/etc/passwd` and `/etc/shadow`
 
 
 
