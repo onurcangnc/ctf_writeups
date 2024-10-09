@@ -189,7 +189,9 @@ You can directly extract from browser's rendered html section. This was what I h
 
 ![[TryHackMe/Dogcat/images/26.png]]
 
-As a software developer, I mentioned about what could do the backend code on server-side.
+As a software developer, I thought that  what actions should I take on the backend code on `server-side`.
+
+Using variable without conditional statements mainly cause vulnerability especially in `php`. That's why, I can  
 
 
 
