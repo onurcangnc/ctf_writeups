@@ -205,7 +205,7 @@ Applying `php://filter` bypasses `cat` , `dog` string and path direction filters
 ![[TryHackMe/Dogcat/images/28.png]]
 
 Now we are ready to reach flag ! ! !
-As far as I remember, we have also `SSH` port open. That's why, I will try to use unshadow through `/etc/passwd` and `/etc/shadow`
+As far as I remember, we have also `SSH` port open. That's why, I will try to use unshadow through `/etc/passwd` and `/etc/shadow`.
 
 
 
