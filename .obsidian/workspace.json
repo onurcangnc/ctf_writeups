@@ -4,15 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "f1323f63d02d241b",
+        "id": "dacf66d244cec2d4",
         "type": "tabs",
         "children": [
           {
-            "id": "59392739252da8e9",
+            "id": "7efa288f697f0ef0",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {}
+              "type": "image",
+              "state": {
+                "file": "TryHackMe/Lianyu/images/4.png"
+              }
             }
           }
         ]
@@ -81,6 +83,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "TryHackMe/Lianyu/images/4.png",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -97,6 +100,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "TryHackMe/Lianyu/images/4.png",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -118,7 +122,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "TryHackMe/Lianyu/images/4.png"
+              }
             }
           }
         ]
@@ -138,32 +144,32 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "59392739252da8e9",
+  "active": "7efa288f697f0ef0",
   "lastOpenFiles": [
-    "TryHackMe/Dogcat/images/39.png",
+    "TryHackMe/Lianyu/Lianyu.md",
+    "TryHackMe/Lianyu/images/4.png",
+    "TryHackMe/Lianyu/images/3.png",
+    "TryHackMe/Lianyu/images/2.png",
+    "TryHackMe/Lianyu/images/1.png",
     "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/Dogcat/images/49.png",
+    "TryHackMe/Lianyu/images",
+    "TryHackMe/Lianyu",
+    "Untitled",
+    "TryHackMe/Dogcat/images/39.png",
     "Pasted image 20241010010007.png",
     "36.png",
     "TryHackMe/Dogcat/images/17.png",
-    "16.png",
-    "17.png",
-    "Screen Shot 2024-10-09 at 18.20.19.png",
-    "TryHackMe/Dogcat/images/16.png",
-    "TryHackMe/Dogcat/images/54.png",
-    "TryHackMe/Dogcat/images/53.png",
     "TryHackMe/Dogcat/Dogcat.html",
     "TryHackMe/Dogcat/images",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Dogcat",
-    "Untitled",
     "TryHackMe/Kibana/Kibana.md",
     "Untitled 1",
     "TryHackMe/CTF",
     "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md",
     "attachment",
     "pre-commit",
-    "TryHackMe/TryHackMe.html",
-    "index.html",
     "Blueprint/Blueprint.md",
     "TryHackMe/BlueprintMachine/Blueprint.md",
     "output/Blueprint.md"
