@@ -4,16 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "dacf66d244cec2d4",
+        "id": "7959bed30afb0677",
         "type": "tabs",
         "children": [
           {
-            "id": "7efa288f697f0ef0",
+            "id": "ed5afb75d57e40c0",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "TryHackMe/Lianyu/images/4.png"
+                "file": "TryHackMe/Lianyu/Lianyu.md",
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -83,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Lianyu/images/4.png",
+                "file": "TryHackMe/Lianyu/Lianyu.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -100,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Lianyu/images/4.png",
+                "file": "TryHackMe/Lianyu/Lianyu.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -123,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Lianyu/images/4.png"
+                "file": "TryHackMe/Lianyu/Lianyu.md"
               }
             }
           }
@@ -144,11 +146,14 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7efa288f697f0ef0",
+  "active": "ed5afb75d57e40c0",
   "lastOpenFiles": [
+    "TryHackMe/Lianyu/images/6.png",
     "TryHackMe/Lianyu/Lianyu.md",
-    "TryHackMe/Lianyu/images/4.png",
+    "TryHackMe/Lianyu/images/5.png",
     "TryHackMe/Lianyu/images/3.png",
+    "TryHackMe/Lianyu/images/4.png",
+    "TryHackMe/Lianyu/Lianyu.html",
     "TryHackMe/Lianyu/images/2.png",
     "TryHackMe/Lianyu/images/1.png",
     "TryHackMe/Dogcat/Dogcat.md",
@@ -159,7 +164,6 @@
     "TryHackMe/Dogcat/images/39.png",
     "Pasted image 20241010010007.png",
     "36.png",
-    "TryHackMe/Dogcat/images/17.png",
     "TryHackMe/Dogcat/Dogcat.html",
     "TryHackMe/Dogcat/images",
     "TryHackMe/Blueprint/Blueprint.md",
@@ -169,7 +173,6 @@
     "TryHackMe/CTF",
     "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md",
     "attachment",
-    "pre-commit",
     "Blueprint/Blueprint.md",
     "TryHackMe/BlueprintMachine/Blueprint.md",
     "output/Blueprint.md"

@@ -62,5 +62,17 @@ curl http://lianyu.thm:8080
 
 <p><img src="./images/4.png" alt="alt text" /></p>
 
-<p>As you can see, I did not have such application instances on ports <code>8080</code> and <code>443</code> respectively. There were nothing interesting on <code>Page Source</code> ,so let me move on <code>automated reconnaissance</code>.</p>
+<p>As you can see, I did not have such application instances on ports <code>8080</code> and <code>443</code> respectively. </p>
+
+<p><code>Wappalayzer</code> just showed the web server software.</p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>There were nothing interesting on <code>Page Source</code> ,so let me move on <code>automated reconnaissance</code>. After a couple of <code>wordlist</code> attempts I used <code>directory-list-medium-2.3-medium.txt</code> then it gave me just one endpoint on our web application.</p>
+
+<p><code>
+dirsearch -u http://lianyu.thm -w/usr/share/wordlists/SecLists/Discovery/Web-Content/directory-list-2.3-medium. txt
+</code></p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
 </body></html>
