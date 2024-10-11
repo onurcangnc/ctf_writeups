@@ -1,0 +1,66 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone today I will analyze the machine called "Lianyu" on <strong>TryHackMe</strong> platform. Before you begin please add your <code>ipv4</code> address to <code>/etc/hosts</code>.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>Firstly, run your <code>VPN</code> file then try to <code>ping</code> the target so that you can understand whether you can communicate with target server or not.</p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p>Gotcha !</p>
+
+<h2>Reconnaissance:</h2>
+
+<p>Now, finally, checking the most common port is beneficial for us because of the penetration testing time restrictions.</p>
+
+<p>Payload:</p>
+
+<p><code>
+curl http://lianyu.thm:80
+curl http://lianyu.thm:8080
+</code></p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>As you can see, I did not have such application instances on ports <code>8080</code> and <code>443</code> respectively. There were nothing interesting on <code>Page Source</code> ,so let me move on <code>automated reconnaissance</code>.</p>
+</body></html>
