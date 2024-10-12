@@ -162,4 +162,140 @@ GET [File_Name]
 <p><code>
 mv Leave_me_alone.png aa.jpg Queen\'s_Gambit.png ../../../../../../home/kali/Desktop
 </code></p>
+
+<p>I should analyze image files with the techniques of <code>steganography</code>. Specifically, in order to apply image steganorgraphy, I needed to find proper tools. Today, I would like to run <code>exiftool</code>.</p>
+
+<p>After a couple of attempt, I did not find juicy data on images ,but one of the instance  did not match its file format called <code>Leave_me_alone.png</code>.</p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p>A normal result should looked like that:</p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>You can also verify through <code>Image Viewer</code> which is a default image application in kali environment.</p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>Further image analyze must be done ,so let's use <code>hexedit</code> and modify its first line. As you can see below, leave<em>me</em>alone does not match with .PNG format. Moreover, you can reach out the long description and magic numbers of many extension from here: <a href="https://gist.github.com/leommoore/f9e57ba2aa4bf197ebc5">File Magic Numbers</a> . </p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>In my first attempt, I could not convert correct format ,but I found a different source giving full format of <code>PNG</code>. On this <a href="https://www.netspi.com/blog/technical-blog/web-application-pentesting/magic-bytes-identifying-common-file-formats-at-a-glance/">website</a> you will find appropriate format.</p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>Now it worked ! It indicated a <code>password</code> for something. At first I applied it on <code>SSH</code> ,but it did not true. After that let's also use <code>steghide</code> because kali gave me the clue about it. The image consisting data inside.</p>
+
+<p><img src="./images/24.png" alt="alt text" /></p>
+
+<p><code>
+┌──(root㉿kali)-[/home/kali/Desktop]
+└─# steghide extract -sf Leave_me_alone.png
+Enter passphrase: 
+steghide: the file format of the file "Leave_me_alone.png" is not supported.
+</code></p>
+
+<p>Maybe other image formats may work:</p>
+
+<p><code>
+┌──(root㉿kali)-[/home/kali]
+└─# steghide extract -sf aa.jpg
+Enter passphrase: 
+wrote extracted data to "ss.zip".
+</code></p>
+
+<p>YES !
+Furthermore, the man appeared was the same as <code>aa.jpg</code> and <code>Leave_me_alone.png</code>. Anyway, use <code>unzip</code> to extract data inside the archive.</p>
+
+<p><img src="./images/25.png" alt="alt text" /></p>
+
+<p>Content of the <code>passwd.txt</code>:</p>
+
+<p>```
+This is your visa to Land on Lian_Yu # Just for Fun <em>*</em></p>
+
+<p>a small Note about it</p>
+
+<p>Having spent years on the island, Oliver learned how to be resourceful and 
+set booby traps all over the island in the common event he ran into dangerous
+people. The island is also home to many animals, including pheasants,
+wild pigs and wolves.
+```</p>
+
+<p>Obtain a string most likely password of the <code>SSH</code>.</p>
+
+<p><img src="./images/26.png" alt="alt text" /></p>
+
+<p>However, I could not find any <code>username</code> for it. Vigilante did not work. I instantly move on <code>FTP</code> again. There was a hidden file named <code>.other_user</code>.</p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p>Reaching was impossible on that. Therefore, there was only one opportunity to deal with that issue. <code>Further Reconnaissance</code> is mandatory to reach username. What if I move parent directory on <code>FTP</code> ?</p>
+
+<p>GOTCHA ! ! !</p>
+
+<p>I found a different user rather than <code>vigilante</code>:</p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>I successfully reached the target instance through <code>SSH</code> with this credential:</p>
+
+<p><code>
+user:pass
+slade:M3tahuman
+</code></p>
+
+<p><img src="./images/29.png" alt="alt text" /></p>
+
+<h2>Exploitation</h2>
+
+<p>Get your <code>user</code> flag from here:</p>
+
+<p><img src="./images/30.png" alt="alt text" /></p>
+
+<p>Now, lets check which commands we can run on <code>slade</code> account:</p>
+
+<p><code>
+sudo -l
+</code></p>
+
+<p>Give its password:</p>
+
+<p><code>
+slade@LianYu:~$ sudo -l
+[sudo] password for slade: #M3tahuman
+Matching Defaults entries for slade on LianYu:
+</code></p>
+
+<p><img src="./images/31.png" alt="alt text" /></p>
+
+<p>The binary called <code>pkexec</code> can be run on this account. I checked the <code>GFTObins</code> for this binary.</p>
+
+<p><a href="https://gtfobins.github.io/gtfobins/pkexec/">pkexec documentation</a></p>
+
+<p><code>GFTObins</code> claims that we can directly be <code>root</code> just using below command:</p>
+
+<p><img src="./images/32.png" alt="alt text" /></p>
+
+<p>What exactly <code>pkexec</code> does ?</p>
+
+<p><code>pkexec</code> is part of the PolicyKit package and it is used to execute commands as another user. Typically with root privileges. By using <code>/bin/sh</code> with <code>sudo</code> target may deploy a shell with root privileges.</p>
+
+<p>YESSS !!!!
+Reach out the PoC of the <code>binary exploitation</code>.</p>
+
+<p><img src="./images/33.png" alt="alt text" /></p>
+
+<p>Get your flag directly on the same directory:</p>
+
+<p><img src="./images/34.png" alt="alt text" /></p>
+
+<p>May The Pentest Be With You ! ! !</p>
+
+<p><img src="./images/pentest.jpg" alt="alt text" /></p>
 </body></html>
