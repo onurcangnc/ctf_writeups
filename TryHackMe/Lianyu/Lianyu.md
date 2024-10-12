@@ -1,9 +1,9 @@
 
-Hi everyone today I will analyze the machine called "Lianyu" on **TryHackMe** platform. Before you begin please add your `ipv4` address to `/etc/hosts`.
+Hi everyone! Today I will analyze the machine called "Lianyu" on the TryHackMe platform. Before you begin, please make sure to add your IPv4 address to `/etc/hosts`.
 
 ![[TryHackMe/Lianyu/images/1.png]]
 
-Firstly, run your `VPN` file then try to `ping` the target so that you can understand whether you can communicate with target server or not.
+Firstly, run your `VPN` configuration file then try to `ping` the target so that you can understand whether you can communicate with target server or not.
 
 ![[TryHackMe/Lianyu/images/2.png]]
 
@@ -11,7 +11,7 @@ Gotcha !
 
 ## Reconnaissance:
 
-Now, finally, checking the most common port is beneficial for us because of the penetration testing time restrictions.
+Checking the most common ports is beneficial due to the time constraints typically involved in penetration testing.
 
 Payload:
 
@@ -26,40 +26,39 @@ curl http://lianyu.thm:8080
 
 ![[TryHackMe/Lianyu/images/4.png]]
 
-As you can see, I did not have such application instances on ports `8080` and `443` respectively. 
+As you can see, there are no applications running on ports `8080` and `443`.
 
-`Wappalayzer` just showed the web server software.
+`Wappalyzer` only identified the web server software.
 
 ![[TryHackMe/Lianyu/images/5.png]]
 
-There were nothing interesting on `Page Source` ,so let me move on `automated reconnaissance`. After I used `common.txt` located on `dirb` directory I decided to use `directory-list-medium-2.3-medium.txt` then it gave me just one endpoint on our web application.
+Since there was nothing interesting in the page source, I moved on to automated reconnaissance. After running `common.txt` from the dirb directory, I decided to use `directory-list-2.3-medium.txt`, which revealed only one endpoint in the web application:
 
 ```
 dirsearch -u http://lianyu.thm -w/usr/share/wordlists/SecLists/Discovery/Web-Content/directory-list-2.3-medium. txt
 ```
 
 ![[TryHackMe/Lianyu/images/6.png]]
-I also applied extended fuzzing especially on `island` endpoint ,so applying `directory-list-2.3-medium.txt` was suitable. I highly recommend you to select `dirsearch` when you need fast fuzzing sessions. 
+I also applied extended fuzzing on the `/island` endpoint. Using `directory-list-2.3-medium.txt` was a good choice. I highly recommend `dirsearch` for fast fuzzing sessions.
 
-Since I was in `Bilkent Network`, it did not allow me to use all payloads in `directory-list-2.3-medium.txt`. As you can see below, tool seems to be bugged.
+However, since I was on the Bilkent Network, I could not use all the payloads in `directory-list-2.3-medium.txt`. The tool appeared to have some bugs, as shown below.
 
 ![[TryHackMe/Lianyu/images/7.png]]
 
-I switched on `2100` endpoint direction. This is what HTML rendered:
+Next, I switched to the `2100` endpoint. This is what the HTML rendered:
 
 ![[TryHackMe/Lianyu/images/8.png]]
 
-`HTML` source file indicates such an extension `.ticket`. I should find a way to fuzz both `2100` endpoint and specific extension called `.ticket`. Checking `-h` parameter or `man` is a great method to get parameters with specific purpose.
+The HTML source indicated an extension `.ticket`. I needed to fuzz both the `2100` endpoint and the `.ticket` extension. Using the `-h` parameter did not help much, so I checked the `manual pages` and found the appropriate parameter for handling extensions.
 
-`-h` parameter was complicated to find necessary information about `extension` utility. That's why, I directly opened `manual pages` and found extension specific parameter.
 
 ![[TryHackMe/Lianyu/images/10.png]]
 
-By using `-e` parameter we can achieve `.ticket` extension files.
+By using the `-e` parameter, we can target `.ticket` extension files.
 
 ![[TryHackMe/Lianyu/images/9.png]]
 
-`Dirsearch` did not find anything ,so I shifted through B plan, `gobuster`. You must be patient to get results on `fuzzing` phases.
+Even though `Dirsearch` didn’t find anything, I switched to my B plan, which was `Gobuster`. Remember to be patient during fuzzing phases !
 
 ### Dirsearch Result:
 ![[TryHackMe/Lianyu/images/12.png]]
@@ -68,17 +67,17 @@ By using `-e` parameter we can achieve `.ticket` extension files.
 
 ![[TryHackMe/Lianyu/images/11.png]]
 
-I found an interesting string `RTy8yhBQdscX` appears to be `encoding` format.
+I found an interesting string: `RTy8yhBQdscX`. This appeared to be in an `encoded format`.
 
 ![[TryHackMe/Lianyu/images/13.png]]
 
-[Cyberchef](https://gchq.github.io/CyberChef/) could help me to decode it ,but it did not find.
+[Cyberchef](https://gchq.github.io/CyberChef/) couldn't decode it, but `dCode` suggested several possible decoding methods, from the `PlayFair cipher` to the `Substitution cipher`.
 
 [dcode](https://www.dcode.fr/cipher-identifier) detected many options for decoding resulting from `PlayFair Cipher` to `Substitution Cipher`.
 
 ![[TryHackMe/Lianyu/images/14.png]]
 
-After I applied all of them, `Base 58` was the most meaningful result compared to others.
+After trying multiple options, the most meaningful result came from `Base58`:
 
 ```
 !#th3h00d
@@ -94,14 +93,14 @@ You should find a way to Lian_Yu as we are planed. The Code Word is:
 vigilante
 ```
 
-Maybe, the `vigilante` or `!#th3h00d` is the user:pass combination. Vigilante was more likely a username ,so I initially tried it on `FTP server`.
+I suspected that `vigilante` might be the username and `!#th3h00d` the password. I tried this combination on the `FTP server`.
 
 GOTCHA ! ! !
 ![[TryHackMe/Lianyu/images/15.png]]
 
-After I logged in successfully, interacting with `FTP` was crucial for file download process.
+Once logged in, interacting with `FTP` was crucial for downloading files.
 
-To list `directories`, `files`:
+To list directories and files, use:
 
 ```
 ls -al
@@ -119,15 +118,15 @@ Unless you understand, check it below:
 
 ![[TryHackMe/Lianyu/images/16.png]]
 
-### Do not forget that FTP client will drop your files from which directory that you run. 
+### Make sure to check which directory you are in, as FTP will drop your files there. I wanted to move the downloaded files to my Desktop:
 
-Since my files are located on `/usr/share/wordlists/SecLists/Discovery/Web-Content`, I want to move them to my `Desktop` directory.
+Since my files are located on `/usr/share/wordlists/SecLists/Discovery/Web-Content`, I wanted to move them to my `Desktop` directory.
 
 ```
 mv Leave_me_alone.png aa.jpg Queen\'s_Gambit.png ../../../../../../home/kali/Desktop
 ```
 
-I should analyze image files with the techniques of `steganography`. Specifically, in order to apply image steganorgraphy, I needed to find proper tools. Today, I would like to run `exiftool`.
+I needed to use `steganography techniques` to analyze the image files. Initially, I ran `exiftool`, but no valuable data was found in most images. However, one image, `Leave_me_alone.png`, did not match its `file format`.
 
 After a couple of attempt, I did not find juicy data on images ,but one of the instance  did not match its file format called `Leave_me_alone.png`.
 
@@ -155,7 +154,7 @@ In my first attempt, I could not convert correct format ,but I found a different
 
 ![[TryHackMe/Lianyu/images/23.png]]
 
-Now it worked ! It indicated a `password` for something. At first I applied it on `SSH` ,but it did not true. After that let's also use `steghide` because kali gave me the clue about it. The image consisting data inside.
+At first, I tried this password on `SSH`, but it didn’t work. Later, Kali hinted that `steghide` could be useful as the image likely contained hidden data.
 
 ![[TryHackMe/Lianyu/images/24.png]]
 
@@ -196,6 +195,9 @@ people. The island is also home to many animals, including pheasants,
 wild pigs and wolves.
 ```
 
+
+The file also contained a small note about traps set on the island. I now had what seemed to be an `SSH password` but no `username`.
+
 Obtain a string most likely password of the `SSH`.
 
 ![[TryHackMe/Lianyu/images/26.png]]
@@ -204,7 +206,7 @@ However, I could not find any `username` for it. Vigilante did not work. I insta
 
 ![[TryHackMe/Lianyu/images/27.png]]
 
-Reaching was impossible on that. Therefore, there was only one opportunity to deal with that issue. `Further Reconnaissance` is mandatory to reach username. What if I move parent directory on `FTP` ?
+I returned to the FTP server, where I discovered a hidden file named `.other_user`. Accessing it was impossible, so I explored the parent directory on FTP.
 
 GOTCHA ! ! !
 
@@ -229,7 +231,7 @@ Get your `user` flag from here:
 
 ![[TryHackMe/Lianyu/images/30.png]]
 
-Now, lets check which commands we can run on `slade` account:
+Once inside, I checked the commands I could run on the `slade` account:
 
 ```
 sudo -l
@@ -245,11 +247,11 @@ Matching Defaults entries for slade on LianYu:
 
 ![[TryHackMe/Lianyu/images/31.png]]
 
-The binary called `pkexec` can be run on this account. I checked the `GFTObins` for this binary.
+The binary `pkexec` was available, which could be exploited for privilege escalation.
 
 [pkexec documentation](https://gtfobins.github.io/gtfobins/pkexec/)
 
-`GFTObins` claims that we can directly be `root` just using below command:
+According to `GTFOBins`, `pkexec` allows us to execute commands as another user, typically with root privileges.
 
 ![[TryHackMe/Lianyu/images/32.png]]
 
@@ -258,6 +260,8 @@ What exactly `pkexec` does ?
 `pkexec` is part of the PolicyKit package and it is used to execute commands as another user. Typically with root privileges. By using `/bin/sh` with `sudo` target may deploy a shell with root privileges.
 
 YESSS !!!!
+
+By using this method, I gained root access and obtained the final flag from the same directory.
 Reach out the PoC of the `binary exploitation`.
 
 ![[TryHackMe/Lianyu/images/33.png]]

@@ -37,11 +37,11 @@
         overflow-x: auto;
     }
 </style>
-</head><body><p>Hi everyone today I will analyze the machine called "Lianyu" on <strong>TryHackMe</strong> platform. Before you begin please add your <code>ipv4</code> address to <code>/etc/hosts</code>.</p>
+</head><body><p>Hi everyone! Today I will analyze the machine called "Lianyu" on the TryHackMe platform. Before you begin, please make sure to add your IPv4 address to <code>/etc/hosts</code>.</p>
 
 <p><img src="./images/1.png" alt="alt text" /></p>
 
-<p>Firstly, run your <code>VPN</code> file then try to <code>ping</code> the target so that you can understand whether you can communicate with target server or not.</p>
+<p>Firstly, run your <code>VPN</code> configuration file then try to <code>ping</code> the target so that you can understand whether you can communicate with target server or not.</p>
 
 <p><img src="./images/2.png" alt="alt text" /></p>
 
@@ -49,7 +49,7 @@
 
 <h2>Reconnaissance:</h2>
 
-<p>Now, finally, checking the most common port is beneficial for us because of the penetration testing time restrictions.</p>
+<p>Checking the most common ports is beneficial due to the time constraints typically involved in penetration testing.</p>
 
 <p>Payload:</p>
 
@@ -62,40 +62,38 @@ curl http://lianyu.thm:8080
 
 <p><img src="./images/4.png" alt="alt text" /></p>
 
-<p>As you can see, I did not have such application instances on ports <code>8080</code> and <code>443</code> respectively. </p>
+<p>As you can see, there are no applications running on ports <code>8080</code> and <code>443</code>.</p>
 
-<p><code>Wappalayzer</code> just showed the web server software.</p>
+<p><code>Wappalyzer</code> only identified the web server software.</p>
 
 <p><img src="./images/5.png" alt="alt text" /></p>
 
-<p>There were nothing interesting on <code>Page Source</code> ,so let me move on <code>automated reconnaissance</code>. After I used <code>common.txt</code> located on <code>dirb</code> directory I decided to use <code>directory-list-medium-2.3-medium.txt</code> then it gave me just one endpoint on our web application.</p>
+<p>Since there was nothing interesting in the page source, I moved on to automated reconnaissance. After running <code>common.txt</code> from the dirb directory, I decided to use <code>directory-list-2.3-medium.txt</code>, which revealed only one endpoint in the web application:</p>
 
 <p><code>
 dirsearch -u http://lianyu.thm -w/usr/share/wordlists/SecLists/Discovery/Web-Content/directory-list-2.3-medium. txt
 </code></p>
 
 <p><img src="./images/6.png" alt="alt text" />
-I also applied extended fuzzing especially on <code>island</code> endpoint ,so applying <code>directory-list-2.3-medium.txt</code> was suitable. I highly recommend you to select <code>dirsearch</code> when you need fast fuzzing sessions. </p>
+I also applied extended fuzzing on the <code>/island</code> endpoint. Using <code>directory-list-2.3-medium.txt</code> was a good choice. I highly recommend <code>dirsearch</code> for fast fuzzing sessions.</p>
 
-<p>Since I was in <code>Bilkent Network</code>, it did not allow me to use all payloads in <code>directory-list-2.3-medium.txt</code>. As you can see below, tool seems to be bugged.</p>
+<p>However, since I was on the Bilkent Network, I could not use all the payloads in <code>directory-list-2.3-medium.txt</code>. The tool appeared to have some bugs, as shown below.</p>
 
 <p><img src="./images/7.png" alt="alt text" /></p>
 
-<p>I switched on <code>2100</code> endpoint direction. This is what HTML rendered:</p>
+<p>Next, I switched to the <code>2100</code> endpoint. This is what the HTML rendered:</p>
 
 <p><img src="./images/8.png" alt="alt text" /></p>
 
-<p><code>HTML</code> source file indicates such an extension <code>.ticket</code>. I should find a way to fuzz both <code>2100</code> endpoint and specific extension called <code>.ticket</code>. Checking <code>-h</code> parameter or <code>man</code> is a great method to get parameters with specific purpose.</p>
-
-<p><code>-h</code> parameter was complicated to find necessary information about <code>extension</code> utility. That's why, I directly opened <code>manual pages</code> and found extension specific parameter.</p>
+<p>The HTML source indicated an extension <code>.ticket</code>. I needed to fuzz both the <code>2100</code> endpoint and the <code>.ticket</code> extension. Using the <code>-h</code> parameter did not help much, so I checked the <code>manual pages</code> and found the appropriate parameter for handling extensions.</p>
 
 <p><img src="./images/10.png" alt="alt text" /></p>
 
-<p>By using <code>-e</code> parameter we can achieve <code>.ticket</code> extension files.</p>
+<p>By using the <code>-e</code> parameter, we can target <code>.ticket</code> extension files.</p>
 
 <p><img src="./images/9.png" alt="alt text" /></p>
 
-<p><code>Dirsearch</code> did not find anything ,so I shifted through B plan, <code>gobuster</code>. You must be patient to get results on <code>fuzzing</code> phases.</p>
+<p>Even though <code>Dirsearch</code> didn’t find anything, I switched to my B plan, which was <code>Gobuster</code>. Remember to be patient during fuzzing phases !</p>
 
 <h3>Dirsearch Result:</h3>
 
@@ -105,17 +103,17 @@ I also applied extended fuzzing especially on <code>island</code> endpoint ,so a
 
 <p><img src="./images/11.png" alt="alt text" /></p>
 
-<p>I found an interesting string <code>RTy8yhBQdscX</code> appears to be <code>encoding</code> format.</p>
+<p>I found an interesting string: <code>RTy8yhBQdscX</code>. This appeared to be in an <code>encoded format</code>.</p>
 
 <p><img src="./images/13.png" alt="alt text" /></p>
 
-<p><a href="https://gchq.github.io/CyberChef/">Cyberchef</a> could help me to decode it ,but it did not find.</p>
+<p><a href="https://gchq.github.io/CyberChef/">Cyberchef</a> couldn't decode it, but <code>dCode</code> suggested several possible decoding methods, from the <code>PlayFair cipher</code> to the <code>Substitution cipher</code>.</p>
 
 <p><a href="https://www.dcode.fr/cipher-identifier">dcode</a> detected many options for decoding resulting from <code>PlayFair Cipher</code> to <code>Substitution Cipher</code>.</p>
 
 <p><img src="./images/14.png" alt="alt text" /></p>
 
-<p>After I applied all of them, <code>Base 58</code> was the most meaningful result compared to others.</p>
+<p>After trying multiple options, the most meaningful result came from <code>Base58</code>:</p>
 
 <p><code>
 !#th3h00d
@@ -130,14 +128,14 @@ Ohhh Noo, Don't Talk...............</p>
 vigilante
 ```</p>
 
-<p>Maybe, the <code>vigilante</code> or <code>!#th3h00d</code> is the user:pass combination. Vigilante was more likely a username ,so I initially tried it on <code>FTP server</code>.</p>
+<p>I suspected that <code>vigilante</code> might be the username and <code>!#th3h00d</code> the password. I tried this combination on the <code>FTP server</code>.</p>
 
 <p>GOTCHA ! ! !
 <img src="./images/15.png" alt="alt text" /></p>
 
-<p>After I logged in successfully, interacting with <code>FTP</code> was crucial for file download process.</p>
+<p>Once logged in, interacting with <code>FTP</code> was crucial for downloading files.</p>
 
-<p>To list <code>directories</code>, <code>files</code>:</p>
+<p>To list directories and files, use:</p>
 
 <p>```
 ls -al</p>
@@ -155,15 +153,15 @@ GET [File_Name]
 
 <p><img src="./images/16.png" alt="alt text" /></p>
 
-<h3>Do not forget that FTP client will drop your files from which directory that you run.</h3>
+<h3>Make sure to check which directory you are in, as FTP will drop your files there. I wanted to move the downloaded files to my Desktop:</h3>
 
-<p>Since my files are located on <code>/usr/share/wordlists/SecLists/Discovery/Web-Content</code>, I want to move them to my <code>Desktop</code> directory.</p>
+<p>Since my files are located on <code>/usr/share/wordlists/SecLists/Discovery/Web-Content</code>, I wanted to move them to my <code>Desktop</code> directory.</p>
 
 <p><code>
 mv Leave_me_alone.png aa.jpg Queen\'s_Gambit.png ../../../../../../home/kali/Desktop
 </code></p>
 
-<p>I should analyze image files with the techniques of <code>steganography</code>. Specifically, in order to apply image steganorgraphy, I needed to find proper tools. Today, I would like to run <code>exiftool</code>.</p>
+<p>I needed to use <code>steganography techniques</code> to analyze the image files. Initially, I ran <code>exiftool</code>, but no valuable data was found in most images. However, one image, <code>Leave_me_alone.png</code>, did not match its <code>file format</code>.</p>
 
 <p>After a couple of attempt, I did not find juicy data on images ,but one of the instance  did not match its file format called <code>Leave_me_alone.png</code>.</p>
 
@@ -189,7 +187,7 @@ mv Leave_me_alone.png aa.jpg Queen\'s_Gambit.png ../../../../../../home/kali/Des
 
 <p><img src="./images/23.png" alt="alt text" /></p>
 
-<p>Now it worked ! It indicated a <code>password</code> for something. At first I applied it on <code>SSH</code> ,but it did not true. After that let's also use <code>steghide</code> because kali gave me the clue about it. The image consisting data inside.</p>
+<p>At first, I tried this password on <code>SSH</code>, but it didn’t work. Later, Kali hinted that <code>steghide</code> could be useful as the image likely contained hidden data.</p>
 
 <p><img src="./images/24.png" alt="alt text" /></p>
 
@@ -227,6 +225,8 @@ people. The island is also home to many animals, including pheasants,
 wild pigs and wolves.
 ```</p>
 
+<p>The file also contained a small note about traps set on the island. I now had what seemed to be an <code>SSH password</code> but no <code>username</code>.</p>
+
 <p>Obtain a string most likely password of the <code>SSH</code>.</p>
 
 <p><img src="./images/26.png" alt="alt text" /></p>
@@ -235,7 +235,7 @@ wild pigs and wolves.
 
 <p><img src="./images/27.png" alt="alt text" /></p>
 
-<p>Reaching was impossible on that. Therefore, there was only one opportunity to deal with that issue. <code>Further Reconnaissance</code> is mandatory to reach username. What if I move parent directory on <code>FTP</code> ?</p>
+<p>I returned to the FTP server, where I discovered a hidden file named <code>.other_user</code>. Accessing it was impossible, so I explored the parent directory on FTP.</p>
 
 <p>GOTCHA ! ! !</p>
 
@@ -258,7 +258,7 @@ slade:M3tahuman
 
 <p><img src="./images/30.png" alt="alt text" /></p>
 
-<p>Now, lets check which commands we can run on <code>slade</code> account:</p>
+<p>Once inside, I checked the commands I could run on the <code>slade</code> account:</p>
 
 <p><code>
 sudo -l
@@ -274,11 +274,11 @@ Matching Defaults entries for slade on LianYu:
 
 <p><img src="./images/31.png" alt="alt text" /></p>
 
-<p>The binary called <code>pkexec</code> can be run on this account. I checked the <code>GFTObins</code> for this binary.</p>
+<p>The binary <code>pkexec</code> was available, which could be exploited for privilege escalation.</p>
 
 <p><a href="https://gtfobins.github.io/gtfobins/pkexec/">pkexec documentation</a></p>
 
-<p><code>GFTObins</code> claims that we can directly be <code>root</code> just using below command:</p>
+<p>According to <code>GTFOBins</code>, <code>pkexec</code> allows us to execute commands as another user, typically with root privileges.</p>
 
 <p><img src="./images/32.png" alt="alt text" /></p>
 
@@ -286,7 +286,9 @@ Matching Defaults entries for slade on LianYu:
 
 <p><code>pkexec</code> is part of the PolicyKit package and it is used to execute commands as another user. Typically with root privileges. By using <code>/bin/sh</code> with <code>sudo</code> target may deploy a shell with root privileges.</p>
 
-<p>YESSS !!!!
+<p>YESSS !!!!</p>
+
+<p>By using this method, I gained root access and obtained the final flag from the same directory.
 Reach out the PoC of the <code>binary exploitation</code>.</p>
 
 <p><img src="./images/33.png" alt="alt text" /></p>
