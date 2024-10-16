@@ -1,0 +1,70 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone, today I would like to analyze the CTF challenge called <code>Fowsniff</code> from TryHackMe platform. Before I begin, I want to include my ipv4 address to <code>/etc/hosts</code> file to make more accessible the way we are reaching the host.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>Let me check the port <code>80</code> and <code>443</code> to understand whether we have active web application or not through the browser.</p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p>After I viewed page source, I understood that there were not any suspicious code segment on <code>html</code> or <code>js</code>.</p>
+
+<h2>Reconnaissance:</h2>
+
+<p>I initially conducted fuzzing ,but I could not reach useful paths. The room recommended us to make manual OSINT. You can reach out what I have accessed below:</p>
+
+<p><a href="https://x.com/fowsniffcorp?lang=en">Twitter</a>
+<a href="https://github.com/berzerk0/Fowsniff/blob/main/fowsniff.txt">GitHub</a></p>
+
+<p>On <code>GitHub</code> I retrieved a couple of <code>mail accounts</code> regarding to our machine. Let me also conduct port scan via <code>network mapper</code>.</p>
+
+<p>I did not create advanced payload for <code>port scanning</code> since I knew that I was dealing with CTF machine. That's why, service, <code>default script</code> and <code>full port scan</code>(because I could not reach any endpoints) options are enough to handle the machine.</p>
+
+<p>Payload:</p>
+
+<p><code>
+sudo nmap -sV -sC -p- fowsniff.thm
+</code></p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>As far as I know from computer networks course, <code>IMAP</code> stores emails through storage ,but <code>pop3</code> firstly downloads emails temporarily then make readable for client.</p>
+</body></html>

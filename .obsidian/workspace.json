@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "7959bed30afb0677",
+        "id": "92903f373fa5510d",
         "type": "tabs",
         "children": [
           {
-            "id": "ed5afb75d57e40c0",
+            "id": "5fa3dd417361cd79",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Lianyu/Lianyu.md",
+                "file": "TryHackMe/Fowsniff/fowsniff.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Lianyu/Lianyu.md",
+                "file": "TryHackMe/Fowsniff/fowsniff.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Lianyu/Lianyu.md",
+                "file": "TryHackMe/Fowsniff/fowsniff.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Lianyu/Lianyu.md"
+                "file": "TryHackMe/Fowsniff/fowsniff.md"
               }
             }
           }
@@ -146,8 +146,18 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "ed5afb75d57e40c0",
+  "active": "be490efddf21fff0",
   "lastOpenFiles": [
+    "TryHackMe/Fowsniff/images/3.png",
+    "TryHackMe/Fowsniff/images/2.png",
+    "TryHackMe/Fowsniff/fowsniff.md",
+    "TryHackMe/Fowsniff/images/1.png",
+    "TryHackMe/Fowsniff/images",
+    "TryHackMe/Kibana/Kibana.md",
+    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/Lianyu/Lianyu.md",
+    "TryHackMe/Fowsniff",
+    "Untitled",
     "TryHackMe/Lianyu/images/pentest.jpg",
     "TryHackMe/Lianyu/images/34.png",
     "TryHackMe/Lianyu/images/33.png",
@@ -156,24 +166,15 @@
     "TryHackMe/Lianyu/images/30.png",
     "TryHackMe/Lianyu/images/29.png",
     "TryHackMe/Lianyu/images/25.png",
-    "TryHackMe/Lianyu/Lianyu.md",
-    "TryHackMe/Lianyu/images/28.png",
-    "TryHackMe/Lianyu/images/27.png",
-    "TryHackMe/Lianyu/images/26.png",
     "TryHackMe/Lianyu/Lianyu.html",
-    "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Lianyu/images",
     "TryHackMe/Lianyu",
-    "Untitled",
     "TryHackMe/Dogcat/Dogcat.html",
     "TryHackMe/Dogcat/images",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Dogcat",
-    "TryHackMe/Kibana/Kibana.md",
     "Untitled 1",
-    "TryHackMe/CTF",
     "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md",
-    "attachment",
     "Blueprint/Blueprint.md",
     "TryHackMe/BlueprintMachine/Blueprint.md",
     "output/Blueprint.md"
