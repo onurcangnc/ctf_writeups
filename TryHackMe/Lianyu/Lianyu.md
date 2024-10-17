@@ -275,4 +275,4 @@ Get your flag directly on the same directory:
 
 May The Pentest Be With You ! ! !
 
-![[pentest.jpg]]
+![[TryHackMe/Lianyu/images/pentest.jpg]]
