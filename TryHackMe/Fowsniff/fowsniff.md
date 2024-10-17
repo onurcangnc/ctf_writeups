@@ -130,11 +130,14 @@ To read content of the messages, we should retrieve messages:
 I would not give all the message content. Instead, I wanted to show the most crucial highlights of it.
 
 ### Message 1 Output:
-**The temporary password for SSH is "S1ck3nBluff+secureshell"**
+
+![[TryHackMe/Fowsniff/images/18.png]]
 
 ### Message 2 Output
-baksteen, the sender
 
+![[TryHackMe/Fowsniff/images/19.png]]
+
+It would be beneficial to try every mail user especially on `SSH` authentication.
 To authenticate `ssh`, use below command:
 
 ```
@@ -156,6 +159,70 @@ Understanding which commands `user` can run is significant for initial enumerati
 Finding were important especially for this machine because every words have a lot of meaning in entire CTF session.
 
 ### 3) Binary Discovery
-As you know, `GFTObins` is a crucial element in most of the `Li`
+As you know, `GFTObins` is really essential part in most of the `Capture The Flag machines` phases ,so I also did not forget to check useful binaries like python in this scenario.
 
-![[Screen Shot 2024-10-15 at 17.23.10.png]]
+![[TryHackMe/Fowsniff/images/15.png]]
+
+### 4) OS Discovery & Permission Check
+
+As you can see below, I used a `privilege escalation` `GFTObin` payload:
+
+```
+sudo python -c 'import os; os.system("/bin/sh")'
+```
+
+If a user allowed to run run as superuser by `sudo`, it does not drop the elevated privileges. Instead, it will escalate privileges ,but it did not work. Even if I changed version of the python, it gave me the same result.
+
+![[TryHackMe/Fowsniff/images/16.png]]
+
+Retrieving essential system information is sometimes useful for `custom binary` exploitation. Besides, reaching the hierarchy of the user is also important aspect in `OS enumeration`.
+
+Further `binary check` can be seen below.
+
+![[TryHackMe/Fowsniff/images/17.png]]
+I intentionally searched for specific `binaries` to download `linpeas` from local since I was not able to find any evidence to escalate my privileges.
+
+I deployed  `python web server` via my local host then downloaded from `target`.
+
+![[TryHackMe/Fowsniff/images/20.png]]
+
+`GET` request and `my local path` indicating something downloaded from my local host. After I executed linpeas by giving executable permission through `chmod +x`,   I observed many evidences about machine ,yet I just only gave you the most important ones.
+
+![[TryHackMe/Fowsniff/images/21.png]]
+We can execute, write or read everything we want on our home directory. However, we do not need such thing in this scenario.
+
+A file called `cube.sh` is so clear to try many escalation vectors.
+
+![[TryHackMe/Fowsniff/images/22.png]]
+
+The creator of the machine embedded a `misconfigured code part` on:
+`/etc/update-motd.d`. It can be observable on `linpeas` output. Furthermore, at the end of the configuration script, there was a script mistakenly running automatically.
+
+```
+sh /opt/cube/cube.sh
+```
+
+Hence, I understood that If I place a `reverse shell` on `cube.sh`. System will automatically forward my `reverse shell` to my local. To make it accomplishable, deploying `netcat` listener then logout and login the `SSH` client is most probably suitable in this condition.
+
+
+I thought that if I somehow execute something on `cube.sh` as `users group`, I can fully escalate my privilege through `update-motd.d` system file. To do this we can drop `reverse shell` on `cube.sh`. Let me try it:
+
+![[TryHackMe/Fowsniff/images/23.png]]
+
+At first, I forgot to add `#!/bin/bash` ,so it did not work because it is necessary to work with any `bash script` . It is like a `include <stdio.h>` in C programming ,so If it is not exist your script will not be executed.
+
+### *Wrong Way*
+![[TryHackMe/Fowsniff/images/24.png]]
+### Corrected !
+![[TryHackMe/Fowsniff/images/25.png]]
+
+Once you done your payload, you just need to run once then please logout on your ssh session then login.
+
+![[TryHackMe/Fowsniff/images/26.png]]
+
+We are done ! ! !
+
+
+May The Pentest Be With You ! ! !
+
+![[PHOTO-2024-10-13-17-24-35.jpg]]

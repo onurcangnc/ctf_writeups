@@ -209,11 +209,11 @@ Since the target is x86 device known as 32bit:
 Using `mimikatz32.exe` is compatible for us. 
 
 Get the `root flag` from here:
-![[25.png]]
+![[TryHackMe/Blueprint/images/25.png]]
 
 In windows, the registry in a binary file format store in `System32/config/` with name SAM, SECURITY , SYSTEM & Default.
 
-![[26.png]]
+![[TryHackMe/Blueprint/images/26.png]]
 
 To decrypt NTLM hash we need three files: SAM, SYSTEM and SECURITY. So, I copied them.
 
