@@ -10,3 +10,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 - [[Kibana]]: Exploiting Kibana dashboards.
 - [[Lianyu]]: A CTF that incorporates different web app and system exploitation techniques.
 
+- [[fowsniff]]: Description of the CTF challenge.
