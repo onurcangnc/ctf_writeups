@@ -11,12 +11,10 @@
             "id": "a1c30254711e17c6",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "TryHackMe/Fowsniff/fowsniff.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -39,7 +37,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
@@ -54,7 +54,9 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              }
+              },
+              "icon": "lucide-search",
+              "title": "Search"
             }
           },
           {
@@ -62,7 +64,9 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {}
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
@@ -85,7 +89,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Fowsniff/fowsniff.md",
+                "file": "TryHackMe/Fowsniff/images/3.png",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,7 +97,9 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 3"
             }
           },
           {
@@ -102,10 +108,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Fowsniff/fowsniff.md",
+                "file": "TryHackMe/Fowsniff/images/3.png",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              }
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 3"
             }
           },
           {
@@ -116,7 +124,9 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              }
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
             }
           },
           {
@@ -125,8 +135,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Fowsniff/fowsniff.md"
-              }
+                "file": "TryHackMe/Fowsniff/images/3.png"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 3"
             }
           }
         ]
@@ -146,20 +158,20 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "be490efddf21fff0",
+  "active": "a1c30254711e17c6",
   "lastOpenFiles": [
+    "Screen Shot 2024-10-15 at 17.23.10.png",
+    "Screen Shot 2024-10-15 at 17.35.48.png",
+    "Screen Shot 2024-10-15 at 17.36.33.png",
     "PHOTO-2024-10-13-17-24-35.jpg",
+    "TryHackMe/Fowsniff/images/3.png",
+    "TryHackMe/Fowsniff/images/2.png",
+    "TryHackMe/Fowsniff/images/1.png",
+    "TryHackMe/Fowsniff/fowsniff.md",
     "TryHackMe/Fowsniff/images/pentest.jpg",
     "TryHackMe/Fowsniff/images/26.png",
     "TryHackMe/Fowsniff/images/25.png",
-    "TryHackMe/Fowsniff/fowsniff.md",
     "TryHackMe/Fowsniff/images/24.png",
-    "TryHackMe/Fowsniff/images/23.png",
-    "TryHackMe/Fowsniff/images/22.png",
-    "Screen Shot 2024-10-15 at 17.36.33.png",
-    "TryHackMe/Fowsniff/images/21.png",
-    "Screen Shot 2024-10-15 at 17.35.48.png",
-    "TryHackMe/Fowsniff/images/20.png",
     "TryHackMe/Fowsniff/fowsniff.html",
     "TryHackMe/Fowsniff/images",
     "TryHackMe/Kibana/Kibana.md",
