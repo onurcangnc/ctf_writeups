@@ -10,7 +10,7 @@ ping 10.10.118.119
 
 The output should look like:
 
-![](TryHackMe/Blueprint/images/1.png)
+![](./images/1.png)
 
 Add your ip address to `/etc/hosts` file.
 
@@ -20,7 +20,7 @@ nano /etc/host
 
 Include your ip address the format provided below:
 
-![](TryHackMe/Blueprint/images/2.png)
+![](./images/2.png)
 
 
 Before move on, I highly recommend you to check manually whether `web application` runs on `port 80/443` via browser. In most scenarios, we will not have https protocol.
@@ -32,7 +32,7 @@ http://blueprint.thm
 
 This route automatically interact with HTTP protocol. Most of the time browsers have default routing mechanism directing to port 443. We should always try to route port 80 by just manually adding `http://`
 
-![](TryHackMe/Blueprint/images/3.png)
+![](./images/3.png)
 
 Recently, I also tried to check `Apache` commonly running on port 8080:
 
@@ -40,7 +40,7 @@ Recently, I also tried to check `Apache` commonly running on port 8080:
 
 As you can see above, we have an directory named `oscommerce-2.3.4`. I was curious about it ,so I searched about our Operating System commerce app.
 
-![](TryHackMe/Blueprint/images/5.png)
+![](./images/5.png)
 
 It is clear that we should trigger RCE through web app. However, further reconnaissance is not harmful :) I also wanted to `fuzz` this route `http://blueprint:8080`
 
@@ -52,16 +52,16 @@ For the fuzzing, I thought that `dirsearch` and `dirb` will be suitable:
 dirsearch -u http://blueprint.thm:8080
 ```
 
-![](TryHackMe/Blueprint/images/6.png)
+![](./images/6.png)
 
 I just got `/server-status/`, `/server-info` paths. Capturing server data is useful for the architectural understanding. Let me extract what we have so far !
 
 
-![](TryHackMe/Blueprint/images/7.png)
+![](./images/7.png)
 
 I was dealing with `Win32` architecture, `Apache` as a web server and for the backend `PHP` working on the machine. Furthermore, on `/oscommerce-2.3.4/docs/` path, there was a database dump. However, I could not reach any juicy information.
 
-![](TryHackMe/Blueprint/images/8.png)
+![](./images/8.png)
 
 
 The `database scheme` pattern looks like `ER diagram`.
@@ -77,12 +77,12 @@ sudo nmap -sV -sC -p- blueprint.thm
 
 Since I have already get what we need especially architecture of the application. I preferred to use only `default script` scan. Moreover, full port scan was not compatible on this scenario because it ran really slow. Anyway, let's check the `network mapper` output.
 
-![](TryHackMe/Blueprint/images/9.png)
+![](./images/9.png)
 
 The results depicted that I did not check only the port `445` as known as `SMB` (Server Message Block).
 
 
-![](TryHackMe/Blueprint/images/10.png)
+![](./images/10.png)
 
 `Nmap` script engine automatically run `default smb scripts` against on target. Lastly, checking the SMB will be crucial to get initial compromise since `nmap` script result revealed the potential discovery on `SMB`.
 
@@ -90,7 +90,7 @@ According to `HackTricks`, we can use `enum4linux` to enumerate the target:
 
 [Pentesting SMB](https://book.hacktricks.xyz/network-services-pentesting/pentesting-smb)
 
-![](TryHackMe/Blueprint/images/11.png)
+![](./images/11.png)
 
 ```
 enum4linux -a 10.10.118.119
@@ -98,11 +98,11 @@ enum4linux -a 10.10.118.119
 
 The most identical part of the `enum4linux` output was the `nbtstat information`.
 
-![](TryHackMe/Blueprint/images/12.png)
+![](./images/12.png)
 
 Script could get the `Domain/Workgroup` named `WORKGROUP`. Let me try to authenticate it through without giving credentials.
 
-![](TryHackMe/Blueprint/images/13.png)
+![](./images/13.png)
 
 ```
 	//IPC$ did not allow me to run any commands
@@ -123,7 +123,7 @@ SMB did not give me useful findings. Therefore, I switched on exploitdb to get i
 [RCE](https://www.exploit-db.com/exploits/44374)
 
 
-![](TryHackMe/Blueprint/images/14.png)
+![](./images/14.png)
 
 There was a web app based vulnerability occurs ,so let me apply this manually before I demonstrate all the ways to compromise machine.
 
@@ -135,18 +135,18 @@ I intended to do directly manual without any tool ,but it did not work. That's w
 
 Firstly, edit the `url` part of the script:
 
-![](TryHackMe/Blueprint/images/16.png)
+![](./images/16.png)
 
 
 As you can see below, it did not work because the script automatically tried to execute `system('ls')` command on the OS.
 
-![](TryHackMe/Blueprint/images/17.png)
+![](./images/17.png)
 
 However, the web app disabled such commands by default ,so lets run another payload from [Github](https://github.com/nobodyatall648/osCommerce-2.3.4-Remote-Command-Execution)
 
 To understand how the script works, I initially ran it just by giving any parameters and inputs.
 
-![](TryHackMe/Blueprint/images/18.png)
+![](./images/18.png)
 
 Payload that I have used:
 
@@ -162,11 +162,11 @@ Malicious payload:
 '); passthru('whoami'); /*
 ```
 
-![](TryHackMe/Blueprint/images/19.png)
+![](./images/19.png)
 
 Although there were not any privilege execution mechanism on script, I had straightforwardly get `NT AUTHORITY\SYSTEM`. However, still I could not move any paths directly on `OS`.
 
-![](TryHackMe/Blueprint/images/20.png)
+![](./images/20.png)
 
 Hence, I also wanted to try again [`Exploit Db`](https://www.exploit-db.com/exploits/44374) Maybe I can upgrade my shell with `Powershell reverse shell`. Because of the script's iteration. I was not able to interact with shell properly. It only allowed me to show `current directory`.
 
@@ -185,13 +185,13 @@ Now deploy `netcat listener`:
 nc -lvnp 4444
 ```
 
-![](TryHackMe/Blueprint/images/21.png)
+![](./images/21.png)
 
 You can directly paste when you prepare your payload as above. Then switch on the shell that you spawned.
 
 You should wait at least `15 seconds` to ensure ready your upgraded `reverse shell`. That's all ! !
 
-![](TryHackMe/Blueprint/images/22.png)
+![](./images/22.png)
 
 To get `LAB` user flag, you should use `Mimikatz` to get the `NTLM` hash of the user.
 
@@ -204,29 +204,29 @@ python -m http.server 3131
 
 Since the target is x86 device known as 32bit:
 
-![](TryHackMe/Blueprint/images/24.png)
+![](./images/24.png)
 
 Using `mimikatz32.exe` is compatible for us. 
 
 Get the `root flag` from here:
-![[TryHackMe/Blueprint/images/25.png]]
+![[./images/25.png]]
 
 In windows, the registry in a binary file format store in `System32/config/` with name SAM, SECURITY , SYSTEM & Default.
 
-![[TryHackMe/Blueprint/images/26.png]]
+![[./images/26.png]]
 
 To decrypt NTLM hash we need three files: SAM, SYSTEM and SECURITY. So, I copied them.
 
-![[TryHackMe/Blueprint/images/27.png]]
+![[./images/27.png]]
 
 
 After collect those file it need to hash dump to get hash value. Here, `samdump2` is best tool for hash dump.
 
-![[TryHackMe/Blueprint/images/28.png]]
+![[./images/28.png]]
 
 The second portion after `:` colon indicates the NTLM of the user.
 
-![[TryHackMe/Blueprint/images/29.png]]
+![[./images/29.png]]
 [CrackStation]()
 
 
