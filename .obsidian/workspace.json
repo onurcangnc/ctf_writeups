@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Blueprint/Blueprint.md",
+                "file": "TryHackMe/TryHackMe.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Blueprint"
+              "title": "TryHackMe"
             }
           }
         ]
@@ -162,22 +162,27 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "be490efddf21fff0",
+  "active": "7f4964ef62d1b19a",
   "lastOpenFiles": [
-    "TryHackMe/Blueprint/images/24.png",
-    "TryHackMe/Blueprint/Blueprint.md",
-    "TryHackMe/Blueprint/images/22.png",
-    "TryHackMe/Blueprint/images/21.png",
-    "TryHackMe/Blueprint/images/20.png",
-    "TryHackMe/Blueprint/images/19.png",
-    "TryHackMe/Blueprint/images/18.png",
-    "TryHackMe/Blueprint/images/17.png",
-    "TryHackMe/Blueprint/images/15.png",
-    "TryHackMe/Blueprint/images/14.png",
-    "TryHackMe/Blueprint/images/13.png",
-    "TryHackMe/Blueprint/images/12.png",
-    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe.md",
     "TryHackMe/TryHackMe.md",
+    "TryHackMe/BlueprintTHM/Blueprint.md",
+    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/BlueprintTHM/images/9.png",
+    "TryHackMe/BlueprintTHM/images/8.png",
+    "TryHackMe/BlueprintTHM/images/7.png",
+    "TryHackMe/BlueprintTHM/images/6.png",
+    "TryHackMe/BlueprintTHM/images/5.png",
+    "TryHackMe/BlueprintTHM/images/4.png",
+    "TryHackMe/BlueprintTHM/images/3.png",
+    "TryHackMe/BlueprintTHM/images/29.png",
+    "TryHackMe/BlueprintTHM/images/26.png",
+    "TryHackMe/BlueprintTHM/images/28.png",
+    "TryHackMe/BlueprintTHM/images",
+    "TryHackMe/BlueprintTHM/Blueprint.html",
+    "TryHackMe/BlueprintTHM",
+    "TryHackMe/Blueprint/Blueprint.md",
+    "HackTheBox.md",
     "TryHackMe/Lianyu/Lianyu.html",
     "TryHackMe/Lianyu/images",
     "TryHackMe/Lianyu/Lianyu.md",
@@ -188,9 +193,6 @@
     "TryHackMe/Fowsniff/images",
     "TryHackMe/Fowsniff/fowsniff.md",
     "TryHackMe/Dogcat/Dogcat.html",
-    "TryHackMe/Dogcat/images",
-    "TryHackMe/Blueprint/Blueprint.html",
-    "TryHackMe/Blueprint/images",
     "TryHackMe/TryHackMe/Lianyu/Lianyu.md",
     "TryHackMe/TryHackMe/Kibana/Kibana.md",
     "TryHackMe/TryHackMe/Fowsniff/fowsniff.md",
