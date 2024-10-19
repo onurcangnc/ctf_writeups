@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/TryHackMe.md",
+                "file": "TryHackMe/Blueprint/Blueprint.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "TryHackMe"
+              "title": "Blueprint"
             }
           }
         ]
@@ -162,25 +162,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7f4964ef62d1b19a",
+  "active": "be490efddf21fff0",
   "lastOpenFiles": [
-    "TryHackMe.md",
     "TryHackMe/TryHackMe.md",
-    "TryHackMe/BlueprintTHM/Blueprint.md",
+    "TryHackMe.md",
+    "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Dogcat/Dogcat.md",
-    "TryHackMe/BlueprintTHM/images/9.png",
-    "TryHackMe/BlueprintTHM/images/8.png",
-    "TryHackMe/BlueprintTHM/images/7.png",
-    "TryHackMe/BlueprintTHM/images/6.png",
-    "TryHackMe/BlueprintTHM/images/5.png",
-    "TryHackMe/BlueprintTHM/images/4.png",
-    "TryHackMe/BlueprintTHM/images/3.png",
-    "TryHackMe/BlueprintTHM/images/29.png",
-    "TryHackMe/BlueprintTHM/images/26.png",
-    "TryHackMe/BlueprintTHM/images/28.png",
-    "TryHackMe/BlueprintTHM/images",
-    "TryHackMe/BlueprintTHM/Blueprint.html",
-    "TryHackMe/BlueprintTHM",
+    "TryHackMe/Blueprint/images/9.png",
+    "TryHackMe/Blueprint/images/8.png",
+    "TryHackMe/Blueprint/images/7.png",
+    "TryHackMe/Blueprint/images/6.png",
+    "TryHackMe/Blueprint/images/5.png",
+    "TryHackMe/Blueprint/images/4.png",
+    "TryHackMe/Blueprint/images/3.png",
+    "TryHackMe/Blueprint/images/29.png",
+    "TryHackMe/Blueprint/images/26.png",
+    "TryHackMe/Blueprint/images/28.png",
+    "TryHackMe/Blueprint/images",
+    "TryHackMe/Blueprint/Blueprint.html",
+    "TryHackMe/Blueprint",
     "TryHackMe/Blueprint/Blueprint.md",
     "HackTheBox.md",
     "TryHackMe/Lianyu/Lianyu.html",
