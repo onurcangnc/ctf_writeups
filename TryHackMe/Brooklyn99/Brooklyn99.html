@@ -1,0 +1,196 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Greetings everyone, today I would like to analyze <code>BrooklynNineNine</code> on TryHackMe platform. Actually, it was not so hard to deal with that machine because of my real-world test experiences. I recognized that I am now able to deal with more complicated reconnaissance on web applications. Therefore, I was comfortable to jump post-compromise part on this instance.</p>
+
+<p>Let me add my <code>IPv4</code> address to <code>/etc/hosts</code> to avoid specifying the address in commands each time.</p>
+
+<p>```</p>
+
+<h1>Open hosts file</h1>
+
+<p>nano /etc/hosts
+[MACHINE-IP] brooklyn.thm</p>
+
+<h1>Save with C^R and exit C^X</h1>
+
+<p>```</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>This how it looks like.</p>
+
+<h2>Reconnaissance</h2>
+
+<p>First of all, I did not want to use browser to display <code>HTML</code> elements of the page. That's why, I decided to use <code>curl</code> to save time. Maybe we have a web app on port <code>80</code> or <code>443</code></p>
+
+<p><code>curl -v brooklyn.thm</code></p>
+
+<p>As you can see below, there was a comment indicating the technique called <code>Steganography</code></p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p><code>
+&lt;!--- Have you ever heard of steganography? --&gt;
+</code></p>
+
+<p>Let me extract the image from web application through my browser:</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>I have tried a lot of <code>Steganography</code> tools from <a href="https://0xrick.github.io/lists/stego/">here</a>.</p>
+
+<p>However, one of them worked well. How I understood <code>stegcracker</code> works is that I did not have any clues on many tools like <code>exiftool</code>, <code>foremost</code>, <code>steghide</code> and <code>zsteg</code>. Finally, <code>stegcracker</code> done it !</p>
+
+<p>Stegcracker requires these parameters:</p>
+
+<p><code>
+stegcracker &lt;file&gt; [&lt;wordlist&gt;]
+</code></p>
+
+<p>For the <code>wordlist</code> part, I selected <code>rockyou</code> since we just need password list ,so I thought that <code>rockyou</code> basically includes passwords.</p>
+
+<p>Full payload &amp; result:
+<img src="./images/4.png" alt="alt text" /></p>
+
+<p>Content of the output file named <code>brooklyn99.jpg.out</code>:
+<img src="./images/5.png" alt="alt text" /></p>
+
+<p>Initially, I could not understand <code>Holts</code> then I conducted a <code>GPT</code> scan to understand who were <code>Holts</code>.</p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>Now, I understood that the <code>user:pass</code> combination <code>holts:fluffydog12@ninenine</code></p>
+
+<p>Finally, conducting port scan may reveal great findings about  architecture:</p>
+
+<p>command:
+<code>sudo nmap -sV -sC brooklyn.thm</code></p>
+
+<p>Results showed me that two significant services:
+- SSH
+- FTP</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>I wanted to display the content of the <code>note_to_jake.txt</code>. You can reach the commands that I have run on <code>FTP</code> client.</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p><code>note_to_joke.txt</code>:
+<img src="./images/9.png" alt="alt text" /></p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p>It was not too precious information compared to <code>Holts user:pass</code>. Therefore, there was not any other ports that we can interact with machine. SSH was suitable to connect because I compromised <code>user:pass</code> combination.</p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>Gotcha ! ! !</p>
+
+<h3>Manual Approach:</h3>
+
+<p>Next step should be what commands am I able to run:</p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>As you can see, user <code>holts</code> can run <code>nano</code> with <code>root</code> privileges.</p>
+
+<h3>Automated Approach:</h3>
+
+<p><code>linpeas.sh</code> is more automated approach for us to make deeper <code>OS analysis</code>.</p>
+
+<p>Deploy local python server to send it to target.</p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>To understand whether we have other binaries allowing us to download like <code>wget</code>,<code>curl</code>.</p>
+
+<p>```</p>
+
+<h1>Combine them</h1>
+
+<p>which wget or curl
+/usr/bin/wget
+```</p>
+
+<p>By using <code>wget</code>, we can observe that downloading files through it possible !</p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>Give execution permission to <code>linpeas.sh</code></p>
+
+<p><code>chmod +x linpeas.sh</code></p>
+
+<p>Run the script:
+<img src="./images/18.png" alt="alt text" /></p>
+
+<p>Great findings about our target:</p>
+
+<p>(we cannot run <code>less</code> because our user did not have sudo privileges for this binary)
+<img src="./images/16.png" alt="alt text" />
+<img src="./images/17.png" alt="alt text" /></p>
+
+<h2>Exploitation</h2>
+
+<p><strong>==Binary exploitation==</strong> can help in this scenario:</p>
+
+<p><a href="https://gtfobins.github.io/gtfobins/nano/">GTFOBins</a> suggest that if binary is allowed to run as superuser by <code>sudo</code>, it does not drop the elevated privileges which means we cannot constantly escalate our privileges to root.</p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>```</p>
+
+<h1>run nano with sudo</h1>
+
+<p>1) sudo nano</p>
+
+<h1>it will ask your user password</h1>
+
+<h1>control+R and control+X respectively</h1>
+
+<p>2) ^R^X
+3) reset; sh 1>&amp;0 2>&amp;0
+```</p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>Flag located on <code>/root</code> path.
+<img src="./images/19.png" alt="alt text" /></p>
+</body></html>
