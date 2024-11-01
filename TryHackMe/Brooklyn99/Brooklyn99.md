@@ -124,12 +124,10 @@ Great findings about our target:
 ![[TryHackMe/Brooklyn99/images/20.png]]
 
 
-run nano with sudo
-1) sudo nano
-(it will ask your user password)
-2) ^R ^X 
-(control+R and control+X respectively)
-4) reset; sh 1>&0 2>&0
+run nano with sudo:
+`sudo nano` (it will ask your user password)
+`^R ^X` (control+R and control+X respectively)
+`reset; sh 1>&0 2>&0`
 
 
 ![[TryHackMe/Brooklyn99/images/13.png]]
