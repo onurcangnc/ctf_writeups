@@ -3,12 +3,14 @@ Greetings everyone, today I would like to analyze `BrooklynNineNine` on TryHackM
 
 Let me add my `IPv4` address to `/etc/hosts` to avoid specifying the address in commands each time.
 
+
 ```
 # Open hosts file
 nano /etc/hosts
 [MACHINE-IP] brooklyn.thm
 # Save with C^R and exit C^X
 ```
+
 
 ![[TryHackMe/Brooklyn99/images/1.png]]
 
@@ -122,7 +124,8 @@ Great findings about our target:
 ![[TryHackMe/Brooklyn99/images/17.png]]
 
 ## Exploitation
-**==Binary exploitation==** can help in this scenario:
+
+**Binary exploitation** can help in this scenario:
 
 [GTFOBins](https://gtfobins.github.io/gtfobins/nano/) suggest that if binary is allowed to run as superuser by `sudo`, it does not drop the elevated privileges which means we cannot constantly escalate our privileges to root.
 
