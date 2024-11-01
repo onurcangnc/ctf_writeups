@@ -41,16 +41,10 @@
 
 <p>Let me add my <code>IPv4</code> address to <code>/etc/hosts</code> to avoid specifying the address in commands each time.</p>
 
-<p>```</p>
-
-<h1>Open hosts file</h1>
-
-<p>nano /etc/hosts
-[MACHINE-IP] brooklyn.thm</p>
-
-<h1>Save with C^R and exit C^X</h1>
-
-<p>```</p>
+<p>Open hosts file
+nano /etc/hosts
+[MACHINE-IP] brooklyn.thm
+Save with C^R and exit C^X</p>
 
 <p><img src="./images/1.png" alt="alt text" /></p>
 
@@ -66,9 +60,7 @@
 
 <p><img src="./images/2.png" alt="alt text" /></p>
 
-<p><code>
-&lt;!--- Have you ever heard of steganography? --&gt;
-</code></p>
+<p><code>&lt;!--- Have you ever heard of steganography? --&gt;</code></p>
 
 <p>Let me extract the image from web application through my browser:</p>
 
@@ -78,11 +70,9 @@
 
 <p>However, one of them worked well. How I understood <code>stegcracker</code> works is that I did not have any clues on many tools like <code>exiftool</code>, <code>foremost</code>, <code>steghide</code> and <code>zsteg</code>. Finally, <code>stegcracker</code> done it !</p>
 
-<p>Stegcracker requires these parameters:</p>
+<p><code>Stegcracker</code> requires these parameters:</p>
 
-<p><code>
-stegcracker &lt;file&gt; [&lt;wordlist&gt;]
-</code></p>
+<p><code>stegcracker &lt;file&gt; [&lt;wordlist&gt;]</code></p>
 
 <p>For the <code>wordlist</code> part, I selected <code>rockyou</code> since we just need password list ,so I thought that <code>rockyou</code> basically includes passwords.</p>
 
@@ -142,13 +132,9 @@ stegcracker &lt;file&gt; [&lt;wordlist&gt;]
 
 <p>To understand whether we have other binaries allowing us to download like <code>wget</code>,<code>curl</code>.</p>
 
-<p>```</p>
-
-<h1>Combine them</h1>
-
-<p>which wget or curl
-/usr/bin/wget
-```</p>
+<p>Combine them
+<code>which wget or curl</code>
+<code>/usr/bin/wget</code></p>
 
 <p>By using <code>wget</code>, we can observe that downloading files through it possible !</p>
 
@@ -175,19 +161,12 @@ stegcracker &lt;file&gt; [&lt;wordlist&gt;]
 
 <p><img src="./images/20.png" alt="alt text" /></p>
 
-<p>```</p>
-
-<h1>run nano with sudo</h1>
-
-<p>1) sudo nano</p>
-
-<h1>it will ask your user password</h1>
-
-<h1>control+R and control+X respectively</h1>
-
-<p>2) ^R^X
-3) reset; sh 1>&amp;0 2>&amp;0
-```</p>
+<p>run nano with sudo
+1) sudo nano
+(it will ask your user password)
+2) ^R ^X 
+(control+R and control+X respectively)
+4) reset; sh 1>&amp;0 2>&amp;0</p>
 
 <p><img src="./images/13.png" alt="alt text" /></p>
 
