@@ -4,12 +4,10 @@ Greetings everyone, today I would like to analyze `BrooklynNineNine` on TryHackM
 Let me add my `IPv4` address to `/etc/hosts` to avoid specifying the address in commands each time.
 
 
-```
-# Open hosts file
+Open hosts file
 nano /etc/hosts
 [MACHINE-IP] brooklyn.thm
-# Save with C^R and exit C^X
-```
+Save with C^R and exit C^X
 
 
 ![[TryHackMe/Brooklyn99/images/1.png]]
@@ -26,9 +24,7 @@ As you can see below, there was a comment indicating the technique called `Stega
 
 ![[TryHackMe/Brooklyn99/images/2.png]]
 
-```
-<!--- Have you ever heard of steganography? -->
-```
+`<!--- Have you ever heard of steganography? -->`
 
 Let me extract the image from web application through my browser:
 
@@ -38,11 +34,9 @@ I have tried a lot of `Steganography` tools from [here](https://0xrick.github.io
 
 However, one of them worked well. How I understood `stegcracker` works is that I did not have any clues on many tools like `exiftool`, `foremost`, `steghide` and `zsteg`. Finally, `stegcracker` done it !
 
-Stegcracker requires these parameters:
+`Stegcracker` requires these parameters:
 
-```
-stegcracker <file> [<wordlist>]
-```
+`stegcracker <file> [<wordlist>]`
 
 For the `wordlist` part, I selected `rockyou` since we just need password list ,so I thought that `rockyou` basically includes passwords.
 
@@ -100,11 +94,9 @@ Deploy local python server to send it to target.
 
 To understand whether we have other binaries allowing us to download like `wget`,`curl`.
 
-```
-# Combine them
-which wget or curl
-/usr/bin/wget
-```
+Combine them
+`which wget or curl`
+`/usr/bin/wget`
 
 By using `wget`, we can observe that downloading files through it possible !
 
@@ -131,14 +123,14 @@ Great findings about our target:
 
 ![[TryHackMe/Brooklyn99/images/20.png]]
 
-```
-# run nano with sudo
+
+run nano with sudo
 1) sudo nano
-# it will ask your user password
-# control+R and control+X respectively
-2) ^R^X
-3) reset; sh 1>&0 2>&0
-```
+(it will ask your user password)
+2) ^R ^X 
+(control+R and control+X respectively)
+4) reset; sh 1>&0 2>&0
+
 
 ![[TryHackMe/Brooklyn99/images/13.png]]
 
