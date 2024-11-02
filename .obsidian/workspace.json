@@ -4,21 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "39603460daf2a802",
+        "id": "7959bed30afb0677",
         "type": "tabs",
         "children": [
           {
-            "id": "7dcf5eadeeb5a3d9",
+            "id": "ed5afb75d57e40c0",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Brooklyn99/Brooklyn99.md",
+                "file": "TryHackMe/Lianyu/Lianyu.md",
                 "mode": "source",
                 "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Brooklyn99"
+              }
             }
           }
         ]
@@ -41,9 +39,7 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              },
-              "icon": "lucide-folder-closed",
-              "title": "Files"
+              }
             }
           },
           {
@@ -58,9 +54,7 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              },
-              "icon": "lucide-search",
-              "title": "Search"
+              }
             }
           },
           {
@@ -68,16 +62,14 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
-              "icon": "lucide-bookmark",
-              "title": "Bookmarks"
+              "state": {}
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 258.5
+    "width": 200
   },
   "right": {
     "id": "89fa7dc435b446ae",
@@ -93,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Fowsniff/images/3.png",
+                "file": "TryHackMe/Lianyu/Lianyu.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -101,9 +93,7 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for 3"
+              }
             }
           },
           {
@@ -112,12 +102,10 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Fowsniff/images/3.png",
+                "file": "TryHackMe/Lianyu/Lianyu.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "Outgoing links from 3"
+              }
             }
           },
           {
@@ -128,9 +116,7 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
+              }
             }
           },
           {
@@ -139,10 +125,8 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Fowsniff/images/3.png"
-              },
-              "icon": "lucide-list",
-              "title": "Outline of 3"
+                "file": "TryHackMe/Lianyu/Lianyu.md"
+              }
             }
           }
         ]
@@ -162,43 +146,36 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7dcf5eadeeb5a3d9",
+  "active": "be490efddf21fff0",
   "lastOpenFiles": [
-    "TryHackMe/Brooklyn99/Brooklyn99.html",
     "TryHackMe/TryHackMe.md",
-    "20.png",
-    "TryHackMe/Brooklyn99/Brooklyn99.md",
-    "TryHackMe/Brooklyn99/images/19.png",
-    "TryHackMe/Brooklyn99/images/20.png",
-    "19.png",
-    "TryHackMe/Brooklyn99/images/17.png",
-    "TryHackMe/Brooklyn99/images/16.png",
-    "TryHackMe/Brooklyn99/images/18.png",
-    "16.png",
-    "14.png",
-    "TryHackMe/Brooklyn99/images/12.png",
+    "TryHackMe/Fowsniff/images/pentest.jpg",
+    "TryHackMe/Fowsniff/images/9.png",
+    "TryHackMe/Fowsniff/images/8.png",
+    "TryHackMe/Fowsniff/images/7.png",
+    "TryHackMe/Fowsniff/images/6.png",
+    "TryHackMe/Fowsniff/images/5.png",
+    "TryHackMe/Fowsniff/images/4.png",
+    "TryHackMe/Fowsniff/images/3.png",
+    "TryHackMe/Fowsniff/images/26.png",
+    "TryHackMe/Fowsniff/images/25.png",
+    "TryHackMe/Fowsniff/images",
+    "TryHackMe/Fowsniff/fowsniff.md",
+    "TryHackMe/Fowsniff/fowsniff.html",
+    "TryHackMe/Fowsniff",
     "TryHackMe/Brooklyn99/images",
-    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/Brooklyn99/Brooklyn99.md",
+    "TryHackMe/Brooklyn99/Brooklyn99.html",
     "TryHackMe/Brooklyn99",
     "TryHackMe.md",
-    "TryHackMe/Fowsniff/fowsniff.md",
-    "TryHackMe/Blueprint/Blueprint.md",
-    "TryHackMe/Blueprint/images",
-    "TryHackMe/Blueprint/Blueprint.html",
-    "TryHackMe/Blueprint",
-    "HackTheBox.md",
-    "TryHackMe/Lianyu/Lianyu.html",
-    "TryHackMe/Lianyu/images",
     "TryHackMe/Lianyu/Lianyu.md",
+    "TryHackMe/Lianyu/Lianyu.html",
+    "TryHackMe/Dogcat/Dogcat.md",
+    "TryHackMe/Lianyu/images",
+    "TryHackMe/Lianyu",
+    "Untitled",
+    "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Kibana/Kibana.md",
-    "TryHackMe/Kibana/images",
-    "TryHackMe/Kibana/Kibana.html",
-    "TryHackMe/Fowsniff/fowsniff.html",
-    "TryHackMe/TryHackMe/Lianyu/Lianyu.md",
-    "TryHackMe/TryHackMe/Kibana/Kibana.md",
-    "TryHackMe/TryHackMe/Fowsniff/fowsniff.md",
-    "TryHackMe/TryHackMe/Dogcat/Dogcat.md",
-    "TryHackMe/TryHackMe/Blueprint/Blueprint.md",
     "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md",
     "Blueprint/Blueprint.md",
     "TryHackMe/BlueprintMachine/Blueprint.md",
