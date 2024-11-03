@@ -20,6 +20,18 @@
               "icon": "lucide-file",
               "title": "EasyPeasy"
             }
+          },
+          {
+            "id": "a17a26a6f6cc36fa",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "TryHackMe/EasyPeasy/images/51.png"
+              },
+              "icon": "lucide-image",
+              "title": "51"
+            }
           }
         ]
       }
@@ -164,9 +176,10 @@
   },
   "active": "aaff7fcc2e464b11",
   "lastOpenFiles": [
+    "TryHackMe/EasyPeasy/images/51.png",
+    "TryHackMe/EasyPeasy/EasyPeasy.md",
     "TryHackMe/EasyPeasy/images/50.PNG",
     "TryHackMe/EasyPeasy/images/49.PNG",
-    "Pasted image 20241103222602.png",
     "TryHackMe/EasyPeasy/images/48.PNG",
     "TryHackMe/EasyPeasy/images/47.PNG",
     "TryHackMe/EasyPeasy/images/46.PNG",
@@ -174,8 +187,6 @@
     "TryHackMe/EasyPeasy/images/44.PNG",
     "TryHackMe/EasyPeasy/images/43.PNG",
     "TryHackMe/EasyPeasy/images/42.PNG",
-    "TryHackMe/EasyPeasy/images/41.PNG",
-    "TryHackMe/EasyPeasy/EasyPeasy.md",
     "TryHackMe/Lianyu/Lianyu.md",
     "TryHackMe/EasyPeasy/EasyPeasy.html",
     "TryHackMe/EasyPeasy/images",
