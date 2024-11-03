@@ -249,7 +249,7 @@ PoC for the `reverse shell`:
 ![[48.PNG]]
 `Reverse Shell` attempted to connect to `MY HOST` and `1984` my port respectively. Let's check whether I was correct or not :)
 
-![[Pasted image 20241103222602.png]]
+![[51.png]]
 
 There was `UNKNOWN` host connected my machine from port `52196`.
 
