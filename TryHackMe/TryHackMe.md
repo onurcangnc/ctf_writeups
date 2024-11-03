@@ -10,3 +10,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 - [[Lianyu]]: Description of the CTF challenge.
 - [[Dogcat]]: Description of the CTF challenge.
 - [[Blueprint]]: Description of the CTF challenge.
+- [[EasyPeasy]]: Description of the CTF challenge.
