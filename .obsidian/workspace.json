@@ -13,24 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/EasyPeasy/EasyPeasy.md",
+                "file": "TryHackMe/Thompson/Thompson.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "EasyPeasy"
-            }
-          },
-          {
-            "id": "a17a26a6f6cc36fa",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "TryHackMe/EasyPeasy/images/51.png"
-              },
-              "icon": "lucide-image",
-              "title": "51"
+              "title": "Thompson"
             }
           }
         ]
@@ -176,17 +164,21 @@
   },
   "active": "aaff7fcc2e464b11",
   "lastOpenFiles": [
-    "TryHackMe/EasyPeasy/images/51.png",
+    "TryHackMe/Thompson/images/25.png",
+    "25.png",
+    "TryHackMe/Thompson/images/24.png",
+    "TryHackMe/Thompson/images/23.png",
+    "TryHackMe/Thompson/images/22.png",
+    "TryHackMe/Thompson/images/21.png",
+    "TryHackMe/Thompson/images/20.png",
+    "TryHackMe/Thompson/images/19.png",
+    "19.png",
+    "TryHackMe/Thompson/images/18.png",
+    "TryHackMe/Thompson/images/17.png",
+    "TryHackMe/Thompson/Thompson.md",
+    "TryHackMe/Thompson/images",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
-    "TryHackMe/EasyPeasy/images/50.PNG",
-    "TryHackMe/EasyPeasy/images/49.PNG",
-    "TryHackMe/EasyPeasy/images/48.PNG",
-    "TryHackMe/EasyPeasy/images/47.PNG",
-    "TryHackMe/EasyPeasy/images/46.PNG",
-    "TryHackMe/EasyPeasy/images/45.PNG",
-    "TryHackMe/EasyPeasy/images/44.PNG",
-    "TryHackMe/EasyPeasy/images/43.PNG",
-    "TryHackMe/EasyPeasy/images/42.PNG",
+    "TryHackMe/Thompson",
     "TryHackMe/Lianyu/Lianyu.md",
     "TryHackMe/EasyPeasy/EasyPeasy.html",
     "TryHackMe/EasyPeasy/images",
@@ -199,9 +191,7 @@
     "TryHackMe/Brooklyn99/images",
     "TryHackMe/Brooklyn99/Brooklyn99.md",
     "TryHackMe/Brooklyn99/Brooklyn99.html",
-    "TryHackMe/Brooklyn99",
     "TryHackMe.md",
-    "TryHackMe/Lianyu/Lianyu.html",
     "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Kibana/Kibana.md",
