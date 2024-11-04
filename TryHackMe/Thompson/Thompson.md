@@ -246,4 +246,7 @@ Append direct `reverse shell`
 
 ![[TryHackMe/Thompson/images/25.png]]
 
+![[TryHackMe/Thompson/images/26.png]]
+
+
 May The Pentest Be With You ! ! !
