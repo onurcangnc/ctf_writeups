@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "18c5ec74c950f892",
+        "id": "7c6b0a66710f1e45",
         "type": "tabs",
         "children": [
           {
-            "id": "aaff7fcc2e464b11",
+            "id": "babfaf59fc77075e",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Thompson/Thompson.md",
+                "file": "TryHackMe.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Thompson"
+              "title": "TryHackMe"
             }
           }
         ]
@@ -162,21 +162,22 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "aaff7fcc2e464b11",
+  "active": "babfaf59fc77075e",
   "lastOpenFiles": [
+    "TryHackMe/TryHackMe.md",
+    "TryHackMe.md",
+    "19.png",
+    "17.png",
+    "25.png",
+    "TryHackMe/Thompson/Thompson.md",
     "TryHackMe/Thompson/images/26.png",
     "TryHackMe/Thompson/Thompson.html",
     "TryHackMe/Thompson/images/25.png",
-    "25.png",
     "TryHackMe/Thompson/images/24.png",
     "TryHackMe/Thompson/images/23.png",
     "TryHackMe/Thompson/images/22.png",
     "TryHackMe/Thompson/images/21.png",
     "TryHackMe/Thompson/images/20.png",
-    "TryHackMe/Thompson/images/19.png",
-    "19.png",
-    "TryHackMe/Thompson/images/18.png",
-    "TryHackMe/Thompson/Thompson.md",
     "TryHackMe/Thompson/images",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
     "TryHackMe/Thompson",
@@ -184,14 +185,12 @@
     "TryHackMe/EasyPeasy/EasyPeasy.html",
     "TryHackMe/EasyPeasy/images",
     "TryHackMe/EasyPeasy",
-    "TryHackMe/TryHackMe.md",
     "TryHackMe/Fowsniff/images",
     "TryHackMe/Fowsniff/fowsniff.md",
     "TryHackMe/Fowsniff/fowsniff.html",
     "TryHackMe/Fowsniff",
     "TryHackMe/Brooklyn99/images",
     "TryHackMe/Brooklyn99/Brooklyn99.md",
-    "TryHackMe.md",
     "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Kibana/Kibana.md",
