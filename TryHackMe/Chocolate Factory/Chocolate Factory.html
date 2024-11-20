@@ -1,0 +1,53 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>After a long exam period, I have finally started to analyze all the TryHackMe machines again. Let me start with embedding our ip address to customized domain named <code>willy.thm</code>.</p>
+
+<p><code>nano /etc/hosts</code></p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<h2>Reconnaissance</h2>
+
+<p>Start with <code>curl</code> instead of browser to understand port <code>80</code> &amp; <code>443</code> response. It is likely more efficient way compared to manual browser approach.</p>
+
+<p><code>curl -v willy.thm</code></p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+</body></html>
