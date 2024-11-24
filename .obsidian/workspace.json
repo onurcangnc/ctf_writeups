@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Chocolate Factory/Chocolate Factory.md",
+                "file": "TryHackMe/Chill Hack/Chill Hack.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Chocolate Factory"
+              "title": "Chill Hack"
             }
           }
         ]
@@ -162,20 +162,24 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "be490efddf21fff0",
+  "active": "babfaf59fc77075e",
   "lastOpenFiles": [
-    "TryHackMe/Chocolate Factory/Chocolate Factory.md",
+    "TryHackMe/Chill Hack/images/45.png",
+    "TryHackMe/Chill Hack/images/44.png",
+    "TryHackMe/Chill Hack/images/43.png",
+    "TryHackMe/Chill Hack/images/42.png",
+    "TryHackMe/Chill Hack/images/41.png",
+    "TryHackMe/Chill Hack/images/40.png",
+    "TryHackMe/Chill Hack/images/39.png",
+    "TryHackMe/Chill Hack/images/38.png",
+    "TryHackMe/Chill Hack/images/37.png",
+    "TryHackMe/Chill Hack/images/16.png",
+    "TryHackMe/Chill Hack/Chill Hack.md",
+    "TryHackMe/Chill Hack/images/36.png",
+    "TryHackMe/Chill Hack/images",
     "TryHackMe/Untitled.md",
-    "TryHackMe/Chocolate Factory/images/28.png",
-    "TryHackMe/Chocolate Factory/images/27.png",
-    "TryHackMe/Chocolate Factory/images/26.png",
-    "TryHackMe/Chocolate Factory/images/25.png",
-    "TryHackMe/Chocolate Factory/images/24.png",
-    "TryHackMe/Chocolate Factory/images/23.png",
-    "TryHackMe/Chocolate Factory/images/22.png",
-    "TryHackMe/Chocolate Factory/images/21.png",
-    "TryHackMe/Chocolate Factory/images/20.png",
-    "TryHackMe/Chocolate Factory/images/19.png",
+    "TryHackMe/Chill Hack",
+    "TryHackMe/Chocolate Factory/Chocolate Factory.md",
     "TryHackMe/Chocolate Factory/Chocolate Factory.html",
     "TryHackMe/TryHackMe.md",
     "TryHackMe/Chocolate Factory/images",
@@ -189,9 +193,7 @@
     "TryHackMe/Thompson/Thompson.html",
     "TryHackMe/Thompson/images",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
-    "TryHackMe/Thompson",
     "TryHackMe/Lianyu/Lianyu.md",
-    "TryHackMe/EasyPeasy/EasyPeasy.html",
     "TryHackMe/Fowsniff/fowsniff.md",
     "TryHackMe/Brooklyn99/Brooklyn99.md",
     "TryHackMe/Dogcat/Dogcat.md",
