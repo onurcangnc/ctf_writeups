@@ -8,3 +8,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 - [[Wgel WriteUp]]: Description of the CTF challenge.
 - [[Lianyu]]: Description of the CTF challenge.
 - [[Chocolate Factory]]: Description of the CTF challenge.
+- [[Chill Hack]]: Description of the CTF challenge.
