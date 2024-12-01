@@ -1,0 +1,221 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone ! in this couple of attempts, I would like to focus on HackerOne's web based CTF's. Let me first analyze 2 stage in this article. As you know, my latest articles were extended &amp; complex. That's why, in this challenge series, I will handle them in a more smooth way.</p>
+
+<p>1)  <strong>A little something to get you started</strong>
+2) <strong>Micro-CMS v1</strong></p>
+
+<h2>A little something to get you started</h2>
+
+<p>Conceptually, <strong>HackerOne</strong> made their competitions more flexible. I mean that we were no longer cope with <code>vm</code> embedded tools a lot. That does not mean there were not any tools for discovery. Always attempting the <code>manual way</code> is the better option ,but If you have nothing to do in terms of <code>manual</code> switch on <code>automated</code> approaches. Anyway, let's navigate through our instance.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>As you can see above, there was not anything especially in the context of web application &amp; page. Direct <code>manual</code> code analysis most probably achieve the first stage.</p>
+
+<p>```
+<html><head>
+        <style>
+            body {
+                background-image: url("background.png");
+            }
+        </style>
+    </head>
+    <body>
+        <p>Welcome to level 0.  Enjoy your stay.</p></p>
+
+<p></body></html>
+```</p>
+
+<p>The image file <code>background</code> was embedded on the <code>background-image</code> attribute of <code>CSS</code>.  Since it looks like an image, it was not an image you can observe it in browser. Furthermore, if you try to open it, you will encounter an error indicating it is not an image. </p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<h3>First Solution</h3>
+
+<p>Still you have the chance to render this image via browser by giving the <code>path</code> or <code>endpoint</code> of the file or directory. Check it -> <code>/background.png/</code></p>
+
+<p>In my instance, the url was weird ,so I will directly share with you ,but it may change in every iterations.</p>
+
+<p><code>https://0e09bdc7f74e2eaa1fc1c57c88824d3d.ctf.hacker101.com/background.png</code></p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<h3>Second Solution</h3>
+
+<p>With the help of the <code>curl</code>, you can prompt the solution on your command line interface.</p>
+
+<p><code>curl -v [URL]/background.png</code></p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>Observe that we have often capabilities against <code>web applications</code> especially in CTF challenges :)</p>
+
+<p>Do not forget to submit your <code>flags</code> on the navigation bar element named <code>Submit Flag</code>.</p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<h2>Micro-CMS v1</h2>
+
+<p>The more you faster, the more you can be confident on every penetration test engagement. Therefore, if you find something values like a diamond, you should hesitantly finish it !</p>
+
+<p>Always check for <code>Page Source</code> especially on web-based challenges, do not including any straight network operations.</p>
+
+<p>```
+<html>
+    <head>
+        <title>Micro-CMS</title>
+    </head>
+<body>
+        <ul>
+            <li><a href="page/1">Testing</a></li>
+            <li><a href="page/2">Markdown Test</a></li>
+        </ul>
+    <a href="page/create">Create a new page</a></p>
+
+<p></body>
+</html>
+```</p>
+
+<p>I have tried indentation to make sure that you understand the page source code more fluently :)</p>
+
+<p>The page has hyperlinks meaning that redirecting somewhere called <code>page/1</code> and <code>page/2</code>. However, the most interesting part is that it straightforwardly routing on <code>directory</code> to <code>file</code>. not directly <code>file</code>.</p>
+
+<p>Let's analyze each path:</p>
+
+<h3>Page1</h3>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p><code>Page1</code> including a really interesting hyperlink  called <code>edit/1</code>. Let me check what we can do further. As you can see below, it did not embedded only <code>&lt;script&gt;</code> tag + full <code>&lt;script&gt;</code> tag.</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>However, it adds an html attribute called <code>&lt;scrubbed&gt;</code>. That's why, there was a sanitization mechanism on that instance.</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p><strong>Notice</strong>: Page opened full <code>&lt;scrubbed&gt; &lt;/scrubbed&gt;</code> automatically at first. Since I opened <code>&lt;script&gt;</code> tag then html automatically completed it.</p>
+
+<p>Let's try more customized payload like <code>&lt;yilmaz&gt; &lt;/erkan&gt;</code>. It behaves directed way because it only captured the first parameter and completes all the payload. Furthermore, it directly embeds what we give it.</p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p>As you can see here, let me also add <code>alert('ATİLLA')</code> method on it to make interactive the page in order to understand XSS instance</p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>Now still it sanitized the <code>structure</code> not the <code>pattern</code>. Now try to escape html elements with <code>&lt;</code> or <code>"</code>.</p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>It applied same approach plus got <code>"</code> and <code>&gt;</code> as string. Moreover, it will be compatible to use different HTML attributes. In this scenario, I would like to try <code>&lt;img&gt;</code> tag.</p>
+
+<p><code>"&gt;&lt;img onerror=alert('ATİLLA_YİLMAZ')&gt;</code></p>
+
+<p>I will try such payload ,but it was not complete. Let's check what will be the reflection of the page.</p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p>Observe that I achieved ,but I could not achieve <code>XSS</code>. Now I will try to complete full payload.</p>
+
+<p><code>"&gt;&lt;img src="mesut:onurcan" onerror=alert('ATİLLA_YİLMAZ')&gt;</code></p>
+
+<p>Since browser was waiting for <code>source</code> for the <code>&lt;img&gt;</code> tag, it could not proceed appropriately. Reach out the solution below:</p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>To get the <code>flag</code> check the source code through browser:</p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>Application automatically generates <code>flag</code> attribute via js.</p>
+
+<p>For the other flags, I moved <code>Creating Page</code> ,but it took really longer time to reach here because I tried <code>Markdown</code> part a lot :)</p>
+
+<p>Let's try more basic things on both <code>title</code> &amp; <code>input field</code>.</p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>Now, I am sure that it did not detect both directly the tag and pattern ,so embed full generic payload.</p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>Let me try what if we embed <code>yilmaz()</code> as method different than <code>alert()</code></p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>It could not find <code>yilmaz()</code> method ,so script did will work because still it can render <code>JS</code> since it will render itself on the main page after creation. What if we try to manipulate path which is <code>10</code> in my instance. Moreover, I tried to create one more than I noticed that it is adding pages incrementally. I discovered it </p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p>Let me move <code>1-20</code>:
+(you can achieve also with burp)</p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>After I initially decreasing the value, I encountered with a path on page <code>7</code>. Then moving is not possible ,but what if I try on <code>editing</code> utility.</p>
+
+<p>We got it ! ! !</p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p>Besides, after I moved main page, <code>page/10</code> automatically generated me to the one of the flags that I could not find anymore on <code>Creating Page</code> part. After it generates it renders then embeds through the <code>&lt;li&gt;</code> elements ,so one of the basic <code>XSS</code> on title also invoked itself on the main page :)</p>
+
+<p>After I pressed go home it directly gave me the flag:</p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>I also created another page with <code>&lt;yilmaz&gt; &lt;/yilmaz&gt;</code> tag ,but browser cannot identify any script here ,so it created only <code>alert('atilla')</code> part solely.</p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>After a long time, I tried to abuse SQLi on <code>edit</code> path and it did not work on <code>/page/</code> direction.</p>
+
+<p>I have applied most generic ones via <a href="https://github.com/payloadbox/sql-injection-payload-list">payloadbox</a></p>
+
+<p><img src="./images/24.png" alt="alt text" /></p>
+
+<p><img src="./images/25.png" alt="alt text" /></p>
+
+<p>May The Pentest Be With You ! ! !</p>
+</body></html>
