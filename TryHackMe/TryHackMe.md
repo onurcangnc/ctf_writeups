@@ -4,9 +4,18 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 # TryHackMe CTF Challenges
 
 ## Challenges List
+<<<<<<< HEAD
+- [[EasyPeasy]]: Description of the CTF challenge.
+- [[Kibana]]: Description of the CTF challenge.
+- [[Lianyu]]: Description of the CTF challenge.
+- [[Thompson]]: Description of the CTF challenge.
+- [[Wgel WriteUp]]: Description of the CTF challenge.
+=======
 - [[Thompson]]: Description of the CTF challenge.
 - [[Wgel WriteUp]]: Description of the CTF challenge.
 - [[Lianyu]]: Description of the CTF challenge.
 - [[Chocolate Factory]]: Description of the CTF challenge.
 - [[Chill Hack]]: Description of the CTF challenge.
 - [[Hacker101 CTF]]: Description of the CTF challenge.
+>>>>>>> 47152c908418836f1041d0569288461fca6a860b
+- [[Micro-CMS v2]]: Description of the CTF challenge.
