@@ -85,7 +85,7 @@ Also the source code is important whether It sends the requests through backend 
 
 Exactly, It is going to send requests to web server. Embedding `ls`directly did not work since the creator sanitized ,but `whoami` works !
 
-![[13.png]]
+![[TryHackMe/Chill Hack/images/13.png]]
 
 We are `www-data` by default on `web server`. Let me also add `;` to catch the response of the application.
 
