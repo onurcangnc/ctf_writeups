@@ -16,9 +16,7 @@
                 "file": "TryHackMe.md",
                 "mode": "source",
                 "source": false
-              },
-              "icon": "lucide-file",
-              "title": "TryHackMe"
+              }
             }
           },
           {
@@ -30,13 +28,21 @@
                 "file": "TryHackMe/Wgel/Wgel WriteUp.md",
                 "mode": "source",
                 "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Wgel WriteUp"
+              }
+            }
+          },
+          {
+            "id": "344adb5f09b3f363",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.7.5"
+              }
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -56,9 +62,7 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical"
-              },
-              "icon": "lucide-folder-closed",
-              "title": "Files"
+              }
             }
           },
           {
@@ -73,9 +77,7 @@
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical"
-              },
-              "icon": "lucide-search",
-              "title": "Search"
+              }
             }
           },
           {
@@ -83,9 +85,7 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
-              "icon": "lucide-bookmark",
-              "title": "Bookmarks"
+              "state": {}
             }
           }
         ]
@@ -116,9 +116,7 @@
                 "searchQuery": "",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks for EasyPeasy"
+              }
             }
           },
           {
@@ -130,9 +128,7 @@
                 "file": "TryHackMe/EasyPeasy/EasyPeasy.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "Outgoing links from EasyPeasy"
+              }
             }
           },
           {
@@ -143,9 +139,7 @@
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "Tags"
+              }
             }
           },
           {
@@ -155,9 +149,7 @@
               "type": "outline",
               "state": {
                 "file": "TryHackMe/EasyPeasy/EasyPeasy.md"
-              },
-              "icon": "lucide-list",
-              "title": "Outline of EasyPeasy"
+              }
             }
           }
         ]
@@ -177,8 +169,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "be490efddf21fff0",
+  "active": "344adb5f09b3f363",
   "lastOpenFiles": [
+    "TryHackMe/Wgel/Wgel WriteUp.html",
+    "TryHackMe/TryHackMe.md",
     "TryHackMe/Wgel/images/27.jpg",
     "TryHackMe/Wgel/images/24.PNG",
     "TryHackMe/Wgel/Wgel WriteUp.md",
@@ -190,12 +184,10 @@
     "TryHackMe/Wgel/images/20.PNG",
     "TryHackMe/Wgel/images/19.PNG",
     "TryHackMe/Wgel/images/18.PNG",
-    "TryHackMe/Wgel/images/17.PNG",
     "TryHackMe/Wgel/images",
     "TryHackMe/Wgel/Yeni klasör",
     "TryHackMe.md",
     "TryHackMe/Wgel",
-    "TryHackMe/TryHackMe.md",
     "TryHackMe/Thompson/Thompson.md",
     "TryHackMe/Thompson/Thompson.html",
     "TryHackMe/Thompson/images",
