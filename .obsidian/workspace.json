@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Hacker101 CTF/Hacker101 CTF.md",
+                "file": "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Hacker101 CTF"
+              "title": "Hacker101 CTF2"
             }
           }
         ]
@@ -164,18 +164,22 @@
   },
   "active": "d0822147155eb69e",
   "lastOpenFiles": [
+    "six.gif",
+    "TryHackMe/Hacker101 CTF2/images/8.png",
+    "TryHackMe/Hacker101 CTF2/images/7.png",
+    "TryHackMe/Hacker101 CTF2/images/6.png",
+    "TryHackMe/Hacker101 CTF2/images/5.png",
+    "TryHackMe/Hacker101 CTF2/images/4.png",
+    "TryHackMe/Hacker101 CTF2/images/3.png",
+    "TryHackMe/Hacker101 CTF2/images/2.png",
+    "TryHackMe/Hacker101 CTF2/images/1.png",
+    "TryHackMe/Hacker101 CTF2/images",
+    "TryHackMe/Hacker101 CTF/Hacker101 CTF.md",
+    "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
+    "TryHackMe/Hacker101 CTF2",
     "TryHackMe/Hacker101 CTF/Hacker101 CTF.html",
     "TryHackMe/Hacker101 CTF/images/25.png",
-    "TryHackMe/Hacker101 CTF/Hacker101 CTF.md",
     "TryHackMe/Hacker101 CTF/images/24.png",
-    "TryHackMe/Hacker101 CTF/images/23.png",
-    "TryHackMe/Hacker101 CTF/images/22.png",
-    "TryHackMe/Hacker101 CTF/images/21.png",
-    "TryHackMe/Hacker101 CTF/images/20.png",
-    "TryHackMe/Hacker101 CTF/images/19.png",
-    "TryHackMe/Hacker101 CTF/images/18.png",
-    "TryHackMe/Hacker101 CTF/images/17.png",
-    "TryHackMe/Hacker101 CTF/images/16.png",
     "TryHackMe/Hacker101 CTF/images",
     "TryHackMe/Chill Hack/Chill Hack.md",
     "TryHackMe/Hacker101 CTF",
@@ -187,10 +191,7 @@
     "TryHackMe/Chocolate Factory/Chocolate Factory.html",
     "TryHackMe/TryHackMe.md",
     "TryHackMe/Chocolate Factory/images",
-    "TryHackMe/Chocolate Factory",
     "TryHackMe/Wgel/Wgel WriteUp.md",
-    "TryHackMe/Wgel/images",
-    "TryHackMe/Wgel/Yeni klasör",
     "TryHackMe.md",
     "TryHackMe/Thompson/Thompson.md",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
