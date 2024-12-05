@@ -20,18 +20,6 @@
             }
           },
           {
-            "id": "6d1c53d815e7e4d6",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "TryHackMe/Wgel/Wgel WriteUp.md",
-                "mode": "source",
-                "source": false
-              }
-            }
-          },
-          {
             "id": "344adb5f09b3f363",
             "type": "leaf",
             "state": {
@@ -42,7 +30,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -108,7 +96,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/EasyPeasy/EasyPeasy.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -125,7 +112,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/EasyPeasy/EasyPeasy.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -169,35 +155,38 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "344adb5f09b3f363",
+  "active": "be490efddf21fff0",
   "lastOpenFiles": [
+    "TryHackMe/Hacker101 CTF2/images/8.png",
+    "TryHackMe/Hacker101 CTF2/images/7.png",
+    "TryHackMe/Hacker101 CTF2/images/6.png",
+    "TryHackMe/Hacker101 CTF2/images/5.png",
+    "TryHackMe/Hacker101 CTF2/images/4.png",
+    "TryHackMe/Hacker101 CTF2/images/3.png",
+    "TryHackMe/Hacker101 CTF2/images/2.png",
+    "TryHackMe/Hacker101 CTF2/images/1.png",
+    "TryHackMe/Hacker101 CTF2/images",
+    "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
+    "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.html",
+    "TryHackMe/Hacker101 CTF2",
+    "TryHackMe/Hacker101 CTF/images/9.png",
+    "TryHackMe/Hacker101 CTF/images/8.png",
+    "TryHackMe/Hacker101 CTF/images/6.png",
+    "TryHackMe/Hacker101 CTF/images",
+    "TryHackMe/Hacker101 CTF/Hacker101 CTF.md",
+    "TryHackMe/Hacker101 CTF/Hacker101 CTF.html",
+    "TryHackMe/Hacker101 CTF",
+    "TryHackMe/Chill Hack/images",
+    "TryHackMe/Chill Hack/Chill Hack.md",
+    "TryHackMe/Chill Hack/Chill Hack.html",
+    "TryHackMe/Chill Hack",
     "TryHackMe/Wgel/Wgel WriteUp.html",
     "TryHackMe/TryHackMe.md",
-    "TryHackMe/Wgel/images/27.jpg",
-    "TryHackMe/Wgel/images/24.PNG",
     "TryHackMe/Wgel/Wgel WriteUp.md",
-    "TryHackMe/Wgel/images/26.PNG",
-    "TryHackMe/Wgel/images/25.PNG",
-    "TryHackMe/Wgel/images/23.PNG",
-    "TryHackMe/Wgel/images/22.PNG",
-    "TryHackMe/Wgel/images/21.PNG",
-    "TryHackMe/Wgel/images/20.PNG",
-    "TryHackMe/Wgel/images/19.PNG",
-    "TryHackMe/Wgel/images/18.PNG",
-    "TryHackMe/Wgel/images",
-    "TryHackMe/Wgel/Yeni klasör",
     "TryHackMe.md",
-    "TryHackMe/Wgel",
     "TryHackMe/Thompson/Thompson.md",
-    "TryHackMe/Thompson/Thompson.html",
-    "TryHackMe/Thompson/images",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
-    "TryHackMe/Thompson",
     "TryHackMe/Lianyu/Lianyu.md",
-    "TryHackMe/EasyPeasy/EasyPeasy.html",
-    "TryHackMe/EasyPeasy/images",
-    "TryHackMe/EasyPeasy",
-    "TryHackMe/Fowsniff/images",
     "TryHackMe/Fowsniff/fowsniff.md",
     "TryHackMe/Brooklyn99/Brooklyn99.md",
     "TryHackMe/Dogcat/Dogcat.md",
