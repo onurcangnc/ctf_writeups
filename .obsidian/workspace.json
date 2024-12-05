@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Micro-CMS v2/Micro-CMS v2.md",
+                "file": "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "TryHackMe/Micro-CMS v2/Micro-CMS v2.md",
+                "file": "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "TryHackMe/Micro-CMS v2/Micro-CMS v2.md",
+                "file": "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "TryHackMe/Micro-CMS v2/Micro-CMS v2.md"
+                "file": "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md"
               }
             }
           }
@@ -148,23 +148,24 @@
   },
   "active": "be490efddf21fff0",
   "lastOpenFiles": [
-    "TryHackMe/Micro-CMS v2/Micro-CMS v2.html",
-    "TryHackMe/Micro-CMS v2/images/21.png",
-    "TryHackMe/Micro-CMS v2/images/20.png",
-    "TryHackMe/Micro-CMS v2/images/19.png",
-    "TryHackMe/Micro-CMS v2/images/18.png",
-    "TryHackMe/Micro-CMS v2/images/17.png",
-    "TryHackMe/Micro-CMS v2/images/16.png",
-    "TryHackMe/Micro-CMS v2/images/15.png",
-    "TryHackMe/Micro-CMS v2/images/14.png",
-    "TryHackMe/Micro-CMS v2/Micro-CMS v2.md",
+    "TryHackMe/TryHackMe.md",
+    "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
+    "TryHackMe/Hacker101 CTF2/Micro-CMS v2.html",
+    "TryHackMe/Hacker101 CTF2/images/21.png",
+    "TryHackMe/Hacker101 CTF2/images/20.png",
+    "TryHackMe/Hacker101 CTF2/images/19.png",
+    "TryHackMe/Hacker101 CTF2/images/18.png",
+    "TryHackMe/Hacker101 CTF2/images/17.png",
+    "TryHackMe/Hacker101 CTF2/images/16.png",
+    "TryHackMe/Hacker101 CTF2/images/15.png",
+    "TryHackMe/Hacker101 CTF2/images/14.png",
     "TryHackMe/Hacker101 CTF/Hacker101 CTF.md",
-    "TryHackMe/Micro-CMS v2/images/13.png",
-    "TryHackMe/Micro-CMS v2/images/12.png",
+    "TryHackMe/Hacker101 CTF2/images/13.png",
+    "TryHackMe/Hacker101 CTF2/images/12.png",
     "TryHackMe.md",
-    "TryHackMe/Micro-CMS v2/images",
+    "TryHackMe/Hacker101 CTF2/images",
     "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.html",
-    "TryHackMe/Micro-CMS v2",
+    "TryHackMe/Hacker101 CTF2",
     "TryHackMe/Hacker101 CTF/images",
     "TryHackMe/Hacker101 CTF/Hacker101 CTF.html",
     "TryHackMe/Hacker101 CTF",
@@ -172,8 +173,6 @@
     "TryHackMe/Chill Hack/Chill Hack.md",
     "TryHackMe/Chill Hack/Chill Hack.html",
     "TryHackMe/Chill Hack",
-    "TryHackMe/Wgel/Wgel WriteUp.html",
-    "TryHackMe/TryHackMe.md",
     "TryHackMe/Wgel/Wgel WriteUp.md",
     "TryHackMe/Thompson/Thompson.md",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
