@@ -135,7 +135,7 @@ ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual
 
 <p>Full Payload (Wrong):</p>
 
-<p><code>SELECT password FROM admins WHERE username=UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1'</code></p>
+<p><code>SELECT password FROM admins WHERE username=UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1'</code>.</p>
 
 <p>Initially, I also got error by using below payload ,but after application returns <code>password</code> field as 'ERKAN<em>UCAR' because of the <code>UNION</code> query it statically adds this aliased result to the entire entity. Normally, application should compare <code>password</code> field and user provided data then authenticate. However, no matter what I  used, password verification process directly accepts what I gave as input. This manipulated the query to always return a result set containing the string "ERKAN</em>UCAR" as the password field, regardless of the actual password stored in the database.</p>
 

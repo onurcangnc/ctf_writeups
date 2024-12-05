@@ -101,7 +101,7 @@ again it did not work.
 
 Full Payload (Wrong):
 
-`SELECT password FROM admins WHERE username=UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1'`
+`SELECT password FROM admins WHERE username=UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1'`.
 
 
 Initially, I also got error by using below payload ,but after application returns `password` field as 'ERKAN_UCAR' because of the `UNION` query it statically adds this aliased result to the entire entity. Normally, application should compare `password` field and user provided data then authenticate. However, no matter what I  used, password verification process directly accepts what I gave as input. This manipulated the query to always return a result set containing the string "ERKAN_UCAR" as the password field, regardless of the actual password stored in the database.
