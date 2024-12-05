@@ -1,0 +1,221 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Greetings everyone !
+Today, I would like to analyze <code>Micro-CMS v2</code> on <code>HackerOne's Hacker101</code> platform. As you know, recently I have completed categories including <code>Trivial</code> and <code>Easy</code> levels. Now let's get start:</p>
+
+<h2>Micro-CMS v2</h2>
+
+<p>On the main path, there was a <code>&lt;li&gt;</code> element which redirects users to <code>Changelog</code> path. </p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>On <code>Changelog</code> path, <code>edit/1</code> endpoint can be seen below. Let me also move on it in order to interact with the application.</p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p>Initially, I tried user:pass combination with <code>admin:admin</code>. However, it did not work.</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>Mostly, to manipulate <code>I/O</code> fields, as a second option I will apply <code>SQLi</code>.</p>
+
+<p><code>Generic Payloads</code> are great way to understand whether the application responds to <code>SQLi</code> or not. In this session, I used payload from <a href="https://github.com/payloadbox/sql-injection-payload-list">payloadbox</a></p>
+
+<p><code>' OR '1</code></p>
+
+<p>Page response was genuienly interesting because it seems like there was not any sanitization on <code>user</code> field or we can ensure that <code>SQLi</code> verified.</p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>To understand the number of columns, I crafted a <code>UNION</code> payload with only 1 column:</p>
+
+<p><code>' UNION SELECT null --</code></p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>Observe that it worked well ! !</p>
+
+<p>However, if you apply the same query with 2 columns, it also gives error:</p>
+
+<p><code>' UNION SELECT null, null --</code></p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>As you can see above, it gave me an error implying no such thing (two columns). Now, I will keep to move from <code>UNION</code> opportunity especially it is more inclusive in terms of detection &amp; bypass compared to <code>error-based</code>.</p>
+
+<p>Meanwhile, I also ran <code>Intruder</code> to find possible user:pass or user:pass(EMPTY). Still, I could no reach any useful findings.</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>After couple of hours, I was curious about why I could not get any output from <code>SQL</code> errors. Then start to search about it since I could not directly know the table &amp; column name precisely. Finally, I asked it for gpt to try many of the combinations with my <code>UNION</code> query with 1 column.</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p>I crafted new payload with most suitable ones:</p>
+
+<p><code>UNION SELECT password FROM admins --</code></p>
+
+<p>then it did not work + it could not invoke <code>SQLi</code> directly since the error message said that <code>Unknown user</code>. After a couple of attempts, I decided to find the correlated query error from Google images.</p>
+
+<p><code>
+Traceback (most recent call last):
+  File "./main.py", line 145, in do_login
+    if cur.execute('SELECT password FROM admins WHERE username=\'%s\'' % request.form['username'].replace('%', '%%')) == 0:
+  File "/usr/local/lib/python2.7/site-packages/MySQLdb/cursors.py", line 250, in execute
+    self.errorhandler(self, exc, value)
+  File "/usr/local/lib/python2.7/site-packages/MySQLdb/connections.py", line 50, in defaulterrorhandler
+    raise errorvalue
+ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''''' at line 1")
+</code></p>
+
+<p>As I understood, there was a DB error occured by the payload that I have used by applying <code>'</code>.</p>
+
+<p>Observe that backend initiates a query:</p>
+
+<p><code>SELECT password FROM admins WHERE username=\'%s\'' % request.form['username'].replace('%', '%%')</code></p>
+
+<p>This directly inserts the user input into the query without proper sanitization or parameterization, making it vulnerable to SQL injection attacks.</p>
+
+<p>By applying such method <code>replace()</code> does not alleviate the SQLi issue here. Even if the developer uses it there is a huge potential for the payload:</p>
+
+<p><code>' or '1' = '1</code></p>
+
+<p>Instead of direct string concatenation on <code>username</code> parameter, developer should apply <code>cur.execute(query, (username,))</code>. Especially the syntax error indicating an occurence of <code>MySQLdb</code>.</p>
+
+<p>Anyway, let's try to abuse direct <code>UNION</code> payload through the help of field &amp; table information:</p>
+
+<p><code>UNION SELECT password FROM admins --</code> was our default payload. Let me construct it with true statement + escaping character.</p>
+
+<p><code>UNION SELECT password FROM admins WHERE '1' = '1</code></p>
+
+<p>again it did not work.</p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p><code>UNION SELECT password FROM admins WHERE '1' = '1'</code> then same error occured (correct query). This means that we cannot have direct access to table entities. In order to bypass this condition, I will also apply a method called <code>Aliasing</code> where I learnt from <code>CTIS259</code>.</p>
+
+<p><code>UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1'</code> : Error because we did not append escape character.</p>
+
+<p>Full Payload (Wrong):</p>
+
+<p><code>SELECT password FROM admins WHERE username=UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1'</code></p>
+
+<p>Initially, I also got error by using below payload ,but after application returns <code>password</code> field as 'ERKAN<em>UCAR' because of the <code>UNION</code> query it statically adds this aliased result to the entire entity. Normally, application should compare <code>password</code> field and user provided data then authenticate. However, no matter what I  used, password verification process directly accepts what I gave as input. This manipulated the query to always return a result set containing the string "ERKAN</em>UCAR" as the password field, regardless of the actual password stored in the database.</p>
+
+<p><code>' UNION SELECT 'ERKAN_UCAR' AS password FROM admins WHERE '1' = '1</code></p>
+
+<p>Let me check:</p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>WE ARE DONE ! ! !</p>
+
+<p>On <code>private page</code> on the path: <code>/page/3</code> consisting corresponding flag:</p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>I was trying to send requests via <code>POST</code> method ,but in somehow application did not allow me to send constructed <code>POST</code> requests.</p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>From that point, I thought that utilizing <code>curl</code> can handle such problem. Initially, <code>Burp</code> successfully handled the <code>GET</code> method ,yet it stucks on <code>POST</code>.</p>
+
+<p><code>curl -X POST -v https://e703f29754ced9752afc5ff667fa6f27.ctf.hacker101.com/page/edit/1</code></p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<h3>Solution 1: THC Hydra to Bruteforce</h3>
+
+<p>Lastly, I did not get anything related to flag while I was fuzzing or analyzing the source code. For the final step, <code>sqlmap based bruteforce</code> will be beneficial to uncover hidden accounts of the <code>web applicaton's db</code>. Moreover, It also help us to <code>dump</code> target database and automate <code>injection</code>. Maybe I can find useful results:</p>
+
+<p><code>sqlmap -u https://e703f29754ced9752afc5ff667fa6f27.ctf.hacker101.com/login --data "username=abc&amp;password=xyz" -p username --dbms=mysql --dump</code></p>
+
+<p>sqlmap could not abuse the <code>POST</code> request. Therefore, using <code>-r</code> parameter will solve the problem because of the full payload description. That's why, I decided to bruteforce login panel by using <code>rockyou</code> since I never accomplish through the <code>SQLmap</code>. It gave more and more errors including HTTP 500 and no SQLi found type of issues. Let's use <code>THCHydra</code> to alleviate this problem:</p>
+
+<p>First of all, I will try to detect any <code>username</code> via <code>rockyou.txt</code>:</p>
+
+<p>As you know if we try to authenticate as user that is not exist, it shows an error <code>Unknown user</code>. Therefore, it is compatible to use such payload:</p>
+
+<p><code>hydra -L /usr/share/wordlists/rockyou.txt -p aaa 041ef32b3e30e9794e010a8f0ddfa74b.ctf.hacker101.com http-post-form "/login:username=^USER^&amp;password=^PASS^:Unknown user" -S</code></p>
+
+<p>By using this payload, <code>Hydra</code> will alert us if it finds a result with error code different than <code>Unknown User</code></p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>YESSS ! ! !</p>
+
+<p><strong>NOTE</strong>: Giving a random password does not affect the result.</p>
+
+<p>Since you have user:pass combination stored on database ,so there will not be any further changes when you try different username with same password <code>aaa</code>.</p>
+
+<p>Observe that we have users called: <code>maritza</code> and <code>asdfghjkl</code>.</p>
+
+<p>Now we are ready to test against the same wordlist against <code>password</code> to find any other users are available to perform lateral movement to other user. Furthermore, maybe the other user has <code>admin</code> privileges.</p>
+
+<p><code>hydra -l maritza -P /usr/share/wordlists/rockyou.txt 041ef32b3e30e9794e010a8f0ddfa74b.ctf.hacker101.com http-post-form "/login:username=^USER^&amp;password=^PASS^:Invalid password" -S</code></p>
+
+<p>Logic behind of the command is that If it cannot see any response consisting <code>Invalid password</code> then it will proceed to prompt on the terminal. This is what I would like to demonstrate by implying:</p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p><code>rockyou</code> did not give me the password ,so I decided to move another <code>user:pass</code> combo on specialized in <code>hacker101CTF</code> from <a href="https://raw.githubusercontent.com/ternera/hacker101-ctf/main/names.txt">github</a></p>
+
+<p>As you can see both <code>rockyou</code> and <code>hacker101</code> wordlist contains the same username:</p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>Now, I also captured the password ,but it was really tough to handle the entire bruteforce session. Approximately 10-15 minutes, it was trying to all the possible combinations.</p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<h3>Solution 2: Burpsuite Bruteforce Operation to Compromise Password</h3>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>If you want, you can also achieve the <code>username</code> finding bruteforce operation with <code>Burp's</code> <code>Payload Processing</code> category in Payloads.</p>
+
+<p>Reach out the FLAG from login panel. Providing valid user:pass redirects the flag page:</p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p>May The Pentest Be With You ! ! !</p>
+</body></html>
