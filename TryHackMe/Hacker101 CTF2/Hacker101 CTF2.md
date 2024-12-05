@@ -6,15 +6,15 @@ Today, I would like to analyze `Micro-CMS v2` on `HackerOne's Hacker101` platfor
 
 On the main path, there was a `<li>` element which redirects users to `Changelog` path. 
 
-![[TryHackMe/Micro-CMS v2/images/1.png]]
+![[TryHackMe/Hacker101 CTF2/images/1.png]]
 
 On `Changelog` path, `edit/1` endpoint can be seen below. Let me also move on it in order to interact with the application.
 
-![[TryHackMe/Micro-CMS v2/images/2.png]]
+![[TryHackMe/Hacker101 CTF2/images/2.png]]
 
 Initially, I tried user:pass combination with `admin:admin`. However, it did not work.
 
-![[TryHackMe/Micro-CMS v2/images/3.png]]
+![[TryHackMe/Hacker101 CTF2/images/3.png]]
 
 Mostly, to manipulate `I/O` fields, as a second option I will apply `SQLi`.
 
@@ -24,13 +24,13 @@ Mostly, to manipulate `I/O` fields, as a second option I will apply `SQLi`.
 
 Page response was genuienly interesting because it seems like there was not any sanitization on `user` field or we can ensure that `SQLi` verified.
 
-![[TryHackMe/Micro-CMS v2/images/4.png]]
+![[TryHackMe/Hacker101 CTF2/images/4.png]]
 
 To understand the number of columns, I crafted a `UNION` payload with only 1 column:
 
 `' UNION SELECT null -- `
 
-![[TryHackMe/Micro-CMS v2/images/5.png]]
+![[TryHackMe/Hacker101 CTF2/images/5.png]]
 
 Observe that it worked well ! !
 
@@ -38,17 +38,17 @@ However, if you apply the same query with 2 columns, it also gives error:
 
 `' UNION SELECT null, null --`
 
-![[TryHackMe/Micro-CMS v2/images/6.png]]
+![[TryHackMe/Hacker101 CTF2/images/6.png]]
 
 As you can see above, it gave me an error implying no such thing (two columns). Now, I will keep to move from `UNION` opportunity especially it is more inclusive in terms of detection & bypass compared to `error-based`.
 
 Meanwhile, I also ran `Intruder` to find possible user:pass or user:pass(EMPTY). Still, I could no reach any useful findings.
 
-![[TryHackMe/Micro-CMS v2/images/7.png]]
+![[TryHackMe/Hacker101 CTF2/images/7.png]]
 
 After couple of hours, I was curious about why I could not get any output from `SQL` errors. Then start to search about it since I could not directly know the table & column name precisely. Finally, I asked it for gpt to try many of the combinations with my `UNION` query with 1 column.
 
-![[TryHackMe/Micro-CMS v2/images/8.png]]
+![[TryHackMe/Hacker101 CTF2/images/8.png]]
 
 I crafted new payload with most suitable ones:
 
@@ -92,7 +92,7 @@ Anyway, let's try to abuse direct `UNION` payload through the help of field & ta
 
 again it did not work.
 
-![[TryHackMe/Micro-CMS v2/images/9.png]]
+![[TryHackMe/Hacker101 CTF2/images/9.png]]
 
 
 `UNION SELECT password FROM admins WHERE '1' = '1'` then same error occured (correct query). This means that we cannot have direct access to table entities. In order to bypass this condition, I will also apply a method called `Aliasing` where I learnt from `CTIS259`.
@@ -110,27 +110,27 @@ Initially, I also got error by using below payload ,but after application return
 
 Let me check:
 
-![[TryHackMe/Micro-CMS v2/images/10.png]]
+![[TryHackMe/Hacker101 CTF2/images/10.png]]
 
 WE ARE DONE ! ! !
 
 On `private page` on the path: `/page/3` consisting corresponding flag:
 
-![[TryHackMe/Micro-CMS v2/images/11.png]]
+![[TryHackMe/Hacker101 CTF2/images/11.png]]
 
 
 
 I was trying to send requests via `POST` method ,but in somehow application did not allow me to send constructed `POST` requests.
 
-![[TryHackMe/Micro-CMS v2/images/12.png]]
+![[TryHackMe/Hacker101 CTF2/images/12.png]]
 
-![[TryHackMe/Micro-CMS v2/images/13.png]]
+![[TryHackMe/Hacker101 CTF2/images/13.png]]
 
 From that point, I thought that utilizing `curl` can handle such problem. Initially, `Burp` successfully handled the `GET` method ,yet it stucks on `POST`.
 
 `curl -X POST -v https://e703f29754ced9752afc5ff667fa6f27.ctf.hacker101.com/page/edit/1`
 
-![[TryHackMe/Micro-CMS v2/images/14.png]]
+![[TryHackMe/Hacker101 CTF2/images/14.png]]
 
 
 ### Solution 1: THC Hydra to Bruteforce
@@ -149,7 +149,7 @@ As you know if we try to authenticate as user that is not exist, it shows an err
 
 By using this payload, `Hydra` will alert us if it finds a result with error code different than `Unknown User`
 
-![[TryHackMe/Micro-CMS v2/images/15.png]]
+![[TryHackMe/Hacker101 CTF2/images/15.png]]
 
 YESSS ! ! !
 
@@ -165,27 +165,27 @@ Now we are ready to test against the same wordlist against `password` to find an
 
 Logic behind of the command is that If it cannot see any response consisting `Invalid password` then it will proceed to prompt on the terminal. This is what I would like to demonstrate by implying:
 
-![[TryHackMe/Micro-CMS v2/images/16.png]]
+![[TryHackMe/Hacker101 CTF2/images/16.png]]
 
 `rockyou` did not give me the password ,so I decided to move another `user:pass` combo on specialized in `hacker101CTF` from [github](https://raw.githubusercontent.com/ternera/hacker101-ctf/main/names.txt)
 
 As you can see both `rockyou` and `hacker101` wordlist contains the same username:
 
-![[TryHackMe/Micro-CMS v2/images/17.png]]
+![[TryHackMe/Hacker101 CTF2/images/17.png]]
 
 Now, I also captured the password ,but it was really tough to handle the entire bruteforce session. Approximately 10-15 minutes, it was trying to all the possible combinations.
 
-![[TryHackMe/Micro-CMS v2/images/18.png]]
+![[TryHackMe/Hacker101 CTF2/images/18.png]]
 
 ### Solution 2: Burpsuite Bruteforce Operation to Compromise Password
 
-![[TryHackMe/Micro-CMS v2/images/19.png]]
+![[TryHackMe/Hacker101 CTF2/images/19.png]]
 
 If you want, you can also achieve the `username` finding bruteforce operation with `Burp's` `Payload Processing` category in Payloads.
 
 Reach out the FLAG from login panel. Providing valid user:pass redirects the flag page:
 
-![[TryHackMe/Micro-CMS v2/images/21.png]]
+![[TryHackMe/Hacker101 CTF2/images/21.png]]
 
 
 May The Pentest Be With You ! ! !
