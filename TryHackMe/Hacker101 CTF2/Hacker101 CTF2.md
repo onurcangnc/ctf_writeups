@@ -67,4 +67,5 @@ Traceback (most recent call last):
 ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''''' at line 1")
 ```
 
+As I understood, there was a DB error occured by the payload that I have used by applying `'`.
 
