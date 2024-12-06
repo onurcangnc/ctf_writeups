@@ -19,3 +19,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 - [[Hacker101 CTF]]: Description of the CTF challenge.
 >>>>>>> 47152c908418836f1041d0569288461fca6a860b
 - [[Hacker101 CTF2]]: Description of the CTF challenge.
+- [[Encrypted Pastebin]]: Description of the CTF challenge.
