@@ -67,3 +67,38 @@ Do not consider about this payload because it is applying deserialization.
 
 Most probably, `decryptLink()` method trying to decrypt the `postCt` coming from different section of the application. Plus, it initiates to `UTF8` decoding operation. Raising `PaddingException()`. Therefore, it is suitable to search for PaddingException thing and json conversion category:
 
+Since I got successfully crash the target, I will try all the alphabet against the application.
+
+Results:
+
+![[TryHackMe/Encrypted Pastebin/images/6.png]]
+
+It is clear that there are also matching values specifically `upper case letters`.  This means that what if I match different character set on entire encrypted thing. Since it will be complex, I decided to search for this especially the `PaddingException`.  
+
+After couple of hours, there was a page indicating `padding oracle attack vector`. Therefore, I decided to implement this approach presented on the page.
+
+[Padding Attack](https://www.nccgroup.com/us/research-blog/cryptopals-exploiting-cbc-padding-oracles/)
+
+On this page there was a python script that handles the cryptographic operations. However, our application running on web ,so I immediately customize the script:
+
+**Detect Padding Exceptions**
+
+import requests
+
+def oracle(iv, ct):
+    response = requests.post("https://989aa4da0cc7149eddb8b848a4369ee0.ctf.hacker101.com/?post=RHAgDiavHF5VVy-uR0bdS6HxTnZ66adcSVL0EMr5Sr24JdHjNOcJcvexjeQB86GtGUeHyk4iqVjHSxGfjQAh3wkvleSkARGJEHbNit23mKmA15LJm-C0XDD2GXJUg-BRXuBM3zTRam4GzI4ptKVk7ryUEZkcQHvEEdxso6GVR9XSDb92Q7JSZOpmbhtnr4vbmCvgHvg085r5mOnXtGkoGb~~", data={"iv": iv, "ct": ct})
+    if "PaddingException" in response.text:
+        return False
+    return True
+
+
+,but I could not successfully handle the script. Instead, I found the logic behind the algorithm then found a script against specifically for this implementation.
+
+![[TryHackMe/Encrypted Pastebin/images/7.png]]
+
+Special characters (`~`, `!`, `-`) are replaced to form a standard Base64 string. However, this might not fully fix the string's formatting issues.
+
+`b64d = lambda x: base64.decodestring(x.replace('~', '=').replace('!', '/').replace('-', '+'))`
+
+
+
