@@ -1,0 +1,107 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hello everyone, today I would like to share my insights on <code>hard</code> level challenge called <code>Encrypted Pastebin</code> from <code>Hacker101</code> platform.</p>
+
+<h2>First Flag</h2>
+
+<p>Manipulating <code>HTTP</code> requests is sometimes beneficial especially when we do not detect anything on the <code>web application</code> surface. For the first solution, you can either use <code>browser</code> or <code>Burpsuite</code>.</p>
+
+<p>Except the encryption algorithm information, there was not anything like <code>XSS</code>, <code>Sensitive Data Exposure</code>, <code>IDOR</code> and so on. That's why, I directly analyzed the HTTP requests instead of regular vulnerabilities.</p>
+
+<p>It was interesting to see such an huge <code>POST</code> method variable in terms of its length. Instead of variable it seems like <code>HASH</code> or <code>Encryption</code> mechanism. </p>
+
+<p>Let's check:</p>
+
+<p>I initially send request with the <code>title</code> yilmaz and <code>textarea</code> as atilla.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>It might not be seem clearly ,so I also added it as code part:</p>
+
+<p><code>r9ZPjaTLJcw4Qv6mxb-6CRHRWOD8fTpCFrkBgR9j4c2L5n83CyI-dkTLPa8gFwCWedquvOIggDLWg8UIG48AaAzIYwYVW7UDKIP0VfCz4sLsQVhgigpoL9zW1JLVNp2bhnUG-hzRLy!ZHvtN5ooBTMcGjKGV!TbZkSu26WOkpOOqWENzJKpB2i-8DX5fQTNFhNTnR8evPZ4q1i5HUTsV7g~~</code></p>
+
+<p>I have never seen such thing like that. However, in the main page, application told that I was dealing with <code>AES128</code> military graded algorithm on the default path.</p>
+
+<p><img src="./images/2.PNG" alt="alt text" /></p>
+
+<p>Observe that the application protected by <code>AES128</code> ,so it was tough to bypass or access unrestricted endpoints, parts and so on... Meanwhile, I decided to play with the <code>?POST=</code> parameter to see the reaction of the application. Therefore, I replaced this huge encrypted parameter to <code>empty</code> string.</p>
+
+<p><code>https://989aa4da0cc7149eddb8b848a4369ee0.ctf.hacker101.com/?post=</code></p>
+
+<p>The application crashed and prompted a couple of error messages resembles as <code>python</code> compiler errors. </p>
+
+<p><img src="./images/3.PNG" alt="alt text" /></p>
+
+<p>Most probably application is using <code>flask</code> because of the application's hierarchy. For example, <code>main.py</code> running the default application and <code>common.py</code> is liable for the encryption program in the backend. We cannot still decide on framework ,but the highest prediction for the <code>Flask</code>.</p>
+
+<h2>Flag2</h2>
+
+<p>When I changed latest letter or any number (byte) application also crashed itself.</p>
+
+<p>For instance:</p>
+
+<p><code>/?post=MZCqr4PTxoZv2DjgD14ByzehPbeOfuqe1xtvVNOXDeQfA-J1Iy82t7I0kMkq7ksiZ3GhR-1!elskyRNNcAFlSMSpE8ZN7ozPIhxwUcUyGcSkb23!D8Rexldw8P!NvyJCAgAZBlGqL1PcIcdT0QaEIjC9t67S2pphrM9WKJKOdI0S9OJ5MU1QvjTz4fY7QD1fLAhE3wZ13PircDmfVBM1Ba~~</code></p>
+
+<p>I altered <code>w</code> to <code>a</code> in this scenario then I encountered application flaw:</p>
+
+<p><img src="./images/4.PNG" alt="alt text" /></p>
+
+<p>After that I noticed that post variable using such a conversion:</p>
+
+<p><code>post = json.loads(decryptLink(postCt).decode('utf8'))</code></p>
+
+<p>Trying a couple of variations might be useful to get other <code>types of error</code>:</p>
+
+<p>GOTCHA ! ! !</p>
+
+<p><img src="./images/5.PNG" alt="alt text" /></p>
+
+<p>When you try to exceed the length of the full encrypted deserialization operation, you also find flaw on the application:</p>
+
+<p>In my session, I tried <code>17 length</code> payload for $post string.</p>
+
+<p><code>MZCqr4PTxoZv2DjgD14ByzehPbeOfuqe1xtvVNOXDeQfA-J1Iy82t7I0kMkq7ksiZ3GhR-1!elskyRNNcAFlSMSpE8ZN7ozPIhxwUcUyGcSkb23!D8Rexldw8P!NvyJCAgAZBlGqL1PcIcdT0QaEIjC9t67S2pphrM9WKJKOdI0S9OJ5MU1QvjTz4fY7QD1fLAhE3wZ13PircDmfVBM1Baa~~</code></p>
+
+<p>Observe that I added second <code>a</code> letter to exceed payload length, needs to pass <code>16 length</code> in total.</p>
+
+<p>Do not consider about this payload because it is applying deserialization.</p>
+
+<p>Most probably, <code>decryptLink()</code> method trying to decrypt the <code>postCt</code> coming from different section of the application. Plus, it initiates to <code>UTF8</code> decoding operation. Raising <code>PaddingException()</code>. Therefore, it is suitable to search for PaddingException thing and json conversion category:</p>
+</body></html>
