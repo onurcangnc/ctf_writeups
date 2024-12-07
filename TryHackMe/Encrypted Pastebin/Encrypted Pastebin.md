@@ -136,6 +136,10 @@ Let me show you how to install & use it:
 
 First of all, in order to run the script without any errors, you should install required libraries provided by script. Even though all the libraries are built-in in `Python`, `requests` library needs to further installation. You can select `virtualization method` or `direct installation`. Direct installation means that it will be always in your OS's default library lists.
 
+If you want to check all the `built-in` libraries & understand the external modules check the manual:
+
+[Python Standard Library Manual](https://docs.python.org/3/library/index.html)
+
 I highly recommend you to use `virtualization` since by virtualizing the `environment`, entire packages will be temporarily stored on the virtual environment. Furthermore, if you encounter any issues when you decide on install as `system environment`, it may lead to complex issues regarding to kernel.
 
 ### Install virtual environment & install dependencies (libraries) & Usage
