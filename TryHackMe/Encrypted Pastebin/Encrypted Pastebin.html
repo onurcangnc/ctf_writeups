@@ -136,4 +136,65 @@
 <p>Special characters (<code>~</code>, <code>!</code>, <code>-</code>) are replaced to form a standard Base64 string. However, this might not fully fix the string's formatting issues.</p>
 
 <p><code>b64d = lambda x: base64.decodestring(x.replace('~', '=').replace('!', '/').replace('-', '+'))</code></p>
+
+<p>I found a customized script, useful to solve this question on github:</p>
+
+<p><a href="https://github.com/richardevcom/padding-oracle-attack">Padding Oracle Attack</a></p>
+
+<p>When you run the script it will ask many libraries including <code>base64</code> and <code>requests</code>. You can easily create <code>virtual environment</code> to make your script for one time usage then delete the virtual environment:</p>
+
+<p><code>python -m venv venv</code></p>
+
+<h3>Install dependencies</h3>
+
+<p><code>pip install requests</code></p>
+
+<p>Since <code>base64</code> is a built in library, you do not need to install it.</p>
+
+<p>After I configured successfully and waited for almost 1-2 hours. I got the result on the prompt.</p>
+
+<h2>NOTE:</h2>
+
+<p>The script tries to <code>byte-to-byte</code> fuzzing ,so it may take long time to achieve the operation. Furthermore, due to the <code>HTTP</code> request's latency it also demand great network to complete the operation.</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p><strong>Notice</strong>: it was the first flag ,so we have to find other ways to achieve flag 2.</p>
+
+<p>After my couple of scripting attempts, finally, I discovered a script, automatically captures all the flags on the machine. Except the 1-2 flags, I successfully compromised others through the help of GitHub script.</p>
+
+<p>You can reach out the script from here:</p>
+
+<p><a href="https://github.com/eggburg/hacker101_CTF_Encrypted_Pastebin">hacker101<em>CTF</em>Encrypted_Pastebin</a></p>
+
+<p>With the help of the script, you can get ALL THE FLAGS located on the target.</p>
+
+<p>Let me show you how to install &amp; use it:</p>
+
+<p>First of all, in order to run the script without any errors, you should install required libraries provided by script. Even though all the libraries are built-in in <code>Python</code>, <code>requests</code> library needs to further installation. You can select <code>virtualization method</code> or <code>direct installation</code>. Direct installation means that it will be always in your OS's default library lists.</p>
+
+<p>I highly recommend you to use <code>virtualization</code> since by virtualizing the <code>environment</code>, entire packages will be temporarily stored on the virtual environment. Furthermore, if you encounter any issues when you decide on install as <code>system environment</code>, it may lead to complex issues regarding to kernel.</p>
+
+<h3>Install virtual environment &amp; install dependencies (libraries) &amp; Usage</h3>
+
+<p>1)  Create Virtual Environment
+    <code>python -m ven venv</code></p>
+
+<p>2) Install Dependencies
+    <code>pip install requests</code></p>
+
+<p>3) Learn The Execution Pattern of The Script
+     Direct run is possible or you can benefit from the resource where you get the script. Plus source code will aid you to usage of the script.
+    <code>python3 [URL_GENERATED_BY_INSTANCE]</code></p>
+
+<p>4) Run The Script as Expected
+    <code>python3 main.py https://cc450d760a660e1501472eaeff18bd61.ctf.hacker101.com/?post=Z0IN4LiHWayAwfq!zr0iPjKhpisFhYTIxFfONv9QD3!NTcIsK9!AkvuDDXJ1dK16gCIcKlfTAdu9QVfywNhohVlfgAypc2NukcPxSh!ZRU1bQ1KSd9h5NzKDYXDWIAvfB4Qmur6PycD-UMh1pCSgNWnLk2nPgzMKx5O6NEZvTjgAtxhxNaa28eTZog2jIHABKq7rEl2Qx4pr4OR4csaEaA~~</code></p>
+
+<p>5) Press Enter (fire) ! ! !</p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p>After you run the scripts, you should check whether it executed itself as expected or not by using the <a href="https://github.com/eggburg/hacker101_CTF_Encrypted_Pastebin">source</a> of the script.</p>
+
+<p>May The Pentest Be With You ! ! !</p>
 </body></html>

@@ -101,4 +101,63 @@ Special characters (`~`, `!`, `-`) are replaced to form a standard Base64 string
 `b64d = lambda x: base64.decodestring(x.replace('~', '=').replace('!', '/').replace('-', '+'))`
 
 
+I found a customized script, useful to solve this question on github:
 
+[Padding Oracle Attack](https://github.com/richardevcom/padding-oracle-attack)
+
+When you run the script it will ask many libraries including `base64` and `requests`. You can easily create `virtual environment` to make your script for one time usage then delete the virtual environment:
+
+`python -m venv venv`
+
+### Install dependencies
+
+`pip install requests`
+
+Since `base64` is a built in library, you do not need to install it.
+
+After I configured successfully and waited for almost 1-2 hours. I got the result on the prompt.
+
+## NOTE:
+The script tries to `byte-to-byte` fuzzing ,so it may take long time to achieve the operation. Furthermore, due to the `HTTP` request's latency it also demand great network to complete the operation.
+
+![[TryHackMe/Encrypted Pastebin/images/8.png]]
+
+**Notice**: it was the first flag ,so we have to find other ways to achieve flag 2.
+
+After my couple of scripting attempts, finally, I discovered a script, automatically captures all the flags on the machine. Except the 1-2 flags, I successfully compromised others through the help of GitHub script.
+
+You can reach out the script from here:
+
+[hacker101_CTF_Encrypted_Pastebin](https://github.com/eggburg/hacker101_CTF_Encrypted_Pastebin)
+
+With the help of the script, you can get ALL THE FLAGS located on the target.
+
+Let me show you how to install & use it:
+
+First of all, in order to run the script without any errors, you should install required libraries provided by script. Even though all the libraries are built-in in `Python`, `requests` library needs to further installation. You can select `virtualization method` or `direct installation`. Direct installation means that it will be always in your OS's default library lists.
+
+I highly recommend you to use `virtualization` since by virtualizing the `environment`, entire packages will be temporarily stored on the virtual environment. Furthermore, if you encounter any issues when you decide on install as `system environment`, it may lead to complex issues regarding to kernel.
+
+### Install virtual environment & install dependencies (libraries) & Usage
+
+1)  Create Virtual Environment
+	`python -m ven venv`
+	
+2) Install Dependencies
+	`pip install requests`
+
+3) Learn The Execution Pattern of The Script
+	 Direct run is possible or you can benefit from the resource where you get the script. Plus source code will aid you to usage of the script.
+	`python3 [URL_GENERATED_BY_INSTANCE]`
+	
+4) Run The Script as Expected
+	`python3 main.py https://cc450d760a660e1501472eaeff18bd61.ctf.hacker101.com/?post=Z0IN4LiHWayAwfq!zr0iPjKhpisFhYTIxFfONv9QD3!NTcIsK9!AkvuDDXJ1dK16gCIcKlfTAdu9QVfywNhohVlfgAypc2NukcPxSh!ZRU1bQ1KSd9h5NzKDYXDWIAvfB4Qmur6PycD-UMh1pCSgNWnLk2nPgzMKx5O6NEZvTjgAtxhxNaa28eTZog2jIHABKq7rEl2Qx4pr4OR4csaEaA~~`
+
+5) Press Enter (fire) ! ! !
+
+![[TryHackMe/Encrypted Pastebin/images/9.png]]
+
+After you run the scripts, you should check whether it executed itself as expected or not by using the [source](https://github.com/eggburg/hacker101_CTF_Encrypted_Pastebin) of the script.
+
+
+May The Pentest Be With You ! ! !
