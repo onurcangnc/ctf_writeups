@@ -1,0 +1,75 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone ! First of all, have a nice weekend. Today I am going to solve <code>Photo Gallery</code> challenge from <code>Hacker 101</code> platform. Before I start, as always I try to give insights on source code. There might be useful findings beforehand.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>As you can see above, we have source images with correlated paths <code>fetch?id=</code> parameter. Let's see what will occur if we change the parameter to invalid &amp; incremental ways.</p>
+
+<p>Since I saw the <code>Invisible</code> <code>&lt;br&gt;</code> element on the page, I decided to fuzz the <code>id</code> parameter to reveal anything related to the flag. However, it did not work.</p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p>Checking the running web app information always beneficial in most scenarios.</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>Meanwhile, I ran <code>steganograph</code> tool called <code>exiftool</code> against the cat images:</p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>Now, from my perspective, hidden data still inside the parameter in <code>fetch?id=3</code>.</p>
+
+<p>I tried to send <code>POST</code>, <code>DEBUG</code> methods rather than <code>GET</code> ,yet still it was restricted.</p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>I noticed that images rendered as binary file not their corresponding <code>Content-Type</code>, image.</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p><code>content-type</code> was <code>text/html</code> in this scenario ,but normally it has to be <code>image</code> instead of text/html because of the file type. It does not matter whether it is text/html or image on the rendering process. Hence, maybe as a last shot, I should also checked <code>SQLi</code> on <code>id</code> parameter. </p>
+
+<p>I initially ran <code>sqlmap</code> with the most basic attributes:</p>
+
+<p><code>sqlmap -u "https://1b8c95d2a8314425fe2ae8a3dedf3b3a.ctf.hacker101.com/fetch?id=1"</code></p>
+</body></html>
