@@ -1,0 +1,156 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Greetings everyone, hope you are well. Today I had the opportunity to  analyze <code>Archangel</code>, başmelek in Turkish from <code>TryHackMe</code> platform. </p>
+
+<p>Add your ip address to <code>hosts</code> file to make customizable domain. This is a local method to override <code>DNS resolution</code> and create your own domain mappings for testing, development, or other purposes.</p>
+
+<h3>Run commands respectively</h3>
+
+<ul>
+<li><code>nano /etc/hosts</code></li>
+<li><code>&lt;ipv4 address&gt; &lt;customized domain name&gt;</code></li>
+<li><code>Control S and X</code></li>
+</ul>
+
+<h3>Final Result:</h3>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<h2>Reconnaissance</h2>
+
+<p>The faster you conduct reconnaissance, the more time you gain for the <code>vulnerability detection</code> and <code>exploitation</code> phases. Cyber intelligence is always a significant asset in understanding the technology an application uses and its vulnerability scope.</p>
+
+<p>As penetration testers, we frequently seek to move directly to the vulnerability exploitation phase, but we should first gather information about the target, whether it involves application testing or local area network assessments. That's why I conducted a <code>curl</code> scan to identify HTTP ports <code>80</code>, <code>443</code>, and Apache <code>8080</code>. If further investigation is required, we should also perform a full-port scan. The technique I usually use is a demand-based approach, meaning we apply what is necessary based on the situation.</p>
+
+<p>Let's use <code>curl</code>:</p>
+
+<p><code>curl -v cuneyt.sevgi</code></p>
+
+<p>By default it will automatically move forward to port <code>80</code></p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p>There is nothing on other ports <code>443</code> and <code>8080</code>:</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>Port <code>80</code> successfully identified web page's <code>html</code> structure and prompted as terminal output. Let me first analyze the source code's comment part and manually investigate with browser.</p>
+
+<p>I saw an email address with domain <code>@mafialive.thm</code> as an internal information.</p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>After a couple of page discover attempts, there was nothing especially uniquely identifiable data on the page content. Nearly entire page consisting default configuration texts, source files and so on... </p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>Majority of the navigation elements redirected me to empty hyperlinks. Therefore, it would be suitable to <code>fuzzing</code> phase.</p>
+
+<p>I utilized couple of tools including <code>dirsearch</code>, <code>dirb</code>, <code>gobuster</code>.</p>
+
+<h3>Used Payloads:</h3>
+
+<ul>
+<li>dirsearch -u http://cuneyt.sevgi</li>
+<li>dirb http://cuneyt.sevgi</li>
+<li>gobuster dir http://cuneyt.sevgi -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt</li>
+</ul>
+
+<p>I deliberately ended the <code>gobuster</code> scan due to the length of wordlist. It also detected the paths included in both <code>dirseach</code> and <code>dirb</code>.</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p><code>dirb</code> and <code>gobuster</code> was trying to recursively fuzz the entire directory structures ,so I terminated the process.</p>
+
+<p>After I navigated through <code>/flags/</code> endpoint there was a file, redirected me to this page:</p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>There was not any clues about <code>flags</code>. Therefore, it was suitable to conduct port scan. Furthermore, you can reach out the <code>web server</code> version &amp; type.</p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>Wappalyzer result:</p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p>I conducted different port scans with below commands:</p>
+
+<p><code>sudo nmap -sV -T4 -p 20-1000 cuneyt.sevgi</code></p>
+
+<p><code>sudo nmap -sV -sC cuneyt.sevgi</code></p>
+
+<p><code>sudo nmap -T4 -A cuneyt.sevgi</code></p>
+
+<p>However, the results were not sufficient to move to the <code>exploitation</code> phase. There must be undiscovered content on the web application or a web-based vulnerability to gain a shell on the target. That's why I would like to move the content referred to a youtube video where I previously demonstrated techniques in the <code>fuzzing</code> phase.</p>
+
+<p><strong>Notice:</strong> I could not find anything technical part such as dynamic page rendering content or backend instance. Observe the answer format: <code>something.***</code>.</p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>After a long time, I was suspicious about the email and its domain. Although I tried different approach against target, I also wanted to add the given hostname <code>mafialive.thm</code>. Maybe there was another gate (web app or static page) for different <code>DNS resolution</code>. Technically, there was not anything since I applied main &amp; essential methodologies on the instance.</p>
+
+<p><strong>Immediately change &amp; refresh the page then result was different:</strong></p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>Let's check <code>test.php</code> and <code>robots.txt</code>.</p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>Contents of endpoints:</p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p><code>User-agent:</code> All bots (crawlers)
+<code>Disallow:</code> These bots cannot crawl this endpoint.</p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p>It looks like <code>file-inclusion</code> or <code>LFI/RFI</code>.</p>
+</body></html>
