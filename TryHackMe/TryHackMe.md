@@ -21,3 +21,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 - [[Hacker101 CTF2]]: Description of the CTF challenge.
 - [[Encrypted Pastebin]]: Description of the CTF challenge.
 - [[Photo Gallery]]: Description of the CTF challenge.
+- [[Archangel]]: Description of the CTF challenge.
