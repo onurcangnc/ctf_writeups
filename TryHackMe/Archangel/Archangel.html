@@ -152,5 +152,60 @@
 
 <p><img src="./images/18.png" alt="alt text" /></p>
 
-<p>It looks like <code>file-inclusion</code> or <code>LFI/RFI</code>.</p>
+<p>It looks like <code>LFI/RFI</code>.</p>
+
+<p>Full <code>URL</code> included form:</p>
+
+<p><code>http://mafialive.thm/test.php?view=/var/www/html/development_testing/mrrobot.php</code></p>
+
+<p>I tried to reach <code>etc/passwd</code> file in order to understand whether I have <code>LFI</code> or not. However, it did not work.</p>
+
+<p>payload that I used:</p>
+
+<p><code>../../../../../etc/passwd</code></p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>Maybe the page initiates a <code>filtering</code> or <code>blocking</code> mechanism on the payload. Therefore, I covered <code>HackTricks</code>
+about the <code>path/directory traversal</code> titled article. To understand how to bypass any restrictions. I have known this technique before since in Deloitte bootcamp, I specifically asked for <code>URL encoding</code> to make adaptable payload for target then immediately our instructor <code>Mücahit Ceri</code> told us that sometimes we cannot directly apply <code>LFI</code> instead we should find <code>wrapper</code> mechanism to pass filtering used by target application.</p>
+
+<p><a href="https://book.hacktricks.xyz/pentesting-web/file-inclusion">PHP Filter Bypass &amp; Wrappers</a></p>
+
+<p>Firstly, I attempted such payload as a fresh start:</p>
+
+<p><code>http://mafialive.thm/test.php?view=PhP://filter</code></p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>I used payload in a wrong way because it should be at the beginning of the endpoints ,but still it stucks then I switched on OWASP's guided <a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion">payload</a>:</p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p><code>php://filter/convert.base64-encode/resource=/etc/passwd</code></p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p>It did not work. After half an hour, I found a page where the payload adjusted as <code>php://filter/read=convert.base64-encode/resource=</code>.</p>
+
+<p><a href="https://forum.hackthebox.com/t/htb-academy-file-inclusion/286531">Adjusted payload resource</a></p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>I tried for <code>/etc/hosts</code> ,yet would not work. However, I kept the path as it is then it worked &amp; encoded <code>base64</code> formatted.</p>
+
+<p><img src="./images/24.png" alt="alt text" /></p>
+
+<p><code>http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/var/www/html/development_testing/mrrobot.php</code></p>
+
+<p>As you can see below, it gave us to the output of the <code>php</code> application called <code>mrrobot.php</code>.</p>
+
+<p><img src="./images/25.png" alt="alt text" /></p>
+
+<p>Null byte injection could be suitable ,but it did not work <code>%00</code>.</p>
+
+<p><code>http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/etc/passwd%00</code></p>
+
+<p><img src="./images/26.png" alt="alt text" /></p>
+
+<p>I have also retrieved <code>test.php</code> as an output xD (Does not necessary)</p>
 </body></html>
