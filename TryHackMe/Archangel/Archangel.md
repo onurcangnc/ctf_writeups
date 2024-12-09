@@ -114,11 +114,59 @@ Contents of endpoints:
 
 ![[TryHackMe/Archangel/images/18.png]]
 
-It looks like `file-inclusion` or `LFI/RFI`.
+It looks like `LFI/RFI`.
 
+Full `URL` included form:
 
+`http://mafialive.thm/test.php?view=/var/www/html/development_testing/mrrobot.php`
 
+I tried to reach `etc/passwd` file in order to understand whether I have `LFI` or not. However, it did not work.
 
+payload that I used:
 
+`../../../../../etc/passwd`
 
+![[TryHackMe/Archangel/images/19.png]]
 
+Maybe the page initiates a `filtering` or `blocking` mechanism on the payload. Therefore, I covered `HackTricks`
+about the `path/directory traversal` titled article. To understand how to bypass any restrictions. I have known this technique before since in Deloitte bootcamp, I specifically asked for `URL encoding` to make adaptable payload for target then immediately our instructor `Mücahit Ceri` told us that sometimes we cannot directly apply `LFI` instead we should find `wrapper` mechanism to pass filtering used by target application.
+
+[PHP Filter Bypass & Wrappers](https://book.hacktricks.xyz/pentesting-web/file-inclusion)
+
+Firstly, I attempted such payload as a fresh start:
+
+`http://mafialive.thm/test.php?view=PhP://filter`
+
+![[TryHackMe/Archangel/images/20.png]]
+
+I used payload in a wrong way because it should be at the beginning of the endpoints ,but still it stucks then I switched on OWASP's guided [payload](https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion):
+
+![[TryHackMe/Archangel/images/23.png]]
+
+`php://filter/convert.base64-encode/resource=/etc/passwd`
+
+![[TryHackMe/Archangel/images/21.png]]
+
+It did not work. After half an hour, I found a page where the payload adjusted as `php://filter/read=convert.base64-encode/resource=`.
+
+[Adjusted payload resource](https://forum.hackthebox.com/t/htb-academy-file-inclusion/286531)
+
+![[TryHackMe/Archangel/images/22.png]]
+
+I tried for `/etc/hosts` ,yet would not work. However, I kept the path as it is then it worked & encoded `base64` formatted.
+
+![[TryHackMe/Archangel/images/24.png]]
+
+`http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/var/www/html/development_testing/mrrobot.php`
+
+As you can see below, it gave us to the output of the `php` application called `mrrobot.php`.
+
+![[TryHackMe/Archangel/images/25.png]]
+
+Null byte injection could be suitable ,but it did not work `%00`.
+
+`http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/etc/passwd%00`
+
+![[TryHackMe/Archangel/images/26.png]]
+
+I have also retrieved `test.php` as an output xD (Does not necessary)
