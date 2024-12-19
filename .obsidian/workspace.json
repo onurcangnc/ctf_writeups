@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Archangel/Archangel.md",
+                "file": "TryHackMe/Photo Gallery/Photo Gallery.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Archangel"
+              "title": "Photo Gallery"
             }
           }
         ]
@@ -164,20 +164,21 @@
   },
   "active": "d0822147155eb69e",
   "lastOpenFiles": [
-    "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
-    "TryHackMe/Archangel/Archangel.md",
-    "TryHackMe/Archangel/images/52.png",
-    "TryHackMe/Archangel/images/51.png",
-    "TryHackMe/Archangel/images/50.png",
-    "TryHackMe/Archangel/images/49.png",
-    "TryHackMe/Archangel/images/48.png",
-    "TryHackMe/Archangel/images/47.png",
-    "TryHackMe/Archangel/images/46.png",
-    "TryHackMe/Archangel/images/45.png",
-    "TryHackMe/Archangel/images/44.png",
-    "TryHackMe/Archangel/images/43.png",
-    "TryHackMe/Archangel/Archangel.html",
+    "TryHackMe/Photo Gallery/images/34.png",
+    "TryHackMe/Photo Gallery/images/33.png",
+    "TryHackMe/Photo Gallery/images/32.png",
+    "TryHackMe/Photo Gallery/images/31.png",
+    "TryHackMe/Photo Gallery/images/30.png",
+    "Pasted image 20241220013530.png",
+    "TryHackMe/Photo Gallery/images/29.png",
+    "TryHackMe/Photo Gallery/images/28.png",
+    "TryHackMe/Photo Gallery/images/27.png",
+    "TryHackMe/Photo Gallery/images/26.png",
+    "TryHackMe/Photo Gallery/images/25.png",
     "TryHackMe/Photo Gallery/Photo Gallery.md",
+    "TryHackMe/Archangel/Archangel.md",
+    "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
+    "TryHackMe/Archangel/Archangel.html",
     "TryHackMe/Archangel/images",
     "TryHackMe/Archangel",
     "TryHackMe/Photo Gallery/Photo Gallery.html",
