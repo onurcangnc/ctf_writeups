@@ -11,10 +11,14 @@
             "id": "d263e15eb633c588",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "TryHackMe.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "TryHackMe"
             }
           }
         ]
@@ -89,6 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "TryHackMe.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -98,7 +103,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks"
+              "title": "Backlinks for TryHackMe"
             }
           },
           {
@@ -107,11 +112,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "TryHackMe.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from TryHackMe"
             }
           },
           {
@@ -133,10 +139,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Chocolate Factory.md"
+                "file": "TryHackMe.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of Chocolate Factory"
+              "title": "Outline of TryHackMe"
             }
           }
         ]
@@ -156,7 +162,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "bf992dc85335a56b",
+  "active": "d263e15eb633c588",
   "lastOpenFiles": [
     "Chocolate Factory.md"
   ]
