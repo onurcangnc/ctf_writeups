@@ -5,3 +5,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 
 ## Challenges List
 - [[Archangel]]: Description of the CTF challenge.
+- [[Mrrobot Writeup]]: Description of the CTF challenge.

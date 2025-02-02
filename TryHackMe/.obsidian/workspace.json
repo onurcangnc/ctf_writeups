@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe.md",
+                "file": "Mrrobot/Mrrobot Writeup.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "TryHackMe"
+              "title": "Mrrobot Writeup"
             }
           }
         ]
@@ -40,7 +40,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -164,6 +165,21 @@
   },
   "active": "d263e15eb633c588",
   "lastOpenFiles": [
+    "Mrrobot/Mrrobot Writeup.html",
+    "Mrrobot/images/38.png",
+    "Mrrobot/images/37.png",
+    "Mrrobot/images/36.png",
+    "Mrrobot/images/36.png",
+    "Mrrobot/images/35.png",
+    "Mrrobot/images/34.png",
+    "Mrrobot/images/33.png",
+    "Mrrobot/images/32.png",
+    "Mrrobot/images/31.png",
+    "Mrrobot/images/30.png",
+    "Mrrobot/Mrrobot Writeup.md",
+    "Mrrobot/images",
+    "TryHackMe.md",
+    "Mrrobot",
     "Chocolate Factory.md"
   ]
 }
