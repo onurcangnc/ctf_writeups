@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Mrrobot/Mrrobot Writeup.md",
+                "file": "Retro/Retro Writeup.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Mrrobot Writeup"
+              "title": "Retro Writeup"
             }
           }
         ]
@@ -163,20 +163,24 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d263e15eb633c588",
+  "active": "bf992dc85335a56b",
   "lastOpenFiles": [
-    "Mrrobot/Mrrobot Writeup.html",
-    "Mrrobot/images/38.png",
-    "Mrrobot/images/37.png",
-    "Mrrobot/images/36.png",
-    "Mrrobot/images/36.png",
-    "Mrrobot/images/35.png",
-    "Mrrobot/images/34.png",
-    "Mrrobot/images/33.png",
-    "Mrrobot/images/32.png",
-    "Mrrobot/images/31.png",
-    "Mrrobot/images/30.png",
+    "Retro/images/18.png",
+    "Retro/images/17.png",
+    "Retro/images/16.png",
+    "Retro/images/15.png",
+    "Retro/images/14.png",
+    "Retro/images/13.png",
+    "Retro/images/12.png",
+    "Retro/images/11.png",
+    "Retro/images/10.png",
+    "Retro/images/9.png",
+    "Retro/images/7.png",
+    "Retro/Retro Writeup.md",
+    "Retro/images",
+    "Retro",
     "Mrrobot/Mrrobot Writeup.md",
+    "Mrrobot/Mrrobot Writeup.html",
     "Mrrobot/images",
     "TryHackMe.md",
     "Mrrobot",
