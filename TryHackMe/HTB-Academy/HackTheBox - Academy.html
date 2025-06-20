@@ -1,0 +1,348 @@
+<html><head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+        background-color: #f4f4f4;
+    }
+    h1, h2, h3 {
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    p {
+        margin-bottom: 20px;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto 20px auto;
+    }
+    code {
+        background-color: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    pre {
+        background-color: #333;
+        color: #f8f8f2;
+        padding: 10px;
+        border-radius: 5px;
+        overflow-x: auto;
+    }
+</style>
+</head><body><p>Hi everyone, in this article I would like to analyze <code>Academy</code> from <code>HackTheBox</code> platform.</p>
+
+<p><img src="./images/1.png" alt="alt text" /></p>
+
+<p>Before I begin, let's attach our ip address to customized domain name -></p>
+
+<p><code>nano /etc/hosts</code></p>
+
+<p><img src="./images/2.png" alt="alt text" /></p>
+
+<h2>Reconnaissance</h2>
+
+<p>I wanted to conduct <code>nmap</code> scan &amp; <code>whatweb</code> enumeration seperately to identify whether there is application or not. Plus if there is application, I iterate the <code>whatweb</code> scan twice.</p>
+
+<p><strong>Full-Scope Faster Scan</strong>:
+<code>sudo nmap -sV -sC -T4 -p- academy.htb</code></p>
+
+<p><strong>Lightweight Version Scan</strong>:
+<code>sudo nmap -sV -Pn --script=vuln academy.htb</code></p>
+
+<p><strong>Rustscan</strong>:
+<code>rustscan -a academy.thm</code></p>
+
+<p>Duration was longer than I expected on <code>nmap</code> scans.</p>
+
+<p><img src="./images/3.png" alt="alt text" /></p>
+
+<p>Due to my VPN, <strong>EU VIP4</strong> I got high ping responses -></p>
+
+<p><img src="./images/4.png" alt="alt text" /></p>
+
+<p>Finally, I was ready to see <strong>port scan</strong> &amp; <strong>whatweb</strong> results -></p>
+
+<p><strong>Whatweb</strong> returned such result -></p>
+
+<p><img src="./images/11.png" alt="alt text" /></p>
+
+<p>We have application running on port <code>80</code> -></p>
+
+<p><img src="./images/5.png" alt="alt text" /></p>
+
+<p>Nmap results -></p>
+
+<p><img src="./images/6.png" alt="alt text" /></p>
+
+<p>I was able to retrieve juicy endpoints while <code>nmap</code> was conducting <code>NSE vuln</code> ->
+<img src="./images/7.png" alt="alt text" /></p>
+
+<p>Moreover, versions include a lot of CVE exploits on <strong>SSH</strong> and <strong>Apache 2.4.41</strong> according to scan results. Having direct endpoints via <code>HTTP enum</code> resulted in efficient time management.</p>
+
+<p>How to interact with <strong>HTTP</strong> on browsers ?</p>
+
+<p>As all you know, giving URI format is a daily basis method to interact with HTTP protocol -></p>
+
+<p><img src="./images/9.png" alt="alt text" /></p>
+
+<p>On the other hand, simply appending on last sequence to domain <code>:80</code> is also useful method -></p>
+
+<p><img src="./images/8.png" alt="alt text" /></p>
+
+<p>During the registration process to the web application, I was also conducting fuzzing on background -></p>
+
+<p><img src="./images/10.png" alt="alt text" /></p>
+
+<p>I used <strong>dirsearch</strong> + <strong>gobuster</strong> combination to pass fuzzing phase so as to examine each endpoint rapidly.</p>
+
+<p><strong>Dirsearch</strong> -></p>
+
+<p><img src="./images/12.png" alt="alt text" /></p>
+
+<p><strong>Gobuster</strong> -></p>
+
+<p><img src="./images/13.png" alt="alt text" /></p>
+
+<p>After a couple of attempts in the application, I did not get move further then I started to analyze every packet with <code>Burpsuite</code>.</p>
+
+<h2>Exploitation</h2>
+
+<p>There was a form retrieving username:password combination from user -></p>
+
+<p><img src="./images/14.png" alt="alt text" /></p>
+
+<p>After I created my first account, except the vulnerable <strong>SSH</strong> and <strong>Apache</strong> version, I did not see anything vulnerable on the application. Then I decided to register as normal user.</p>
+
+<p>When I capture the <code>POST</code> request, I detected a parameter called <strong>roleid=</strong>, most likely responsible for user privileges. -></p>
+
+<p><img src="./images/15.png" alt="alt text" /></p>
+
+<p>Moreover, I switched the parameter 0 to 1 -></p>
+
+<p><img src="./images/16.png" alt="alt text" /></p>
+
+<p>However, I was looking for cookie parameter in order to grant my privileges on the application. -></p>
+
+<p><img src="./images/17.png" alt="alt text" /></p>
+
+<p>After an admin user generation, I hesitately logged as admin on <code>admin.php</code> -></p>
+
+<p><img src="./images/18.png" alt="alt text" /></p>
+
+<p>It looks like I found a credentials then I preferred this on <code>SSH</code> as credentials -></p>
+
+<p><img src="./images/19.png" alt="alt text" /></p>
+
+<p>It was not possible to authenticate as user <code>cry0l1t3</code> -></p>
+
+<p><img src="./images/20.png" alt="alt text" /></p>
+
+<p>What's more, I found a domain that was working on staging environment ->
+<img src="./images/21.png" alt="alt text" /></p>
+
+<p>I also added it on my <code>/etc/hosts</code> file ->
+<img src="./images/22.png" alt="alt text" /></p>
+
+<p>Now, after I reached target domain, I encountered with a error output corresponding system sensitive php scripts and mysql database credentials -></p>
+
+<p><img src="./images/23.png" alt="alt text" /></p>
+
+<p>In addition to the these information disclosures, I discovered admin use of the server ->
+<img src="./images/24.png" alt="alt text" /></p>
+
+<p>Let's dump the <strong>administrator user credentials</strong> from DB &amp; start post exploitation phase:</p>
+
+<p>Using this juicy resource to understand how we can interact with mysql client ? -></p>
+
+<p>https://www.bytebase.com/reference/mysql/how-to/top-mysql-commands-with-examples/</p>
+
+<p>Due to my previous <code>rustscan</code> result, instead of using port number as <code>3306</code> I wanted to use <code>33060</code> -></p>
+
+<p><img src="./images/25.png" alt="alt text" /></p>
+
+<p>Although I successfuly put necessary credentials to mysql client, I was not able to connect DB -></p>
+
+<p><img src="./images/26.png" alt="alt text" /></p>
+
+<p>Then I asked <code>Laravel</code> to <code>searchsploit</code> to find useful vulnerabilities -></p>
+
+<p><img src="./images/29.png" alt="alt text" /></p>
+
+<p>I solely knew that application envionment app key was leaked ,so there should be a way to use it.</p>
+
+<p><code>dBLUaMuZz7Iq06XtL/Xnz/90Ejq+DEEynggqubHWFj0=</code></p>
+
+<p><code>Whatweb</code> could not get <code>PHP</code> version information or framework information. Besides, <code>Wappalyzer</code> also did not too. Therefore, I also used to retrieve version through <code>Burpsuite</code>. Moreover, Burpsuite could not find version number of PHP.</p>
+
+<p><img src="./images/27.png" alt="alt text" /></p>
+
+<p>I tried to authenticate DB ,yet it did not work. Finally, I googled the PHP + appkey combination -></p>
+
+<p><img src="./images/28.png" alt="alt text" /></p>
+
+<p>Gotcha  ! ! !</p>
+
+<h2>Automated Exploitation</h2>
+
+<p>Let's check PoC -></p>
+
+<p><code>cat /usr/share/exploitdb/exploits/linux/remote/47129.rb</code></p>
+
+<p>It looks like <code>Ruby</code> file, most common extension depicts a Metasploit Framework exploit. Then I deployed <code>msfconsole</code> -></p>
+
+<p><code>
+msfconsole
+search Laravel
+use 6
+</code></p>
+
+<p><img src="./images/31.png" alt="alt text" /></p>
+
+<p>then RUN:</p>
+
+<p><img src="./images/30.png" alt="alt text" /></p>
+
+<p>I wrongly set <code>APP_KEY</code> then removed base64 string from appkey. After that switched VHOST parameter as my virtual host <code>dev-staging-01.academy.htb</code>.
+then I got shell via Metasploit Framework.</p>
+
+<p><img src="./images/32.png" alt="alt text" /></p>
+
+<h2>Manual Exploitation</h2>
+
+<p>I wanted to use <code>manual exploitation</code> to force myself to prepare OSCP exam. On GitHub I found a manual exploit to get direct reverse shell -></p>
+
+<p>https://github.com/aljavier/exploit<em>laravel</em>cve-2018-15133</p>
+
+<p>Follow the steps that I provided so as to prepare exploit -></p>
+
+<p><img src="./images/33.png" alt="alt text" /></p>
+
+<p>Because of the recent updates made by OffSec, we were no longer use internal Python package management system. Therefore, I created virtual environment for the exploit -></p>
+
+<p><img src="./images/34.png" alt="alt text" /></p>
+
+<p>Once you run exploit, you will encounter an usage manual -></p>
+
+<p><img src="./images/35.png" alt="alt text" /></p>
+
+<p>I did not want to execute command instead I needed to get shell via exploit ,so I retrieved a command <code>--interactive</code> on the official GitHub page of exploit.</p>
+
+<p><img src="./images/36.png" alt="alt text" /></p>
+
+<p>Do not forget to give full URL -></p>
+
+<p><img src="./images/37.png" alt="alt text" /></p>
+
+<p>Now we got fully manual reverse shell via PoC exploit called <strong>exploit<em>laravel</em>cve-2018-15133</strong>.</p>
+
+<p>After I got shell, I started to manually enumerate server via sending consecutive commands -></p>
+
+<p><img src="./images/38.png" alt="alt text" /></p>
+
+<p>Then I discovered sensitive files. That's why, let's check what kind of information that includes ?</p>
+
+<p>Observe that I prompted the same file, where debugger renders on browser -></p>
+
+<p><img src="./images/39.png" alt="alt text" /></p>
+
+<p>I want to keep forward to binary exploitation whether it is possible or not. Hence, <code>linepas</code> would be suitable -></p>
+
+<p>https://github.com/peass-ng/PEASS-ng/releases/tag/20250601-88c7a0f6</p>
+
+<p>Deploy a <code>python web server</code> to transfer <code>linpeas</code> to target -></p>
+
+<p><img src="./images/40.png" alt="alt text" /></p>
+
+<p>It is clear that we have both <code>python3</code> and <code>curl</code> as binary in target server ->
+<img src="./images/41.png" alt="alt text" /></p>
+
+<p>Check for how to download files via <code>curl</code>:</p>
+
+<p>https://www.digitalocean.com/community/tutorials/workflow-downloading-files-curl</p>
+
+<p>I was not able to send it to the target. Let me try binary exploitation via python3 -></p>
+
+<p>Again it did not work at all.</p>
+
+<p><img src="./images/42.png" alt="alt text" /></p>
+
+<p>Try manually read file paths repetitievly -></p>
+
+<p><code>
+cd ..; ls -al
+cd ../..; ls -al
+cd ../../academy; ls -al
+cd ../../academy; cat .env
+</code></p>
+
+<p>After this combination I found another application including different DB user:pass variation -></p>
+
+<p><img src="./images/43.png" alt="alt text" /></p>
+
+<p>Attempt authentication via <strong>mysql</strong> ->
+<img src="./images/44.png" alt="alt text" /></p>
+
+<p>It did not work ,but let me try also <code>SSH</code>:</p>
+
+<p>Bingo ! ! !</p>
+
+<p>Fuzzing approach worked for <code>cy0l1t3</code> user :)</p>
+
+<p><img src="./images/45.png" alt="alt text" /></p>
+
+<p>Capture <code>user.txt</code> flag from <code>/home/cry0l1t3</code> directory -></p>
+
+<p><img src="./images/46.png" alt="alt text" /></p>
+
+<p>Generally, you can use <code>temp</code> folder to run &amp; build script because most of the time this directory has privileges to do such tasks. That's why, I moved <code>tmp</code> folder then sent <code>linpeas.sh</code> -></p>
+
+<p><img src="./images/47.png" alt="alt text" /></p>
+
+<p>Wait for the <code>linpeas.sh</code> task to complete it enumerates all the kernel + OS ->
+<img src="./images/48.png" alt="alt text" /></p>
+
+<p>Kernel PoC exploit's occurence can be seen as below ->
+<img src="./images/49.png" alt="alt text" /></p>
+
+<p>I tried and abuse <code>Polkit</code> exploit ,yet it did not work on my instance -></p>
+
+<p><img src="./images/50.png" alt="alt text" /></p>
+
+<p>After further investigations, I discovered a credential looks like <code>mrb3n</code> user's credentials -></p>
+
+<p><img src="./images/51.png" alt="alt text" /></p>
+
+<p><strong>Cyberchef</strong> successfully identified the type of the data -></p>
+
+<p><img src="./images/52.png" alt="alt text" /></p>
+
+<p>YESS ! ! ! It worked.</p>
+
+<p><img src="./images/53.png" alt="alt text" /></p>
+
+<p>user <code>mrb3n</code> can run composer binary -></p>
+
+<p><img src="./images/54.png" alt="alt text" /></p>
+
+<p>Let's check <code>gftobins</code> -></p>
+
+<p><img src="./images/55.png" alt="alt text" /></p>
+
+<p><code>Composer binary exploitation</code> method worked clearly ! ! !</p>
+
+<p><img src="./images/56.png" alt="alt text" /></p>
+
+<p>Get <code>root.txt</code> flag from simply from <code>/root/</code> directory -></p>
+
+<p><code>cat /root/root.txt</code></p>
+
+<p><img src="./images/57.png" alt="alt text" /></p>
+</body></html>
