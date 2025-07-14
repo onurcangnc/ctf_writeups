@@ -8,3 +8,4 @@ Detailed write-ups of Capture the Flag (CTF) challenges I have solved. Each writ
 - [[Mrrobot Writeup]]: Description of the CTF challenge.
 - [[Retro Writeup]]: Description of the CTF challenge.
 - [[HackTheBox - Academy]]: Description of the CTF challenge.
+- [[HackTheBox - Access]]: Description of the CTF challenge.
