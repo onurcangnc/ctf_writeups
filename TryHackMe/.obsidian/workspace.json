@@ -11,14 +11,12 @@
             "id": "976351d0466fa4a8",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "HTB-Academy/HackTheBox - Academy.md",
-                "mode": "source",
-                "source": false
+                "file": "HTB-Academy/images/57.png"
               },
-              "icon": "lucide-file",
-              "title": "HackTheBox - Academy"
+              "icon": "lucide-image",
+              "title": "57"
             }
           }
         ]
@@ -162,8 +160,9 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "bf992dc85335a56b",
+  "active": "976351d0466fa4a8",
   "lastOpenFiles": [
+    "HTB-Academy/HackTheBox - Academy.md",
     "Retro/images/Retro Writeup.html",
     "HTB-Academy/HackTheBox - Academy.html",
     "HTB-Academy/images/57.png",
@@ -172,7 +171,6 @@
     "HTB-Academy/images/54.png",
     "HTB-Academy/images/53.png",
     "HTB-Academy/images/52.png",
-    "HTB-Academy/HackTheBox - Academy.md",
     "HTB-Academy/images/51.png",
     "HTB-Academy/images/50.png",
     "HTB-Academy/images/49.png",
