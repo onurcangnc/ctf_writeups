@@ -18,8 +18,21 @@
               "icon": "lucide-image",
               "title": "57"
             }
+          },
+          {
+            "id": "1ee5bfde58eaad1f",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.8.10"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.8.10"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -38,7 +51,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -160,7 +174,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "976351d0466fa4a8",
+  "active": "1ee5bfde58eaad1f",
   "lastOpenFiles": [
     "HTB-Academy/HackTheBox - Academy.md",
     "Retro/images/Retro Writeup.html",
