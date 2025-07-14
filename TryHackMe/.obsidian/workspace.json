@@ -4,35 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "2ec4c820a6be4ba9",
+        "id": "c8df1e1f6f27a33d",
         "type": "tabs",
         "children": [
           {
-            "id": "976351d0466fa4a8",
+            "id": "ddb5b46fe32e1c39",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "HTB-Academy/images/57.png"
+                "file": "HTB-Access/HackTheBox - Access.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "57"
-            }
-          },
-          {
-            "id": "1ee5bfde58eaad1f",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.8.10"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.8.10"
+              "icon": "lucide-file",
+              "title": "HackTheBox - Access"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -174,21 +163,25 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "1ee5bfde58eaad1f",
+  "active": "ddb5b46fe32e1c39",
   "lastOpenFiles": [
+    "HTB-Access/HackTheBox - Access.html",
+    "HTB-Access/images/47.png",
+    "47.png",
+    "HTB-Access/images/46.png",
+    "HTB-Access/images/45.png",
+    "HTB-Access/images/44.png",
+    "HTB-Access/images/43.png",
+    "Pasted image 20250715022815.png",
+    "Pasted image 20250715023522.png",
+    "HTB-Access/HackTheBox - Access.md",
+    "Pasted image 20250715022733.png",
+    "Pasted image 20250715022731.png",
     "HTB-Academy/HackTheBox - Academy.md",
+    "HTB-Access/images",
+    "HTB-Access",
     "Retro/images/Retro Writeup.html",
     "HTB-Academy/HackTheBox - Academy.html",
-    "HTB-Academy/images/57.png",
-    "HTB-Academy/images/56.png",
-    "HTB-Academy/images/55.png",
-    "HTB-Academy/images/54.png",
-    "HTB-Academy/images/53.png",
-    "HTB-Academy/images/52.png",
-    "HTB-Academy/images/51.png",
-    "HTB-Academy/images/50.png",
-    "HTB-Academy/images/49.png",
-    "HTB-Academy/images/48.png",
     "Retro/images/Retro Writeup.md",
     "TryHackMe.md",
     "HTB-Academy/images",
@@ -198,7 +191,6 @@
     "Mrrobot/Mrrobot Writeup.md",
     "Mrrobot/Mrrobot Writeup.html",
     "Mrrobot/images",
-    "Mrrobot",
     "Chocolate Factory.md"
   ]
 }
