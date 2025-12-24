@@ -25,7 +25,7 @@ import yaml
 
 # ============== CONFIGURATION ==============
 # Environment variables override defaults
-MEDIUM_API_TOKEN = os.getenv('MEDIUM_TOKEN', "256a7521d3bad37c3748ccb785c1a6db2de6d58db88955b1aa4d8db321641a895")
+MEDIUM_API_TOKEN = os.getenv('MEDIUM_TOKEN', "")
 GITHUB_PAGES_URL = os.getenv('GITHUB_PAGES_URL', "https://onurcangnc.github.io/ctf_writeups")
 BASE_DIR = './TryHackMe'
 TRACKING_FILE = 'published_posts.json'

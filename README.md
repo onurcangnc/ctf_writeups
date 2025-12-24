@@ -60,7 +60,7 @@ GitHub repo → Settings → Secrets and variables → Actions → New repositor
 
 ```
 Name: MEDIUM_TOKEN
-Value: 256a7521d3bad37c3748ccb785c1a6db2de6d58db88955b1aa4d8db321641a895
+Value: your_medium_integration_token_here
 ```
 
 ## Kullanım
@@ -147,7 +147,7 @@ CTF Writeups - Medium Publisher v2.0
 ==================================================
 
 Medium API'ye bağlanılıyor...
-Bağlandı: User ID = 1b073698e93a68dc8435e7a51e579bcd853436639baf3f8e26350d68bf645464a
+Bağlandı: User ID = 1b073698e93a... (gizlendi)
 
 1 adet publishable yazı bulundu:
   [YENİ] Test
