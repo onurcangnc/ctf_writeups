@@ -1,38 +1,35 @@
-# Obsidian to Medium Publisher
+# CTF Writeups - GitHub Pages Publisher
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-automated-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-> **Obsidian** yazılarınızı otomatik olarak **Medium** draft'larına dönüştürün. CTF writeup'ları, blog yazıları, notlarınızı tek bir komutla yayınlayın.
+> **Obsidian** yazılarınızı otomatik olarak **GitHub Pages**'te yayınlayın. CTF writeup'ları, blog yazıları, notlarınızı tek push ile yayınlayın.
 
 ## Özellikler
 
-- **Frontmatter ile seçici publishing** - Sadece istediğiniz yazıları yayınlayın
-- **Takip mekanizması** - Aynı içeriği tekrar göndermez, değişiklikleri algılar
-- **Obsidian resim link desteği** - `![[resim.png]]` formatını otomatik dönüştürür
-- **GitHub Actions entegrasyonu** - Push yapın, otomatik Medium draft oluştursun
-- **GitHub Pages deploy** - Statik site olarak da yayınlayın
-- **Interaktif CLI** - Değişikliklerde onay ister
+- **Otomatik Markdown → HTML** - Push yapın, HTML otomatik oluşturulsun
+- **Dinamik index.html** - Yeni writeup'lar otomatik listelenir
+- **Obsidian resim link desteği** - `![[resim.png]]` formatı çalışır
+- **GitHub Actions entegrasyonu** - Tam otomatik deploy
+- **GitHub Pages hosting** - Ücretsiz statik site
 
 ## Kullanım Alanları
 
 - **CTF Writeup'ları** - TryHackMe, HackTheBox çözümlerinizi dokümante edin
-- **Blog Yazarlığı** - Obsidian'da yazın, Medium'da yayınlayın
+- **Blog Yazarlığı** - Obsidian'da yazın, GitHub Pages'te yayınlayın
 - **Teknik Notlar** - Geliştirme notlarınızı paylaşın
-- **Akademik Yazılar** - Araştırma notlarınızı draft olarak saklayın
+- **Akademik Yazılar** - Araştırma notlarınızı yayınlayın
 
 ## Teknolojiler
 
 | Teknoloji | Kullanım Amacı |
 |-----------|----------------|
-| **Python 3.11+** | Ana scripting dili |
-| **PyYAML** | Frontmatter parsing |
-| **markdown2** | Markdown → HTML dönüşümü |
-| **requests** | Medium API iletişimi |
+| **Python 3.11+** | Markdown → HTML script |
+| **markdown2** | Markdown parsing |
 | **GitHub Actions** | CI/CD otomasyonu |
 | **GitHub Pages** | Statik site hosting |
-| **Obsidian** | Markdown editörü (client side) |
+| **Obsidian** | Markdown editörü |
 
 ## Kurulum
 
@@ -43,57 +40,39 @@ git clone https://github.com/onurcangnc/ctf_writeups.git
 cd ctf_writeups
 ```
 
-### 2. Python Bağımlılıkları
+### 2. GitHub Pages'i Aktifleştirin
 
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Medium Integration Token Alın
-
-1. [Medium Settings](https://medium.com/me/settings) → Integration Tokens
-2. "Get integration token" → İsim verin → Token'ı kopyalayın
-
-### 4. GitHub Secret Ekleyin
-
-GitHub repo → Settings → Secrets and variables → Actions → New repository secret
-
-```
-Name: MEDIUM_TOKEN
-Value: your_medium_integration_token_here
-```
+1. Repo → Settings → Pages
+2. Source: **GitHub Actions**
 
 ## Kullanım
 
-### Frontmatter Ekleyin
+### Yazı Yazın
 
-Obsidian'da yazınızın başına ekleyin:
+Obsidian'da `TryHackMe/ChallengeName/writeup.md` oluşturun:
 
-```yaml
----
-title: Makale Başlığı
-tags: [etiket1, etiket2, etiket3]
-publish-medium: true
----
+```markdown
+# CTF Challenge Name
+
+Walkthrough content...
+
+![[images/screenshot.png]]
 ```
 
-### Yerel Çalıştırma
+Resimleri `TryHackMe/ChallengeName/images/` klasörüne koyun.
 
-```bash
-python publish_to_medium.py
-```
-
-### Otomatik Mod (GitHub Actions)
+### Yayınlayın
 
 ```bash
 git add .
-git commit -m "Yeni yazı eklendi"
+git commit -m "Add new CTF writeup"
 git push
 ```
 
-Her push'ta otomatik olarak:
-1. ✅ GitHub Pages'e deploy
-2. ✅ Medium'a draft gönder
+**Bu kadar!** GitHub Actions otomatik olarak:
+1. ✅ Markdown'ı HTML'e çevirir
+2. ✅ index.html'i günceller
+3. ✅ GitHub Pages'e deploy eder
 
 ## Proje Yapısı
 
@@ -101,71 +80,39 @@ Her push'ta otomatik olarak:
 ctf_writeups/
 ├── .github/
 │   └── workflows/
-│       ├── deploy-and-update-index.yml  # GitHub Pages deploy
-│       └── publish_to_medium.yml         # Medium publish
+│       └── deploy.yml                    # Auto deploy workflow
 ├── TryHackMe/
 │   ├── ChallengeName/
-│   │   ├── writeup.md                   # Obsidian'da yazın
-│   │   └── images/                      # Resimler
+│   │   ├── writeup.md                    # Obsidian'da yazın
+│   │   └── images/                       # Resimler
 │   └── ...
-├── publish_to_medium.py                 # Ana script
-├── convert_md_to_html.py                # Markdown → HTML
-├── published_posts.json                 # Takip dosyası (auto)
-└── requirements.txt                     # Python bağımlılıkları
+├── convert_md_to_html.py                 # MD → HTML script
+└── index.html                            # Ana sayfa (auto)
 ```
 
-## Frontmatter Seçenekleri
+## Obsidian Resim Linkleri
 
-| Alan | Zorunlu | Açıklama |
-|------|---------|----------|
-| `title` | Hayır | Yazı başlığı (yoksa H1'den alınır) |
-| `tags` | Hayır | Medium tag'leri (max 5) |
-| `publish-medium` | **Evet** | `true` olanlar yayınlanır |
+Script Obsidian formatını otomatik dönüştürür:
 
-## Workflow'lar
+| Obsidian | HTML |
+|----------|------|
+| `![[images/1.png]]` | `<img src="./images/1.png">` |
 
-### 1. Deploy & Update Index
+## Workflow
 
-Her push'ta:
-- `TryHackMe/*/` altındaki `.html` dosyalarını bulur
-- `index.html`'i günceller
-- GitHub Pages'e deploy eder
+Her `push`'ta:
 
-### 2. Publish to Medium
-
-Her push'ta (`published_posts.json` hariç):
-- `publish-medium: true` olan `.md` dosyalarını bulur
-- Değişiklik kontrolü yapar
-- Medium'a draft gönderir
-- `published_posts.json`'i günceller
-
-## Örnek Çıktı
-
+```mermaid
+graph LR
+    A[Push] --> B[Convert MD to HTML]
+    B --> C[Update index.html]
+    C --> D[Commit HTML files]
+    D --> E[Deploy to Pages]
 ```
-==================================================
-CTF Writeups - Medium Publisher v2.0
-==================================================
 
-Medium API'ye bağlanılıyor...
-Bağlandı: User ID = 1b073698e93a... (gizlendi)
+## Live Demo
 
-1 adet publishable yazı bulundu:
-  [YENİ] Test
-
-1 yazı gönderilecek:
-  - Test
-
-Devam etmek istiyor musunuz? [y/N]: y
-==================================================
-Dizin: Test
-==================================================
-  İşleniyor: ---.md
-  ✓ SUCCESS: Draft oluşturuldu!
-     URL: https://medium.com/@user/c8df4f32003e
-==================================================
-Tamamlandı! 1/1 işlem başarılı.
-==================================================
-```
+👉 https://onurcangnc.github.io/ctf_writeups/
 
 ## Contributing
 
@@ -179,12 +126,6 @@ Tamamlandı! 1/1 işlem başarılı.
 
 MIT License - kendi projenizde özgürce kullanın.
 
-## Inspirations
-
-- [Obsidian](https://obsidian.md) - Powerful markdown editor
-- [Medium API](https://github.com/Medium/medium-api-docs) - Publishing platform
-- [GitHub Actions](https://github.com/features/actions) - CI/CD automation
-
 ---
 
-**Not:** Bu proje originally CTF writeup'ları için geliştirilmiştir ancak **herhangi bir Obsidian → Medium otomasyonu** için kullanılabilir.
+**Not:** Bu proje originally CTF writeup'ları için geliştirilmiştir ancak **herhangi bir Obsidian → GitHub Pages otomasyonu** için kullanılabilir.
