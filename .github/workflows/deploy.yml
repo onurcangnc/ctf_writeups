@@ -1,0 +1,85 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install markdown2
+
+    - name: Convert Markdown to HTML
+      run: |
+        python convert_md_to_html.py
+
+    - name: Generate index.html
+      run: |
+        echo "<!DOCTYPE html>" > index.html
+        echo "<html lang='en'>" >> index.html
+        echo "<head>" >> index.html
+        echo "    <meta charset='UTF-8'>" >> index.html
+        echo "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" >> index.html
+        echo "    <title>CTF Writeups</title>" >> index.html
+        echo "    <style>" >> index.html
+        echo "        body { font-family: Arial, sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }" >> index.html
+        echo "        .container { max-width: 800px; padding: 20px; margin: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); border-radius: 8px; text-align: center; }" >> index.html
+        echo "        h1 { color: #0367A6; font-size: 2.5em; margin-bottom: 20px; }" >> index.html
+        echo "        ul { list-style-type: none; padding: 0; }" >> index.html
+        echo "        ul li { margin: 40px 0; }" >> index.html
+        echo "        a { font-size: 1.2em; text-decoration: none; color: #0367A6; padding: 10px 20px; border: 2px solid #0367A6; border-radius: 5px; transition: background-color 0.3s, color 0.3s; }" >> index.html
+        echo "        a:hover { background-color: #0367A6; color: #fff; }" >> index.html
+        echo "    </style>" >> index.html
+        echo "</head>" >> index.html
+        echo "<body>" >> index.html
+        echo "    <div class='container'>" >> index.html
+        echo "        <h1>CTF Writeups</h1>" >> index.html
+        echo "        <ul>" >> index.html
+
+        for dir in TryHackMe/*/ ; do
+          html_file=$(find "$dir" -name '*.html' -print -quit)
+          if [ -n "$html_file" ]; then
+            dir_name=$(basename "$dir")
+            html_filename=$(basename "$html_file")
+            echo "        <li><a href='TryHackMe/$dir_name/$html_filename'>$dir_name Writeup</a></li>" >> index.html
+          fi
+        done
+
+        echo "        </ul>" >> index.html
+        echo "    </div>" >> index.html
+        echo "</body>" >> index.html
+        echo "</html>" >> index.html
+
+    - name: Commit HTML files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add TryHackMe/*/index.html TryHackMe/*/*.html
+        git add index.html
+
+        if git diff --cached --quiet; then
+          echo "No HTML changes to commit."
+        else
+          git commit -m "Update HTML files [skip ci]"
+          git push
+        fi
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./
