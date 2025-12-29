@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe/Photo Gallery/Photo Gallery.md",
+                "file": "TryHackMe.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Photo Gallery"
+              "title": "TryHackMe"
             }
           }
         ]
@@ -40,7 +40,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical"
+                "sortOrder": "alphabetical",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -154,6 +155,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -162,8 +164,27 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d0822147155eb69e",
+  "active": "be490efddf21fff0",
   "lastOpenFiles": [
+    "publish_to_medium.py.tmp.23976.1766545102552",
+    "README.md",
+    "README.md.tmp.23976.1766544215820",
+    "publish_to_medium.py.tmp.23976.1766543917841",
+    "published_posts.json",
+    "TryHackMe/Test/images/og.jpg",
+    "TryHackMe/Test/images",
+    "TryHackMe/TryHackMe.md",
+    "TryHackMe/Test/---.md",
+    "TryHackMe/Test/---.md.tmp.23976.1766543422861",
+    "TryHackMe/Archangel/Archangel.md.tmp.23976.1766543369736",
+    "TryHackMe/Archangel/Archangel.md.tmp.23976.1766543316114",
+    "venv/Lib/site-packages/requests-2.32.5.dist-info/licenses/LICENSE",
+    "venv/Lib/site-packages/requests-2.32.5.dist-info/WHEEL",
+    "venv/Lib/site-packages/requests-2.32.5.dist-info/top_level.txt",
+    "venv/Lib/site-packages/idna-3.11.dist-info/licenses/LICENSE.md",
+    "venv/Lib/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
+    "venv/Lib/site-packages/pip/_vendor/idna/LICENSE.md",
+    "TryHackMe.md",
     "TryHackMe/Photo Gallery/images/34.png",
     "TryHackMe/Photo Gallery/images/33.png",
     "TryHackMe/Photo Gallery/images/32.png",
@@ -173,29 +194,15 @@
     "TryHackMe/Photo Gallery/images/29.png",
     "TryHackMe/Photo Gallery/images/28.png",
     "TryHackMe/Photo Gallery/images/27.png",
-    "TryHackMe/Photo Gallery/images/26.png",
-    "TryHackMe/Photo Gallery/images/25.png",
     "TryHackMe/Photo Gallery/Photo Gallery.md",
     "TryHackMe/Archangel/Archangel.md",
     "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
-    "TryHackMe/Archangel/Archangel.html",
-    "TryHackMe/Archangel/images",
-    "TryHackMe/Archangel",
-    "TryHackMe/Photo Gallery/Photo Gallery.html",
-    "TryHackMe/Photo Gallery/images",
     "TryHackMe/Encrypted Pastebin/Encrypted Pastebin.md",
-    "TryHackMe/Photo Gallery",
-    "TryHackMe/Hacker101 CTF2/Micro-CMS v2.html",
-    "TryHackMe/Encrypted Pastebin/images",
-    "TryHackMe/Encrypted Pastebin/Encrypted Pastebin.html",
-    "TryHackMe/Encrypted Pastebin",
     "TryHackMe/Hacker101 CTF/Hacker101 CTF.md",
     "TryHackMe/Chill Hack/Chill Hack.md",
     "TryHackMe/Untitled.md",
     "TryHackMe/Chocolate Factory/Chocolate Factory.md",
-    "TryHackMe/TryHackMe.md",
     "TryHackMe/Wgel/Wgel WriteUp.md",
-    "TryHackMe.md",
     "TryHackMe/Thompson/Thompson.md",
     "TryHackMe/EasyPeasy/EasyPeasy.md",
     "TryHackMe/Lianyu/Lianyu.md",
@@ -204,9 +211,6 @@
     "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Blueprint/Blueprint.md",
     "TryHackMe/Kibana/Kibana.md",
-    "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md",
-    "Blueprint/Blueprint.md",
-    "TryHackMe/BlueprintMachine/Blueprint.md",
-    "output/Blueprint.md"
+    "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md"
   ]
 }
