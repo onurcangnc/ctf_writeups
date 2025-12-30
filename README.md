@@ -1,131 +1,160 @@
-# CTF Writeups - GitHub Pages Publisher
+# 📚 Knowledge Base - GitHub Pages Publisher
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-automated-green)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-> **Obsidian** yazılarınızı otomatik olarak **GitHub Pages**'te yayınlayın. CTF writeup'ları, blog yazıları, notlarınızı tek push ile yayınlayın.
+> **Obsidian** notlarınızı otomatik olarak modern, profesyonel bir **GitHub Pages** sitesine dönüştürün.
 
-## Özellikler
+## ✨ Özellikler
 
-- **Otomatik Markdown → HTML** - Push yapın, HTML otomatik oluşturulsun
-- **Dinamik index.html** - Yeni writeup'lar otomatik listelenir
-- **Obsidian resim link desteği** - `![[resim.png]]` formatı çalışır
-- **GitHub Actions entegrasyonu** - Tam otomatik deploy
-- **GitHub Pages hosting** - Ücretsiz statik site
+- 🎨 **Modern Cybersecurity Temalı Tasarım** - Dark mode, neon aksan renkler, terminal estetiği
+- 📁 **Çoklu Kategori Desteği** - CTF, CheatSheets, Notes, Research, Blog, Projects...
+- 🔄 **Tam Otomatik Deploy** - Push yapın, site güncellensin
+- 🖼️ **Obsidian Uyumlu** - `![[image.png]]` formatı otomatik çevrilir
+- 📱 **Responsive Tasarım** - Mobil ve masaüstü uyumlu
+- ⚡ **Hızlı & Hafif** - Vanilla CSS, framework yok
 
-## Kullanım Alanları
+## 🚀 Desteklenen Dizinler
 
-- **CTF Writeup'ları** - TryHackMe, HackTheBox çözümlerinizi dokümante edin
-- **Blog Yazarlığı** - Obsidian'da yazın, GitHub Pages'te yayınlayın
-- **Teknik Notlar** - Geliştirme notlarınızı paylaşın
-- **Akademik Yazılar** - Araştırma notlarınızı yayınlayın
+Script aşağıdaki dizinleri otomatik tarar:
 
-## Teknolojiler
+| Dizin | Açıklama |
+|-------|----------|
+| `TryHackMe/` | TryHackMe CTF writeup'ları |
+| `HackTheBox/` | HackTheBox machine writeup'ları |
+| `CheatSheets/` | Hızlı referans kılavuzları |
+| `Notes/` | Teknik notlar |
+| `Research/` | Güvenlik araştırmaları |
+| `Blog/` | Blog yazıları |
+| `Projects/` | Proje dokümantasyonları |
+| `Writeups/` | Genel CTF writeup'ları |
 
-| Teknoloji | Kullanım Amacı |
-|-----------|----------------|
-| **Python 3.11+** | Markdown → HTML script |
-| **markdown2** | Markdown parsing |
-| **GitHub Actions** | CI/CD otomasyonu |
-| **GitHub Pages** | Statik site hosting |
-| **Obsidian** | Markdown editörü |
+## 📂 Proje Yapısı
 
-## Kurulum
+```
+knowledge-base/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # GitHub Actions workflow
+├── TryHackMe/
+│   └── MachineName/
+│       ├── writeup.md          # Obsidian'da yazın
+│       └── images/             # Ekran görüntüleri
+├── CheatSheets/
+│   └── topic.md
+├── Notes/
+│   └── subject.md
+├── convert_md_to_html.py       # Ana converter script
+├── requirements.txt
+└── README.md
+```
 
-### 1. Depoyu Klonlayın
+## 🛠️ Kurulum
+
+### 1. Repo'yu Klonlayın
 
 ```bash
 git clone https://github.com/onurcangnc/ctf_writeups.git
 cd ctf_writeups
 ```
 
-### 2. GitHub Pages'i Aktifleştirin
+### 2. GitHub Pages Aktifleştirin
 
-1. Repo → Settings → Pages
+1. Repository → Settings → Pages
 2. Source: **GitHub Actions**
 
-## Kullanım
+### 3. Yeni Klasör Ekleyin (Opsiyonel)
 
-### Yazı Yazın
+`convert_md_to_html.py` içindeki `CONFIG` bölümüne yeni dizin ekleyin:
 
-Obsidian'da `TryHackMe/ChallengeName/writeup.md` oluşturun:
-
-```markdown
-# CTF Challenge Name
-
-Walkthrough content...
-
-![[images/screenshot.png]]
+```python
+CONFIG = {
+    "base_dirs": [
+        "TryHackMe",
+        "HackTheBox",
+        "CheatSheets",
+        "YeniKlasorAdi",  # Buraya ekleyin
+        ...
+    ],
+    ...
+}
 ```
 
-Resimleri `TryHackMe/ChallengeName/images/` klasörüne koyun.
+## 📝 Kullanım
 
-### Yayınlayın
+### Obsidian'da Yazın
+
+```markdown
+# CTF Machine Name
+
+## Reconnaissance
+
+Nmap scan results...
+
+![[images/nmap.png]]
+
+## Exploitation
+
+Found vulnerability in...
+```
+
+### Push Yapın
 
 ```bash
 git add .
-git commit -m "Add new CTF writeup"
+git commit -m "Add new writeup"
 git push
 ```
 
-**Bu kadar!** GitHub Actions otomatik olarak:
-1. ✅ Markdown'ı HTML'e çevirir
-2. ✅ index.html'i günceller
-3. ✅ GitHub Pages'e deploy eder
+**Otomatik olarak:**
+1. ✅ Tüm `.md` dosyaları HTML'e çevrilir
+2. ✅ Modern index sayfası oluşturulur
+3. ✅ GitHub Pages'e deploy edilir
 
-## Proje Yapısı
+## 🎨 Tasarım Özellikleri
 
-```
-ctf_writeups/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml                    # Auto deploy workflow
-├── TryHackMe/
-│   ├── ChallengeName/
-│   │   ├── writeup.md                    # Obsidian'da yazın
-│   │   └── images/                       # Resimler
-│   └── ...
-├── convert_md_to_html.py                 # MD → HTML script
-└── index.html                            # Ana sayfa (auto)
-```
+- **Dark Theme**: Göz yormayan koyu tema
+- **Neon Accent**: `#00ff88` cybersecurity yeşili
+- **Grid Background**: Terminal/matrix estetiği
+- **Card Layout**: Her writeup için hover efektli kartlar
+- **Responsive**: Mobil uyumlu grid sistemi
+- **Syntax Highlighting**: Kod blokları için özel stil
 
-## Obsidian Resim Linkleri
+## 🔧 Özelleştirme
 
-Script Obsidian formatını otomatik dönüştürür:
+### Renkleri Değiştirin
 
-| Obsidian | HTML |
-|----------|------|
-| `![[images/1.png]]` | `<img src="./images/1.png">` |
+`convert_md_to_html.py` içinde CSS değişkenlerini düzenleyin:
 
-## Workflow
-
-Her `push`'ta:
-
-```mermaid
-graph LR
-    A[Push] --> B[Convert MD to HTML]
-    B --> C[Update index.html]
-    C --> D[Commit HTML files]
-    D --> E[Deploy to Pages]
+```css
+:root {
+    --accent-primary: #00ff88;    /* Ana vurgu rengi */
+    --bg-primary: #0a0a0f;        /* Arka plan */
+    ...
+}
 ```
 
-## Live Demo
+### Kategori İkonlarını Değiştirin
 
-👉 https://onurcangnc.github.io/ctf_writeups/
+```python
+CATEGORY_META = {
+    "TryHackMe": {
+        "icon": "🎯",
+        "description": "TryHackMe CTF writeups"
+    },
+    ...
+}
+```
 
-## Contributing
+## 🌐 Live Demo
 
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push yapın (`git push origin feature/amazing-feature`)
-5. Pull Request açın
+👉 [https://onurcangnc.github.io/ctf_writeups/](https://onurcangnc.github.io/ctf_writeups/)
 
-## License
+## 📄 License
 
-MIT License - kendi projenizde özgürce kullanın.
+MIT License - Özgürce kullanın ve geliştirin.
 
 ---
 
-**Not:** Bu proje originally CTF writeup'ları için geliştirilmiştir ancak **herhangi bir Obsidian → GitHub Pages otomasyonu** için kullanılabilir.
+**Made with 💚 by [onurcangnc](https://github.com/onurcangnc)**
