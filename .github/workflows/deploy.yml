@@ -64,20 +64,6 @@ jobs:
         echo "</body>" >> index.html
         echo "</html>" >> index.html
 
-    - name: Commit HTML files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add TryHackMe/*/index.html TryHackMe/*/*.html
-        git add index.html
-
-        if git diff --cached --quiet; then
-          echo "No HTML changes to commit."
-        else
-          git commit -m "Update HTML files [skip ci]"
-          git push
-        fi
-
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
