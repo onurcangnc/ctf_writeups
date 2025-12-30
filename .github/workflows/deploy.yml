@@ -62,11 +62,13 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # Publish to Medium as draft (MANUAL trigger only)
-  # Run via: workflow_dispatch in GitHub Actions tab
+  # Publish to Medium as draft (AUTO on every push)
+  # Requires: MEDIUM_EMAIL, MEDIUM_PASSWORD
+  # Optional: GMAIL_REFRESH_TOKEN, GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET (for 2FA)
   medium:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    needs: build
+    if: github.event_name == 'push'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -77,12 +79,25 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install markdown2 playwright curl-cffi
+        run: |
+          pip install markdown2 playwright curl-cffi google-api-python-client google-auth-httplib2 google-auth-oauthlib
 
       - name: Install Playwright browsers
         run: playwright install chromium
 
+      - name: Login to Medium and get cookies
+        id: auth
+        env:
+          MEDIUM_EMAIL: ${{ secrets.MEDIUM_EMAIL }}
+          MEDIUM_PASSWORD: ${{ secrets.MEDIUM_PASSWORD }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+        run: python scripts/medium_auth.py
+        continue-on-error: true
+
       - name: Publish to Medium
         env:
-          MEDIUM_COOKIES: ${{ secrets.MEDIUM_COOKIES }}
+          MEDIUM_COOKIES_FILE: .medium_cookies.json
         run: python scripts/convert_md_to_html.py --medium
+        continue-on-error: true
