@@ -1,43 +1,214 @@
-<html><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archangel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
 <style>
+    :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --bg-code: #1a1a24;
+        --accent: #00ff88;
+        --accent-dim: #00cc6a;
+        --text: #e4e4e7;
+        --text-dim: #a1a1aa;
+        --border: #27272a;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
-        font-family: Arial, sans-serif;
-        max-width: 800px;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text);
+        line-height: 1.8;
+        padding: 40px 20px;
+        max-width: 900px;
         margin: 0 auto;
-        padding: 20px;
-        line-height: 1.6;
-        background-color: #f4f4f4;
     }
-    h1, h2, h3 {
-        color: #333;
-        border-bottom: 2px solid #ddd;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.875rem;
+        margin-bottom: 32px;
+        padding: 8px 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
     }
-    p {
-        margin-bottom: 20px;
+    
+    .back-link:hover {
+        background: var(--bg-code);
+        border-color: var(--accent);
     }
+    
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+        color: var(--text);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 16px;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+        margin: 48px 0 16px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    h2::before {
+        content: '##';
+        color: var(--accent);
+        font-family: monospace;
+        font-size: 1rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin: 32px 0 12px;
+        color: var(--text-dim);
+    }
+    
+    p { margin-bottom: 16px; }
+    
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s;
+    }
+    
+    a:hover { border-bottom-color: var(--accent); }
+    
     img {
         max-width: 100%;
         height: auto;
-        display: block;
-        margin: 0 auto 20px auto;
+        border-radius: 12px;
+        margin: 24px 0;
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
+    
     code {
-        background-color: #f9f9f9;
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 5px;
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        background: var(--bg-code);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: var(--accent);
+        border: 1px solid var(--border);
     }
+    
     pre {
-        background-color: #333;
-        color: #f8f8f2;
-        padding: 10px;
-        border-radius: 5px;
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 12px;
         overflow-x: auto;
+        margin: 24px 0;
+        border: 1px solid var(--border);
+        position: relative;
+    }
+    
+    pre::before {
+        content: 'terminal';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text);
+    }
+    
+    blockquote {
+        border-left: 3px solid var(--accent);
+        padding-left: 20px;
+        margin: 24px 0;
+        color: var(--text-dim);
+        font-style: italic;
+    }
+    
+    ul, ol {
+        margin: 16px 0 16px 24px;
+    }
+    
+    li {
+        margin-bottom: 8px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+    }
+    
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border: 1px solid var(--border);
+    }
+    
+    th {
+        background: var(--bg-secondary);
+        color: var(--accent);
+        font-weight: 600;
+    }
+    
+    tr:nth-child(even) { background: var(--bg-secondary); }
+    
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border);
+        margin: 40px 0;
+    }
+    
+    .meta {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding: 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        color: var(--text-dim);
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 </style>
-</head><body><p>Greetings everyone, hope you are well. Today I had the opportunity to  analyze <code>Archangel</code>, başmelek in Turkish from <code>TryHackMe</code> platform. </p>
+
+</head>
+<body>
+    <a href="../../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2025-12-24</span>
+        <span class="meta-item">📂 Archangel</span>
+    </div>
+    <article>
+        <p>Greetings everyone, hope you are well. Today I had the opportunity to  analyze <code>Archangel</code>, başmelek in Turkish from <code>TryHackMe</code> platform. </p>
 
 <p>Add your ip address to <code>hosts</code> file to make customizable domain. This is a local method to override <code>DNS resolution</code> and create your own domain mappings for testing, development, or other purposes.</p>
 
@@ -51,7 +222,7 @@
 
 <h3>Final Result:</h3>
 
-<p><img src="./images/1.png" alt="alt text" /></p>
+<p><img src="./images/1.png" alt="1.png" /></p>
 
 <h2>Reconnaissance</h2>
 
@@ -65,23 +236,23 @@
 
 <p>By default it will automatically move forward to port <code>80</code></p>
 
-<p><img src="./images/2.png" alt="alt text" /></p>
+<p><img src="./images/2.png" alt="2.png" /></p>
 
 <p>There is nothing on other ports <code>443</code> and <code>8080</code>:</p>
 
-<p><img src="./images/3.png" alt="alt text" /></p>
+<p><img src="./images/3.png" alt="3.png" /></p>
 
 <p>Port <code>80</code> successfully identified web page's <code>html</code> structure and prompted as terminal output. Let me first analyze the source code's comment part and manually investigate with browser.</p>
 
 <p>I saw an email address with domain <code>@mafialive.thm</code> as an internal information.</p>
 
-<p><img src="./images/4.png" alt="alt text" /></p>
+<p><img src="./images/4.png" alt="4.png" /></p>
 
 <p>After a couple of page discover attempts, there was nothing especially uniquely identifiable data on the page content. Nearly entire page consisting default configuration texts, source files and so on... </p>
 
-<p><img src="./images/5.png" alt="alt text" /></p>
+<p><img src="./images/5.png" alt="5.png" /></p>
 
-<p><img src="./images/6.png" alt="alt text" /></p>
+<p><img src="./images/6.png" alt="6.png" /></p>
 
 <p>Majority of the navigation elements redirected me to empty hyperlinks. Therefore, it would be suitable to <code>fuzzing</code> phase.</p>
 
@@ -97,27 +268,27 @@
 
 <p>I deliberately ended the <code>gobuster</code> scan due to the length of wordlist. It also detected the paths included in both <code>dirseach</code> and <code>dirb</code>.</p>
 
-<p><img src="./images/7.png" alt="alt text" /></p>
+<p><img src="./images/7.png" alt="7.png" /></p>
 
-<p><img src="./images/8.png" alt="alt text" /></p>
+<p><img src="./images/8.png" alt="8.png" /></p>
 
-<p><img src="./images/9.png" alt="alt text" /></p>
+<p><img src="./images/9.png" alt="9.png" /></p>
 
 <p><code>dirb</code> and <code>gobuster</code> was trying to recursively fuzz the entire directory structures ,so I terminated the process.</p>
 
 <p>After I navigated through <code>/flags/</code> endpoint there was a file, redirected me to this page:</p>
 
-<p><img src="./images/10.png" alt="alt text" /></p>
+<p><img src="./images/10.png" alt="10.png" /></p>
 
 <p>There was not any clues about <code>flags</code>. Therefore, it was suitable to conduct port scan. Furthermore, you can reach out the <code>web server</code> version &amp; type.</p>
 
-<p><img src="./images/13.png" alt="alt text" /></p>
+<p><img src="./images/13.png" alt="13.png" /></p>
 
-<p><img src="./images/11.png" alt="alt text" /></p>
+<p><img src="./images/11.png" alt="11.png" /></p>
 
 <p>Wappalyzer result:</p>
 
-<p><img src="./images/12.png" alt="alt text" /></p>
+<p><img src="./images/12.png" alt="12.png" /></p>
 
 <p>I conducted different port scans with below commands:</p>
 
@@ -131,26 +302,26 @@
 
 <p><strong>Notice:</strong> I could not find anything technical part such as dynamic page rendering content or backend instance. Observe the answer format: <code>something.***</code>.</p>
 
-<p><img src="./images/15.png" alt="alt text" /></p>
+<p><img src="./images/15.png" alt="15.png" /></p>
 
 <p>After a long time, I was suspicious about the email and its domain. Although I tried different approach against target, I also wanted to add the given hostname <code>mafialive.thm</code>. Maybe there was another gate (web app or static page) for different <code>DNS resolution</code>. Technically, there was not anything since I applied main &amp; essential methodologies on the instance.</p>
 
 <p><strong>Immediately change &amp; refresh the page then result was different:</strong></p>
 
-<p><img src="./images/14.png" alt="alt text" /></p>
+<p><img src="./images/14.png" alt="14.png" /></p>
 
 <p>Let's check <code>test.php</code> and <code>robots.txt</code>.</p>
 
-<p><img src="./images/16.png" alt="alt text" /></p>
+<p><img src="./images/16.png" alt="16.png" /></p>
 
 <p>Contents of endpoints:</p>
 
-<p><img src="./images/17.png" alt="alt text" /></p>
+<p><img src="./images/17.png" alt="17.png" /></p>
 
 <p><code>User-agent:</code> All bots (crawlers)
 <code>Disallow:</code> These bots cannot crawl this endpoint.</p>
 
-<p><img src="./images/18.png" alt="alt text" /></p>
+<p><img src="./images/18.png" alt="18.png" /></p>
 
 <p>It looks like <code>LFI/RFI</code>.</p>
 
@@ -164,7 +335,7 @@
 
 <p><code>../../../../../etc/passwd</code></p>
 
-<p><img src="./images/19.png" alt="alt text" /></p>
+<p><img src="./images/19.png" alt="19.png" /></p>
 
 <p>Maybe the page initiates a <code>filtering</code> or <code>blocking</code> mechanism on the payload. Therefore, I covered <code>HackTricks</code>
 about the <code>path/directory traversal</code> titled article. To understand how to bypass any restrictions. I have known this technique before since in Deloitte bootcamp, I specifically asked for <code>URL encoding</code> to make adaptable payload for target then immediately our instructor <code>Mücahit Ceri</code> told us that sometimes we cannot directly apply <code>LFI</code> instead we should find <code>wrapper</code> mechanism to pass filtering used by target application.</p>
@@ -175,37 +346,37 @@ about the <code>path/directory traversal</code> titled article. To understand ho
 
 <p><code>http://mafialive.thm/test.php?view=PhP://filter</code></p>
 
-<p><img src="./images/20.png" alt="alt text" /></p>
+<p><img src="./images/20.png" alt="20.png" /></p>
 
 <p>I used payload in a wrong way because it should be at the beginning of the endpoints ,but still it stucks then I switched on OWASP's guided <a href="https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion">payload</a>:</p>
 
-<p><img src="./images/23.png" alt="alt text" /></p>
+<p><img src="./images/23.png" alt="23.png" /></p>
 
 <p><code>php://filter/convert.base64-encode/resource=/etc/passwd</code></p>
 
-<p><img src="./images/21.png" alt="alt text" /></p>
+<p><img src="./images/21.png" alt="21.png" /></p>
 
 <p>It did not work. After half an hour, I found a page where the payload adjusted as <code>php://filter/read=convert.base64-encode/resource=</code>.</p>
 
 <p><a href="https://forum.hackthebox.com/t/htb-academy-file-inclusion/286531">Adjusted payload resource</a></p>
 
-<p><img src="./images/22.png" alt="alt text" /></p>
+<p><img src="./images/22.png" alt="22.png" /></p>
 
 <p>I tried for <code>/etc/hosts</code> ,yet would not work. However, I kept the path as it is then it worked &amp; encoded <code>base64</code> formatted.</p>
 
-<p><img src="./images/24.png" alt="alt text" /></p>
+<p><img src="./images/24.png" alt="24.png" /></p>
 
 <p>`http://mafialive.thm/test.php?view=</p>
 
 <p>As you can see below, it gave us to the output of the <code>php</code> application called <code>mrrobot.php</code>.</p>
 
-<p><img src="./images/25.png" alt="alt text" /></p>
+<p><img src="./images/25.png" alt="25.png" /></p>
 
 <p>Null byte injection could be suitable ,but it did not work <code>%00</code>.</p>
 
 <p><code>http://mafialive.thm/test.php?view=php://filter/read=convert.base64-encode/resource=/etc/passwd%00</code></p>
 
-<p><img src="./images/26.png" alt="alt text" /></p>
+<p><img src="./images/26.png" alt="26.png" /></p>
 
 <p>I have also retrieved <code>test.php</code> as an output xD (Does not necessary). On the other hand, instead of using <code>Cyberchef</code>as a decoder, I decided to work with different tool because I have never found something beneficial. </p>
 
@@ -213,18 +384,16 @@ about the <code>path/directory traversal</code> titled article. To understand ho
 
 <p><a href="https://www.base64decode.org/">Base64 encoding/decoding</a></p>
 
-<p>```</p>
+<pre><code>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
 
-<p><!DOCTYPE HTML></p>
+&lt;head&gt;
+    &lt;title&gt;INCLUDE&lt;/title&gt;
+    &lt;h1&gt;Test Page. Not to be Deployed&lt;/h1&gt;
 
-<html>
-
-<head>
-    <title>INCLUDE</title>
-    <h1>Test Page. Not to be Deployed</h1>
-
-    </button></a> <a href="/test.php?view=/var/www/html/development_testing/mrrobot.php"><button id="secret">Here is a button</button></a><br>
-        <?php
+    &lt;/button&gt;&lt;/a&gt; &lt;a href="/test.php?view=/var/www/html/development_testing/mrrobot.php"&gt;&lt;button id="secret"&gt;Here is a button&lt;/button&gt;&lt;/a&gt;&lt;br&gt;
+        &lt;?php
 
         //FLAG: thm{explo1t1ng_lf1}
 
@@ -232,20 +401,20 @@ about the <code>path/directory traversal</code> titled article. To understand ho
                 return strpos($str, $substr) !== false;
             }
         if(isset($_GET["view"])){
-        if(!containsStr($_GET['view'], '../..') && containsStr($_GET['view'], '/var/www/html/development_testing')) {
+        if(!containsStr($_GET['view'], '../..') &amp;&amp; containsStr($_GET['view'], '/var/www/html/development_testing')) {
                 include $_GET['view'];
             }else{
 
         echo 'Sorry, Thats not allowed';
             }
     }
-        ?>
-    </div>
-</body>
+        ?&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
 
-</html>
+&lt;/html&gt;
 
-<p>```</p>
+</code></pre>
 
 <p>Got it ! ! !</p>
 
@@ -261,7 +430,7 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p><code>php://filter/read=convert.base64-encode/resource=/var/www/html/development_testing/..//..//..//..//etc/passwd</code></p>
 
-<p><img src="./images/27.png" alt="alt text" /></p>
+<p><img src="./images/27.png" alt="27.png" /></p>
 
 <p>we have such user:</p>
 
@@ -269,7 +438,7 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>In <code>Deloitte</code>'s Cyber bootcamp, we have learnt to how to use web servers logs to achieve log poisoning by reaching it <code>LFI</code>.</p>
 
-<p><img src="./images/28.png" alt="alt text" /></p>
+<p><img src="./images/28.png" alt="28.png" /></p>
 
 <p>We do not need to use <code>php://filter</code> and base64 utility anymore because we found how to bypass restrictions. We should elevate <code>LFI</code> to <code>RCE</code> so as to reach initial compromise phase.</p>
 
@@ -279,7 +448,7 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>Reason why we require to include <code>log</code> file is that I needed to include my payload as an internal process or command to target. Therefore, we have to run commands through headers located in each request.</p>
 
-<p><img src="./images/29.png" alt="alt text" /></p>
+<p><img src="./images/29.png" alt="29.png" /></p>
 
 <p>Even if the web server running on <code>nginx</code>, we can also apply the same approach in <code>apache</code>.</p>
 
@@ -295,9 +464,9 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 <p><code>&lt;?php system('ls') ?&gt;</code>
 <code>&lt;?= system('ls') ?&gt;</code></p>
 
-<p><img src="./images/30.png" alt="alt text" /></p>
+<p><img src="./images/30.png" alt="30.png" /></p>
 
-<p><img src="./images/31.png" alt="alt text" /></p>
+<p><img src="./images/31.png" alt="31.png" /></p>
 
 <p>Let's try <code>PHP</code> one-liner reverse shell against target:</p>
 
@@ -322,9 +491,9 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>Program Output:</p>
 
-<p><img src="./images/32.png" alt="alt text" /></p>
+<p><img src="./images/32.png" alt="32.png" /></p>
 
-<p><img src="./images/33.png" alt="alt text" /></p>
+<p><img src="./images/33.png" alt="33.png" /></p>
 
 <p>Now I wanted to understand default <code>cmd</code> variable's instance on target. <code>GET</code> method may help to achieve this since I could not abuse the <code>User-Agent</code> to retrieve reverse shell in each attempt server gets down. I needed to make <code>LFI</code> to <code>RFI</code> so as to make target eligible for downloading in my local files. Therefore, it would run directly it.</p>
 
@@ -332,23 +501,23 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>Generating variable, used in url parameter as <code>cmd</code> can be suitable to include local python server's url.</p>
 
-<p><img src="./images/34.png" alt="alt text" /></p>
+<p><img src="./images/34.png" alt="34.png" /></p>
 
 <p>As an example I generated <code>$cmd</code> variable in the target by using <code>access</code> log then intended to run <code>id</code> with the system method through command parameter (<code>$cmd</code>). </p>
 
-<p><img src="./images/35.png" alt="alt text" /></p>
+<p><img src="./images/35.png" alt="35.png" /></p>
 
 <p>Now we are the user <code>www-data</code> by default, reach the <code>user</code> flag from <code>archangel</code> user directory located on <code>/home/archangel</code>.</p>
 
-<p><img src="./images/36.png" alt="alt text" /></p>
+<p><img src="./images/36.png" alt="36.png" /></p>
 
 <p>I could not find anything related to <code>privilege escalation</code> vector. That's why, I uploaded <code>linpeas.sh</code> from it's generic github repo. </p>
 
 <p>Reach out here below:</p>
 
-<p><img src="./images/37.png" alt="alt text" /></p>
+<p><img src="./images/37.png" alt="37.png" /></p>
 
-<p><img src="./images/38.png" alt="alt text" /></p>
+<p><img src="./images/38.png" alt="38.png" /></p>
 
 <p><strong>Notice:</strong> I deliberately downloaded on <code>tmp</code> directory because every user in <code>linux</code> can run commands from here.</p>
 
@@ -356,25 +525,22 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>Observe we are the user on <code>web server</code>:</p>
 
-<p><img src="./images/39.png" alt="alt text" /></p>
+<p><img src="./images/39.png" alt="39.png" /></p>
 
 <p>Crontab had direct horizontal privilege escalation vector in every minute user <code>archangel</code> was running <code>helloworld.sh</code> script.</p>
 
-<p><img src="./images/40.png" alt="alt text" /></p>
+<p><img src="./images/40.png" alt="40.png" /></p>
 
 <p>From my perspective, I was able to modify the script let's see:</p>
 
 <p>The script could be readable, writeable and every minute system calls it:</p>
 
-<p>```</p>
+<pre><code>
+$ cat helloworld.sh
+#!/bin/bash
+echo "hello world" &gt;&gt; /opt/backupfiles/helloworld.txt
 
-<p>$ cat helloworld.sh</p>
-
-<h1>!/bin/bash</h1>
-
-<p>echo "hello world" &gt;&gt; /opt/backupfiles/helloworld.txt</p>
-
-<p>```</p>
+</code></pre>
 
 <p>Now append the payload below:</p>
 
@@ -382,23 +548,23 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>I do not want to wait for it ,so I tried and blocked by kernel to run the script. Immediately, I got reverse shell. However, it was <code>www-data</code> because the script is ran by www-data service.</p>
 
-<p><img src="./images/41.png" alt="alt text" /></p>
+<p><img src="./images/41.png" alt="41.png" /></p>
 
-<p><img src="./images/42.png" alt="alt text" /></p>
+<p><img src="./images/42.png" alt="42.png" /></p>
 
 <p>Patience was the strongest element in this CTF session :)</p>
 
 <p>Get <code>flag 2</code> from <code>secret</code> directory located in <code>/home/archangel</code></p>
 
-<p><img src="./images/43.png" alt="alt text" /></p>
+<p><img src="./images/43.png" alt="43.png" /></p>
 
 <p>I tried generic command to understand the user's eligible binaries <code>sudo -l</code> ,but sudo requires tty terminal process let's upgrade shell:</p>
 
-<p><img src="./images/44.png" alt="alt text" /></p>
+<p><img src="./images/44.png" alt="44.png" /></p>
 
 <p>Normally, most of the shell upgrade operations done by <code>python</code> binary ,so I checked for python binary and found <code>python3</code>:</p>
 
-<p><img src="./images/45.png" alt="alt text" /></p>
+<p><img src="./images/45.png" alt="45.png" /></p>
 
 <p><a href="https://blog.ropnop.com/upgrading-simple-shells-to-fully-interactive-ttys/">Full TTY shell</a></p>
 
@@ -406,19 +572,19 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p><code>python3 -c 'import pty; pty.spawn("/bin/bash")'</code></p>
 
-<p><img src="./images/46.png" alt="alt text" /></p>
+<p><img src="./images/46.png" alt="46.png" /></p>
 
 <p>I tried <code>sudo -l</code> ,yet asked me to give password. Therefore, I moved another strategy on <code>secret</code> directory. There was a binary named <code>backup</code> straightly running another service by root.</p>
 
-<p><img src="./images/47.png" alt="alt text" /></p>
+<p><img src="./images/47.png" alt="47.png" /></p>
 
 <p>When I attempted to run script, It gave an error indication <code>cp</code> operation on the directory not created.</p>
 
-<p><img src="./images/48.png" alt="alt text" /></p>
+<p><img src="./images/48.png" alt="48.png" /></p>
 
 <p>I reminded that there was another directory on <code>opt</code> named <code>backupfiles</code>. What if we try to cp the provided path to the target.</p>
 
-<p><img src="./images/49.png" alt="alt text" /></p>
+<p><img src="./images/49.png" alt="49.png" /></p>
 
 <p>However, this was not work since I did not have any files on this path.</p>
 
@@ -432,40 +598,41 @@ I attempted to read <code>/etc/passwd</code> file with the help of the <code>LFI
 
 <p>-> <a href="https://gtfobins.github.io/gtfobins/cp/">reach</a></p>
 
-<p>```</p>
-
-<p>LFILE=file<em>to</em>write
+<pre><code>
+LFILE=file_to_write
 TF=$(mktemp)
 echo "DATA" &gt; $TF
-sudo cp $TF $LFILE</p>
+sudo cp $TF $LFILE
 
-<p>```</p>
+</code></pre>
 
 <p>It gave me error indicating <code>Not a directory</code> ,so using <code>man</code> I found <code>mktemp</code> usage with -d parameter.</p>
 
-<p><img src="./images/50.png" alt="alt text" /></p>
+<p><img src="./images/50.png" alt="50.png" /></p>
 
 <p><code>man mktemp</code></p>
 
-<p><img src="./images/51.png" alt="alt text" /></p>
+<p><img src="./images/51.png" alt="51.png" /></p>
 
 <p>To make persistent my binary path <code>/bin/cp</code>, I also call the <code>PATH</code> variable and added my customized path to the target.</p>
 
-<p><img src="./images/52.png" alt="alt text" /></p>
+<p><img src="./images/52.png" alt="52.png" /></p>
 
 <p>I was creating a binary path representing fake <code>cp</code> command ,but nearly similar as <code>/bin/cp</code>.
 However, I manipulated correct path with <code>/bin/sh</code>. Since I gave all the users executable permissions, <code>backup</code> binary successfully executed the command ,yet it reached different path point, <code>/bin/sh</code>. Then directly invoked shell with root privileges because of the backup script's privileges.</p>
 
-<p>```</p>
-
-<p>erkanucar=$(mktemp -d)
+<pre><code>
+erkanucar=$(mktemp -d)
 echo '/bin/sh' &gt; "$erkanucar/cp"
 chmod a+x "$erkanucar/cp"
-export PATH=$erkanucar:$PATH</p>
+export PATH=$erkanucar:$PATH
 
-<p>```</p>
+</code></pre>
 
 <p>Finally, reach the root flag from <code>/root/</code> path.</p>
 
 <p>May The Pentest Be With You ! ! !</p>
-</body></html>
+
+    </article>
+</body>
+</html>
