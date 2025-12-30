@@ -83,18 +83,20 @@ pip install -r requirements.txt
 
 ### 4. Medium Publisher Kurulumu (Opsiyonel)
 
-Medium'a otomatik publish için GitHub Secrets'a şunları ekleyin:
+Medium'a otomatik publish için GitHub Secrets'a ekleyin:
 
 **Gerekli:**
-- `MEDIUM_EMAIL` - Medium email adresiniz
-- `MEDIUM_PASSWORD` - Medium şifreniz
+- `MEDIUM_COOKIES` - Medium session cookies (EditThisCookie ile dışa aktarın)
 
-**2FA kullanıyorsanız (opsiyonel):**
-- `GMAIL_REFRESH_TOKEN` - Gmail OAuth refresh token
-- `GMAIL_CLIENT_ID` - Google OAuth client ID
-- `GMAIL_CLIENT_SECRET` - Google OAuth client secret
+**Medium cookies nasıl alınır:**
+1. Medium'a giriş yapın
+2. EditThisCookie extension ile cookies'i dışa aktarın
+3. JSON olarak GitHub Secrets'a ekleyin
 
-> ⚠️ **2FA Setup**: [Google Cloud Console](https://console.cloud.google.com/)'da proje oluşturup Gmail API'yi aktif edin, OAuth credentials alın.
+**Kullanım:**
+- `Medium/` klasörüne yazı yazın
+- GitHub Actions → Workflows → Deploy → Run workflow
+- Son yazılan makale otomatik draft olarak Medium'a gider
 
 ### 5. Yeni Klasör Ekleyin (Opsiyonel)
 
@@ -154,22 +156,21 @@ git push
 
 ```bash
 # CLI ile
-python scripts/medium_publisher.py TryHackMe/MachineName/writeup.md --method playwright
+python scripts/medium_publisher.py Medium/my-article.md
 
 # Veya Python içinde
 from scripts.medium_publisher import MediumPublisher
 publisher = MediumPublisher()
-result = publisher.publish("TryHackMe/MachineName/writeup.md", method='playwright')
+result = publisher.publish("Medium/my-article.md")
 ```
 
-**Publish Methods:**
-- `auto` (default): Önce Playwright dener, başarısız olursa clipboard
-- `playwright`: Headless Chrome ile otomatik yazar
-- `clipboard`: Panoya kopyalar, manuel yapıştırırsınız
+**Medium klasörü:**
+- GitHub Pages'de görünmez
+- Sadece Medium publish için kullanılır
 
 ## 🔧 Medium Publisher Nasıl Çalışır?
 
-### 1. Draft Oluşturma (API)
+### API ile Draft Oluşturma
 
 ```python
 # Medium internal API kullanılır
@@ -181,20 +182,10 @@ Body:
   - visibility: 0 (draft)
 ```
 
-### 2. İçerik Yazma (Playwright)
-
-```python
-# Headless Chrome açılır
-# Draft editörü açılır
-# İçerik satır satır yazılır
-# Ctrl+S ile kaydedilir
-```
-
-### 3. Cloudflare Bypass
+### Cloudflare Bypass
 
 - `curl_cffi` Chrome TLS fingerprinting taklidi yapar
 - Browser cookies ile authentication sağlanır
-- API key veya OAuth gerekmez
 
 ### Visibility Levels
 
