@@ -340,7 +340,7 @@ def convert_md_to_html(md_path: Path) -> dict:
     {PAGE_CSS}
 </head>
 <body>
-    <a href="../../index.html" class="back-link">← Back to Index</a>
+    <a href="../index.html" class="back-link">← Back to Index</a>
     <div class="meta">
         <span class="meta-item">📅 Updated: {modified}</span>
         <span class="meta-item">📂 {md_path.parent.name}</span>
