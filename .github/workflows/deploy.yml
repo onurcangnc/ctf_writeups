@@ -62,11 +62,11 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # Publish to Medium as draft (requires MEDIUM_COOKIES secret)
+  # Publish to Medium as draft (MANUAL trigger only)
+  # Run via: workflow_dispatch in GitHub Actions tab
   medium:
     runs-on: ubuntu-latest
-    needs: build
-    if: github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -85,6 +85,4 @@ jobs:
       - name: Publish to Medium
         env:
           MEDIUM_COOKIES: ${{ secrets.MEDIUM_COOKIES }}
-          MEDIUM_PUBLISH: "true"
         run: python scripts/convert_md_to_html.py --medium
-        continue-on-error: true
