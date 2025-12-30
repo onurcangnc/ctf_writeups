@@ -83,13 +83,18 @@ pip install -r requirements.txt
 
 ### 4. Medium Publisher Kurulumu (Opsiyonel)
 
-Medium'a otomatik publish için:
+Medium'a otomatik publish için GitHub Secrets'a şunları ekleyin:
 
-1. **Medium'a giriş yapın** (browser)
-2. **Cookileri dışa aktarın** (EditThisCookie extension kullanın)
-3. **`.medium_cookies.json` olarak kaydedin** (repo ana dizine)
+**Gerekli:**
+- `MEDIUM_EMAIL` - Medium email adresiniz
+- `MEDIUM_PASSWORD` - Medium şifreniz
 
-> ⚠️ **ÖNEMLİ**: `.medium_cookies.json` `.gitignore` içinde olduğu için git'e push edilmez.
+**2FA kullanıyorsanız (opsiyonel):**
+- `GMAIL_REFRESH_TOKEN` - Gmail OAuth refresh token
+- `GMAIL_CLIENT_ID` - Google OAuth client ID
+- `GMAIL_CLIENT_SECRET` - Google OAuth client secret
+
+> ⚠️ **2FA Setup**: [Google Cloud Console](https://console.cloud.google.com/)'da proje oluşturup Gmail API'yi aktif edin, OAuth credentials alın.
 
 ### 5. Yeni Klasör Ekleyin (Opsiyonel)
 
