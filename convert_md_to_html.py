@@ -328,6 +328,10 @@ def convert_md_to_html(md_path: Path) -> dict:
     stat = md_path.stat()
     modified = datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d')
     
+    # Calculate relative path to index.html based on directory depth
+    depth = len(md_path.parts) - 1  # -1 for the filename itself
+    back_path = '../' * depth + 'index.html' if depth > 0 else 'index.html'
+    
     # Build full HTML
     full_html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -340,7 +344,7 @@ def convert_md_to_html(md_path: Path) -> dict:
     {PAGE_CSS}
 </head>
 <body>
-    <a href="../index.html" class="back-link">← Back to Index</a>
+    <a href="{back_path}" class="back-link">← Back to Index</a>
     <div class="meta">
         <span class="meta-item">📅 Updated: {modified}</span>
         <span class="meta-item">📂 {md_path.parent.name}</span>
