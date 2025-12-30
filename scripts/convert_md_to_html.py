@@ -22,11 +22,11 @@ CONFIG = {
         "Research",
         "Blog",
         "Projects",
-        "Writeups"
-        # NOT: "Medium" - GitHub Pages'de görülmez, sadece Medium publish için
+        "Writeups",
+        "Medium"  # Medium articles also displayed on GitHub Pages
     ],
     "exclude_files": ["README.md", "TryHackMe.md", "index.md", "_index.md"],
-    "exclude_dirs": [".obsidian", ".git", "templates", "attachments", "_templates", "Medium"],
+    "exclude_dirs": [".obsidian", ".git", "templates", "attachments", "_templates"],
     "output_file": "index.html"
 }
 
@@ -63,6 +63,10 @@ CATEGORY_META = {
     "Writeups": {
         "icon": "📄",
         "description": "General CTF and challenge writeups"
+    },
+    "Medium": {
+        "icon": "📰",
+        "description": "Articles published on Medium"
     }
 }
 
