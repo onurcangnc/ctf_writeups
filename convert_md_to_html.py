@@ -748,14 +748,50 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
 </body>
 </html>"""
 
+def publish_to_medium_if_enabled(md_path: Path, title: str, content: str):
+    """Publish to Medium if cookies are configured."""
+    if not os.environ.get('MEDIUM_COOKIES') and not os.path.exists('.medium_cookies.json'):
+        return
+
+    try:
+        from medium_publisher import MediumPublisher
+        publisher = MediumPublisher()
+        result = publisher.publish(str(md_path), method='playwright')
+        if result.success:
+            print(f"  ✓ Medium: {result.url}")
+        else:
+            print(f"  ⚠ Medium failed: {result.error}")
+    except ImportError:
+        print("  ⚠ medium_publisher.py not found")
+    except Exception as e:
+        print(f"  ⚠ Medium error: {e}")
+
+
 if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Convert Obsidian markdown to HTML')
+    parser.add_argument('--medium', action='store_true', help='Also publish to Medium as draft')
+    args = parser.parse_args()
+
     print("🚀 Starting Obsidian to HTML conversion...\n")
     categories = discover_documents()
-    
+
     if categories:
         generate_index_html(categories)
+
+        # Publish to Medium if enabled
+        if args.medium or os.environ.get('MEDIUM_PUBLISH', '').lower() == 'true':
+            print("\n📝 Publishing to Medium...")
+            for cat_name, docs in categories.items():
+                for doc in docs:
+                    md_path = Path(doc['path']).with_suffix('.md')
+                    if md_path.exists():
+                        content = md_path.read_text(encoding='utf-8')
+                        print(f"\n  → {doc['title']}")
+                        publish_to_medium_if_enabled(md_path, doc['title'], content)
     else:
         print("⚠ No markdown files found in configured directories.")
         print(f"  Checked: {', '.join(CONFIG['base_dirs'])}")
-    
+
     print("\n✅ Done!")
