@@ -53,10 +53,11 @@ knowledge-base/
 │   └── topic.md
 ├── Notes/
 │   └── subject.md
-├── convert_md_to_html.py       # Ana HTML converter script
-├── medium_publisher.py         # Medium publishing library
+├── scripts/
+│   ├── convert_md_to_html.py  # Ana HTML converter script
+│   └── medium_publisher.py    # Medium publishing library
 ├── requirements.txt
-├── .gitignore                  # Hassas dosyalar hariç tutulur
+├── .gitignore                 # Hassas dosyalar hariç tutulur
 └── README.md
 ```
 
@@ -112,7 +113,7 @@ CONFIG = {
 ### GitHub Pages için HTML Convert
 
 ```bash
-python convert_md_to_html.py
+python scripts/convert_md_to_html.py
 ```
 
 **Otomatik olarak:**
@@ -148,10 +149,10 @@ git push
 
 ```bash
 # CLI ile
-python medium_publisher.py TryHackMe/MachineName/writeup.md --method playwright
+python scripts/medium_publisher.py TryHackMe/MachineName/writeup.md --method playwright
 
 # Veya Python içinde
-from medium_publisher import MediumPublisher
+from scripts.medium_publisher import MediumPublisher
 publisher = MediumPublisher()
 result = publisher.publish("TryHackMe/MachineName/writeup.md", method='playwright')
 ```

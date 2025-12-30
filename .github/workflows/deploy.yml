@@ -33,7 +33,7 @@ jobs:
         run: pip install markdown2
 
       - name: Convert Markdown to HTML
-        run: python convert_md_to_html.py
+        run: python scripts/convert_md_to_html.py
 
       - name: Debug - List generated files
         run: |
@@ -77,11 +77,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install markdown2 pyppeteer
+        run: pip install markdown2 playwright curl-cffi
+
+      - name: Install Playwright browsers
+        run: playwright install chromium
 
       - name: Publish to Medium
         env:
           MEDIUM_COOKIES: ${{ secrets.MEDIUM_COOKIES }}
           MEDIUM_PUBLISH: "true"
-        run: python convert_md_to_html.py --medium
+        run: python scripts/convert_md_to_html.py --medium
         continue-on-error: true
