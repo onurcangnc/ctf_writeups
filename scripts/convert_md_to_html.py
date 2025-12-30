@@ -16,16 +16,17 @@ from datetime import datetime
 CONFIG = {
     "base_dirs": [
         "TryHackMe",
-        "HackTheBox", 
+        "HackTheBox",
         "CheatSheets",
         "Notes",
         "Research",
         "Blog",
         "Projects",
         "Writeups"
+        # NOT: "Medium" - GitHub Pages'de görülmez, sadece Medium publish için
     ],
     "exclude_files": ["README.md", "TryHackMe.md", "index.md", "_index.md"],
-    "exclude_dirs": [".obsidian", ".git", "templates", "attachments", "_templates"],
+    "exclude_dirs": [".obsidian", ".git", "templates", "attachments", "_templates", "Medium"],
     "output_file": "index.html"
 }
 
