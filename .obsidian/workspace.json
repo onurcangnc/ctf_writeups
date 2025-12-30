@@ -8,17 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d0822147155eb69e",
+            "id": "b3244330c0faafef",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "TryHackMe.md",
+                "file": "CheatSheets/CyberWarfare Labs - Web Red Team Analyst (WEB-RTA).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "TryHackMe"
+              "title": "CyberWarfare Labs - Web Red Team Analyst (WEB-RTA)"
             }
           }
         ]
@@ -164,8 +164,14 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "be490efddf21fff0",
+  "active": "b3244330c0faafef",
   "lastOpenFiles": [
+    "CheatSheets/images",
+    "CheatSheets/images/1.png",
+    "TryHackMe.md",
+    "CheatSheets/CyberWarfare Labs - Web Red Team Analyst (WEB-RTA).md",
+    "CheatSheets",
+    "TryHackMe/Test/---.md",
     "publish_to_medium.py.tmp.23976.1766545102552",
     "README.md",
     "README.md.tmp.23976.1766544215820",
@@ -174,17 +180,13 @@
     "TryHackMe/Test/images/og.jpg",
     "TryHackMe/Test/images",
     "TryHackMe/TryHackMe.md",
-    "TryHackMe/Test/---.md",
     "TryHackMe/Test/---.md.tmp.23976.1766543422861",
     "TryHackMe/Archangel/Archangel.md.tmp.23976.1766543369736",
     "TryHackMe/Archangel/Archangel.md.tmp.23976.1766543316114",
     "venv/Lib/site-packages/requests-2.32.5.dist-info/licenses/LICENSE",
-    "venv/Lib/site-packages/requests-2.32.5.dist-info/WHEEL",
-    "venv/Lib/site-packages/requests-2.32.5.dist-info/top_level.txt",
     "venv/Lib/site-packages/idna-3.11.dist-info/licenses/LICENSE.md",
     "venv/Lib/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md",
     "venv/Lib/site-packages/pip/_vendor/idna/LICENSE.md",
-    "TryHackMe.md",
     "TryHackMe/Photo Gallery/images/34.png",
     "TryHackMe/Photo Gallery/images/33.png",
     "TryHackMe/Photo Gallery/images/32.png",
@@ -193,7 +195,6 @@
     "Pasted image 20241220013530.png",
     "TryHackMe/Photo Gallery/images/29.png",
     "TryHackMe/Photo Gallery/images/28.png",
-    "TryHackMe/Photo Gallery/images/27.png",
     "TryHackMe/Photo Gallery/Photo Gallery.md",
     "TryHackMe/Archangel/Archangel.md",
     "TryHackMe/Hacker101 CTF2/Hacker101 CTF2.md",
@@ -210,7 +211,6 @@
     "TryHackMe/Brooklyn99/Brooklyn99.md",
     "TryHackMe/Dogcat/Dogcat.md",
     "TryHackMe/Blueprint/Blueprint.md",
-    "TryHackMe/Kibana/Kibana.md",
-    "attachment/11df5f7c7c9ac5dfcab4d51099732301.png.md"
+    "TryHackMe/Kibana/Kibana.md"
   ]
 }
