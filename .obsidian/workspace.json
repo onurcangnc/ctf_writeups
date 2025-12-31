@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0545e138f82fd8ad",
+        "id": "bdc9cc76b21b5124",
         "type": "tabs",
         "children": [
           {
-            "id": "70d6c85400e8506a",
+            "id": "f7b7118c36f3c18c",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Medium/CTIS Security Roadmap/Building a Cybersecurity Learning Roadmap for CTIS Students.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Building a Cybersecurity Learning Roadmap for CTIS Students"
             }
           }
         ]
@@ -176,6 +180,20 @@
       "bases:Create new base": false
     }
   },
-  "active": "70d6c85400e8506a",
-  "lastOpenFiles": []
+  "active": "f7b7118c36f3c18c",
+  "lastOpenFiles": [
+    "scripts/__pycache__/medium_publisher.cpython-314.pyc",
+    "scripts/__pycache__",
+    "Medium/CTIS Security Roadmap/Building a Cybersecurity Learning Roadmap for CTIS Students.html",
+    "Medium/CTIS Security Roadmap/images/7.png",
+    "Medium/CTIS Security Roadmap/images/6.png",
+    "Medium/CTIS Security Roadmap/images/5.png",
+    "Medium/CTIS Security Roadmap/images/4.png",
+    "Medium/CTIS Security Roadmap/images/3.png",
+    "Medium/CTIS Security Roadmap/images/2.png",
+    "Medium/CTIS Security Roadmap/images/1.png",
+    "Medium/CTIS Security Roadmap/Building a Cybersecurity Learning Roadmap for CTIS Students.md",
+    "Medium/CTIS Security Roadmap/images",
+    "Medium/CTIS Security Roadmap"
+  ]
 }
