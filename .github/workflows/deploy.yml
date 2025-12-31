@@ -62,25 +62,3 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  # Publish to Medium as draft (MANUAL trigger only)
-  # Requires: MEDIUM_COOKIES secret (from EditThisCookie)
-  # Run via: GitHub Actions → Workflows → Deploy → Run workflow
-  medium:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install markdown2 curl-cffi
-
-      - name: Publish to Medium
-        env:
-          MEDIUM_COOKIES: ${{ secrets.MEDIUM_COOKIES }}
-        run: python scripts/convert_md_to_html.py --medium
