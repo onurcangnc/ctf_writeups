@@ -753,79 +753,12 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
 </body>
 </html>"""
 
-def get_latest_modified_markdown() -> tuple[Path, str]:
-    """Find the most recently modified markdown file."""
-    all_md_files = []
-
-    for base_dir in CONFIG['base_dirs']:
-        base_path = Path(base_dir)
-        if not base_path.exists():
-            continue
-
-        for md_file in base_path.rglob('*.md'):
-            if md_file.name in CONFIG['exclude_files']:
-                continue
-            if any(excl in str(md_file) for excl in CONFIG['exclude_dirs']):
-                continue
-
-            mtime = md_file.stat().st_mtime
-            all_md_files.append((md_file, mtime))
-
-    if not all_md_files:
-        return None, None
-
-    # Sort by modification time, newest first
-    all_md_files.sort(key=lambda x: x[1], reverse=True)
-    latest_md = all_md_files[0][0]
-
-    # Extract title from filename
-    title = latest_md.stem
-    return latest_md, title
-
-
-def publish_to_medium_if_enabled(md_path: Path, title: str, content: str):
-    """Publish to Medium if cookies are configured."""
-    if not os.environ.get('MEDIUM_COOKIES') and not os.path.exists('.medium_cookies.json'):
-        print("  ⚠ Medium cookies not found, skipping...")
-        return
-
-    try:
-        from medium_publisher import MediumPublisher
-        publisher = MediumPublisher()
-        result = publisher.publish(str(md_path))
-        if result.success:
-            print(f"  ✓ Medium draft created: {result.url}")
-        else:
-            print(f"  ⚠ Medium failed: {result.error}")
-    except ImportError:
-        print("  ⚠ medium_publisher.py not found")
-    except Exception as e:
-        print(f"  ⚠ Medium error: {e}")
-
-
 if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Convert Obsidian markdown to HTML')
-    parser.add_argument('--medium', action='store_true', help='Also publish to Medium as draft')
-    args = parser.parse_args()
-
     print("🚀 Starting Obsidian to HTML conversion...\n")
     categories = discover_documents()
 
     if categories:
         generate_index_html(categories)
-
-        # Publish to Medium if enabled
-        if args.medium or os.environ.get('MEDIUM_PUBLISH', '').lower() == 'true':
-            print("\n📝 Publishing to Medium...")
-            latest_md, title = get_latest_modified_markdown()
-            if latest_md:
-                content = latest_md.read_text(encoding='utf-8')
-                print(f"\n  → {title} ({latest_md})")
-                publish_to_medium_if_enabled(latest_md, title, content)
-            else:
-                print("  ⚠ No markdown files found to publish.")
     else:
         print("⚠ No markdown files found in configured directories.")
         print(f"  Checked: {', '.join(CONFIG['base_dirs'])}")
