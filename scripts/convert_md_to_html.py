@@ -792,7 +792,7 @@ def publish_to_medium_if_enabled(md_path: Path, title: str, content: str):
     try:
         from medium_publisher import MediumPublisher
         publisher = MediumPublisher()
-        result = publisher.publish(str(md_path), method='playwright')
+        result = publisher.publish(str(md_path))
         if result.success:
             print(f"  ✓ Medium draft created: {result.url}")
         else:
