@@ -20,8 +20,21 @@
               "icon": "lucide-file",
               "title": "My C AI MLPen Exam Review"
             }
+          },
+          {
+            "id": "c56c296f019ff62e",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.11.4"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.11.4"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -180,8 +193,13 @@
       "bases:Create new base": false
     }
   },
-  "active": "e696a2ed0d262cfc",
+  "active": "c56c296f019ff62e",
   "lastOpenFiles": [
+    "Medium/C-AI MLPen/images/9.jpg",
+    "Medium/C-AI MLPen/images/8.jpg",
+    "Medium/C-AI MLPen/images/7.jpg",
+    "Medium/C-AI MLPen/images/6.jpg",
+    "Medium/C-AI MLPen/images/5.jpg",
     "Medium/C-AI MLPen/images/4.jpg",
     "Medium/C-AI MLPen/images/3.jpg",
     "Medium/C-AI MLPen/images/2.webp",
@@ -196,11 +214,6 @@
     "Medium/CTIS Security Roadmap/Building a Cybersecurity Learning Roadmap for CTIS Students.html",
     "Medium/CTIS Security Roadmap/images/7.png",
     "Medium/CTIS Security Roadmap/images/6.png",
-    "Medium/CTIS Security Roadmap/images/5.png",
-    "Medium/CTIS Security Roadmap/images/4.png",
-    "Medium/CTIS Security Roadmap/images/3.png",
-    "Medium/CTIS Security Roadmap/images/2.png",
-    "Medium/CTIS Security Roadmap/images/1.png",
     "Medium/CTIS Security Roadmap/images",
     "Medium/CTIS Security Roadmap"
   ]
