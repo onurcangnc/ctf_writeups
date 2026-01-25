@@ -1,5 +1,6 @@
 
-# Input Manipulation & Prompt Injection
+# Attacking LLMs
+
 ## Introduction
 
 Large Language Models (LLMs) are designed to generate responses based on instructions and user queries. In many applications, these models operate with multiple layers of instruction:
