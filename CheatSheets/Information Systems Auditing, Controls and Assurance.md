@@ -1,5 +1,8 @@
 
-# Module 1
+# Information Systems Auditing, Controls and Assurance
+
+# Risk in Information Systems (IS)
+
 ## 1.2 Introduction to Risk in Information System
 
 ### What is Risk ?
@@ -154,4 +157,70 @@ Two different scenarios that we do risk re-evaluation.
 
 Japan earthquake (nuclear plant melt down) -> envrionment change example
 
-# Identify Internal Controls
+# Internal Controls of Information Systems (IS)
+
+## 1.6 Identify Internal Controls
+
+![[risk10.png]]
+
+**What are internal controls ?**
+
+Policies, procedures, practices and organizational structures implemented to reduce **risks**.
+
+**==Policy & Procedure==**
+Every employees must change their usernames and passwords every 3 months.
+
+| Username | Username |
+| -------- | -------- |
+| johnw123 | johnw456 |
+
+| Passwords   | Passwords |
+| ----------- | --------- |
+| Dlfhsji!s24 | ovldjhD13 |
+**How to implement this policy ?**
+
+![[controls1.png]]
+
+*If no change, staff cannot access to the system*
+
+**Internal Controls:**
+
+1) Policy and procedures
+2) Law & regulations from government
+
+**Classification of internal controls**
+
+1. **Preventative Controls** -> If you have antivirus software installed in your computer, whenever there could be some virus attacks to your computer. Your antivirus software is going to prevent that attack.
+2. **Detective Controls** -> Sometimes security administrators keep firewalls, that firewalls could detect any of these unauthorized access to the system and would give alarm to the security administrators.
+3. **Corrective Controls** -> We backup data ,so we can do the restoration.
+
+Internal controls example:
+
+**What are the best ways to reduce risk of fire using control?**
+
+![[controls2.png]]
+
+- List 15 controls to reduce the risk of fire.
+
+**Preventative controls** -> *Use fire proof building materials*, *install sprinklers*, install escape route maps, *organize fire safety education workshops*, *get fire insurance, fire drill practices, no naked flame in the building, no smoking in the building, regular fire department inspection, regular maintenance of devices*
+
+**Detective controls** -> *install smoke detection sensors, install fire alarms, install CCTV's*
+
+**Corrective controls** -> *backup systems, install fire extinguishers, get fire insurance*
+
+**Preventative Controls**
+
+Most desire controls to reduce risk
+
+9 -> No naked flame in the building
+10 -> No smoking in the building
+
+Why 9 is before 10 ?
+
+-> *Preventative Controls*
+1. Reduce Probability
+2. Reduce Impact
+
+## 1.7 Internal Controls Examples
+
+
