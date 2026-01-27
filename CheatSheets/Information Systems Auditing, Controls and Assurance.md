@@ -54,7 +54,7 @@ Likelihood of having risk
 
 [http://www.startribune.com/insiders-drive-most-cyber-security-breaches-according-to-study-for-minnesota-s-code42/562174112/](http://www.startribune.com/insiders-drive-most-cyber-security-breaches-according-to-study-for-minnesota-s-code42/562174112/)
 
-## Risk Management Process 1- Risk Assessment
+#### Risk Management Process 1- Risk Assessment
 
 What is the process of risk management ?
 
@@ -62,7 +62,7 @@ What is the process of risk management ?
 2. Risk Mitigation
 3. Risk re-evaluation
 
-### Risk Assessment
+##### Risk Assessment
 
 - Identify area of having high risk
 - 3 elements of risk:
@@ -107,11 +107,11 @@ Multiply on matrix ->
 
 ![[risk5.png]]
 
-## Risk Management Process 2 - Risk Mitigation
+#### Risk Management Process 2 - Risk Mitigation
 
 Risk mitigation means reduce the risks using controls.
 
-### Risk mitigation example:
+##### Risk mitigation example:
 
 How can we reduce the risk of cyber hacking ?
 
@@ -146,7 +146,7 @@ not doing e-banking leads to lose customer DONT PREFERRED.
 
 **Remember cannot eliminate**
 
-## Risk Management Process 3 - Risk Re-evaluation
+### Risk Management Process 3 - Risk Re-evaluation
 
 **When are we doing risk evaluation?**
 
@@ -157,9 +157,9 @@ Two different scenarios that we do risk re-evaluation.
 
 Japan earthquake (nuclear plant melt down) -> envrionment change example
 
-# Internal Controls of Information Systems (IS)
+#### Internal Controls of Information Systems (IS)
 
-## 1.6 Identify Internal Controls
+#### 1.6 Identify Internal Controls
 
 ![[risk10.png]]
 
@@ -223,4 +223,173 @@ Why 9 is before 10 ?
 
 ## 1.7 Internal Controls Examples
 
+**How to identify controls?**
 
+*Step1:* Classify which control is primary -> Preventative, Detective, Corrective
+
+*Step2:* Explain how and what **risks** do the control address ->
+
+*Step3:* Analyse whether different controls can be applied to different situation.
+
+**Internal Controls Example-1**
+
+Encryption software
+
+-> 1. Preventative
+-> 2. Prevent revealing confidential information
+
+**Internal Controls Example-2**
+
+Job Rotation
+
+-> Preventative Control
+-> Prevent the knowledge of the system by a single employee only
+-> Detective Control e.g: Banking, Societe Generale case
+
+**Internal Controls Example-3**
+
+System backup & restoration
+
+-> Corrective Control
+-> Backup & restore the system when needed 
+-> May be as preventative control against data loss
+
+**Internal Controls Example-4**
+
+Password
+
+-> Preventative control
+-> Prevent danger of privileged user accounts
+
+**Internal Controls Example-5**
+
+A log of user
+
+-> Detective control
+-> Record & Track user activities
+(e.g money transaction amount, date, time & user's authorization as audit trail)
+
+**Internal Controls Example-6**
+
+Security Awareness Training
+
+-> Preventative control
+-> Prevent security breaches caused by the failures of personnel (Esp. Single point of failure)
+
+**Internal Controls Example-7**
+
+Close circuit monitoring system (CCTV)
+
+-> Detective controls 
+-> Detect unusual activites
+-> Preventative to deter employees from committing computer frauds
+
+**Internal Controls Example-8**
+
+Data entry controls
+
+ID: missing ID
+
+-> Preventative control
+-> Ensure accuracy & integrity of transaction data entry
+
+## Perform IS Auditing
+
+### General IS Audit Procedures
+
+![[procedures1.png]]
+
+#### Understanding of the audit areas/subjects
+
+**Audit areas** (financial area, airline, healthcare)
+- Sensitive Information
+- Common risk
+- Regulations
+- General IT architecture
+- Control breach
+
+**Audit subjects**
+- Sensitive Information
+- Policies and procedures
+- Business practices
+- IT architecture
+- Outsource?
+- Interview key managers
+- Tour key organization facility
+- Prior audit report
+- Environment change
+
+### Compliance Testing and Substantive Testing
+
+**What is compliance testing?**
+
+Determine whether employees follow **policies & procedures** of senior management and **laws & regulation** from regulators.
+
+**Example of IT compliance**
+
+**Policy:** Change password 1-3 months
+
+**Compliance testing:** Check if employees follow this policy.
+
+#### Classical case that leads to new policy
+
+Bank account balance: $123.45
+
+Actual bank account balance: $123.456789
+
+6789 -> collected by programmer
+
+Come up with new controls (policy) to reduce the risk of this kind of things happens. -> Change management
+
+![[procedures2.png]]
+
+![[procedures3.png]]
+
+**Substantive testing:** Detailed analysis of the line of codes.
+
+![[procedures4.png]]
+
+In a normal situation, if *compliance testing pass* we don't have to do *substantive testing*. 
+
+#### What if the company has weak or no internal controls?
+
+Compliance testing (pass) -> Substantive testing (still require)
+
+There should be policy of change management. Control of change management should be there but it is not there.
+
+|Scenario|Audit Approach|
+|---|---|
+|Good policy + **Bad control design**|Controls are weak by design → Compliance testing is meaningless → **Substantive testing MANDATORY** ✓|
+|Good policy + Good design + Not followed|Compliance testing is performed first, then substantive testing follows based on results|
+|No policy|Nothing to test in this case, different category entirely|
+### Evidence
+
+**How can we obtain evidence?**
+
+Compliance officer observations, Notes from interview, Internal documentation, Contract with external parties, result of compliance test, re-performance, confirmation
+
+![[procedures5.png]]
+
+![[procedures6.png]]
+
+![[procedures7.png]]
+
+![[procedures8.png]]
+
+##### **What are the determinants to evaluate evidence?**
+
+- **Independence** of the provider of the evidence
+
+- **Qualification** of the individual providing the information or evidence
+
+- **Objectivity** of the evidence
+
+- **Timing** of the evidence
+
+##### What are the techniques to get evidence?
+
+1. Review IS organization structures
+2. Review IS policies and procedures
+3. Review IS documentation
+4. Interview appropriate personnel
+5. Observe processes and employee performance
