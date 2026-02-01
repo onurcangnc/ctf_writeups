@@ -77,7 +77,7 @@ Fast fuzzing for directories, files, parameters, headers, POST data.
 |---|---|
 |URL Encoding|`<script>` → `%3Cscript%3E`|
 |Double Encoding|`<` → `%253C`|
-|Case Changing|`<ScRiPt>`, `SeLeCt`, `UniOn`|
+|Case Changing|`<ScRiPt>`, `SeLeCt>`, `UniOn`|
 |Content-Type Manipulation|Change header, add charsets|
 
 ---
