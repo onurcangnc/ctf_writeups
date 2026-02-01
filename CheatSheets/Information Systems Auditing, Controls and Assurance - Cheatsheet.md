@@ -178,3 +178,68 @@ Two different scenarios that we do risk re-evaluation:
 ---
 
 # Identify Internal Controls
+
+## Feasibility and Requirements
+
+**Why develop new application ?**
+- New opportunity to new/existing business process
+- Problem found in business process
+- New opportunity to take advantage of technology (e.g. FinTech)
+- Problem with current technology
+
+**Software Development Lifecycle**
+
+![[sdlc.png]]
+
+Traditional system development lifecycle approach
+
+**Phase 1 - Feasibility** -> **Phase 2 - Requirements** -> **Phase 3A - Design** -> **Phase 3B -Selection** -> **Phase 4A - Development** -> **Phase 4B - Configuration** -> **Phase 5 - Implementation** ->
+-> **Phase 6 - Post Implementation**
+
+![[sdlc2.png]]
+
+**In these SDLC phases, which one is the most important one ?**
+
+The most important phase is phase 2 which is the requirement phase.
+
+*Note:* If we don't do well in the phase 2, our entire system development would be a failure.
+
+**What is feasibility study ?**
+Yes, there are three different ones. We call them operational feasibility, technical feasibility, and economic feasibility.
+### Phase 1 - Feasibility
+- **Operational Feasibility:** Operational feasibility means whether that system is being developed whether we can operate within our organization, whether we have software or hardware to operate the system.
+- **Technical Feasibility:** Technical feasibility means whether we have expertise to develop system, as well as maintain systems within ourselves.
+- **Economic Feasibility:** The system gives you an economic benefit. That's something that we look at economic feasibility.
+
+**What is the definition of requirements ?**
+We are trying to find out what is needed for the users because most important people for a system are whoever use the system.
+### Phase 2 - Requirements
+- Identify & specify business requirements during feasibility study
+- Description, users interaction, operation conditions & information criteria.
+
+They could be your employee, customers that means if you are developing a banking system,
+Whoever it is, the person that uses a system day in day out. If they aren't happy with your new system development, no matter how good you think the system is, system will be retired very soon. So the most important thing are the users, what they feel about.
+
+## Design and Selection
+
+**What do you think? What's the difference between 3A and 3B?**
+
+- 3A means we develop in house
+- 3B means we do outsource the system development
+
+![[sdlc3.png]]
+
+what are the different ways for us to have a system in our place ? What we can do is one thing, we can develop the system by ourselves, we call it in house development or we can outsource it that means we can ask someone.
+
+1) Just by package and use exactly as it is.
+2) There is a package out there ,but package does not really fit to your organization, your business process, your business need. We asked them to modify the package to a certain extent so that the package will be fit to use into your system.
+3) There is no package. Your system is very unique, something like financial technology, you ask someone else to develop a system, brand new system and give it to us.
+
+### Phase 3A - Design
+
+- In house development 
+### Phase 3B - Selection
+
+- Outsource development
+
+**Careful:** If you outsource the system development, whatever the future maintenance means fixing the bug, adding a new feature, you cannot do it by yourself you won't get the source codes.

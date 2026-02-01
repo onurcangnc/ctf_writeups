@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CheatSheets/Information Systems Auditing, Controls and Assurance.md",
+                "file": "CheatSheets/Information Systems Auditing, Controls and Assurance - Cheatsheet.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Information Systems Auditing, Controls and Assurance"
+              "title": "Information Systems Auditing, Controls and Assurance - Cheatsheet"
             }
           }
         ]
@@ -182,6 +182,9 @@
   },
   "active": "e696a2ed0d262cfc",
   "lastOpenFiles": [
+    "CheatSheets/images/sdlc3.png",
+    "CheatSheets/images/sdlc2.png",
+    "CheatSheets/images/sdlc.png",
     "CheatSheets/images/procedures8.png",
     "CheatSheets/images/procedures7.png",
     "CheatSheets/images/procedures7.png",
@@ -191,9 +194,6 @@
     "CheatSheets/images/procedures4.png",
     "CheatSheets/images/procedures3.png",
     "CheatSheets/images/procedures2.png",
-    "CheatSheets/images/procedures2.png",
-    "CheatSheets/images/procedures1.png",
-    "CheatSheets/images/controls2.png",
     "CheatSheets/TryHackMe - Attacking LLMs.md",
     "Medium/C-AI MLPen/My C AI MLPen Exam Review.md",
     "Medium/C-AI MLPen/images",
