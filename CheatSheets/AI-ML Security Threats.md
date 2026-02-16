@@ -6,6 +6,8 @@
 
 ### AI Hierarchy
 
+![[ai9.png]]
+
 ```
 AI (Artificial Intelligence) ─ Computers behaving like humans
  └── ML (Machine Learning) ─ Learning from data without explicit instructions
@@ -19,6 +21,8 @@ AI (Artificial Intelligence) ─ Computers behaving like humans
 
 **Definition:** A computer's ability to learn from data without being given instructions. Comparable to how the human brain learns. Over time, with more data, algorithms improve accuracy and decisions.
 
+![[ai1.png]]
+
 **ML Lifecycle:**
 
 |Phase|Description|
@@ -31,9 +35,13 @@ AI (Artificial Intelligence) ─ Computers behaving like humans
 |6. Deployment|Production environment (e.g., real-time email classification)|
 |7. Monitoring|Ongoing accuracy checks, trigger retraining when needed|
 
+![[ai2.png]]
+
 > ⚠️ **Overfitting:** Model's familiarity with training data causes failure to make generalizations on unseen/raw data
 
 **ML Algorithm Components:**
+
+![[ai3.png]]
 
 |Component|Function|
 |---|---|
@@ -56,6 +64,8 @@ AI (Artificial Intelligence) ─ Computers behaving like humans
 
 ### Neural Networks
 
+![[ai4.png]]
+
 **Human Brain Analogy:**
 
 |Brain|Neural Network|
@@ -63,6 +73,8 @@ AI (Artificial Intelligence) ─ Computers behaving like humans
 |Neuron (cell for transmitting communications)|Node|
 |Synapse (connection for electrical/chemical signals)|Connection (with weight)|
 |Learning by adjusting connection strengths|Training adjusts weights based on patterns|
+
+![[ai5.png]]
 
 **Layer Structure:**
 
@@ -83,6 +95,8 @@ AI (Artificial Intelligence) ─ Computers behaving like humans
 ---
 
 ### Deep Learning vs Machine Learning
+
+![[ai6.png]]
 
 |Feature|ML|DL|
 |---|---|---|
@@ -107,6 +121,8 @@ AI (Artificial Intelligence) ─ Computers behaving like humans
 **Definition:** Deep learning-based AI models that can process and generate text by predicting the next word in a sequence.
 
 **Example - Next Word Prediction:**
+
+![[ai8.png]]
 
 ```
 Input:  "Ever have that feeling where you're not sure if you're awake or ____"
@@ -163,6 +179,8 @@ Transformer determines what "it" refers to: "the bank" or "the loan"?
 - Query is fed → Trained model predicts next word → Repeat → Complete response
 
 ### Generative AI
+
+![[ai7.png]]
 
 **Definition:** Products built on LLMs that create original text-based content (ChatGPT, LLaMA)
 
