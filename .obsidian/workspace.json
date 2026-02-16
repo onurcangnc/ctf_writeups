@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "bdc9cc76b21b5124",
+        "id": "9b3a4eb2ebf75c81",
         "type": "tabs",
         "children": [
           {
-            "id": "e2b7e001235fd4e8",
+            "id": "a1142316248ce8fa",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 275.5
   },
   "right": {
     "id": "9585b294357bcf2a",
@@ -180,20 +180,22 @@
       "bases:Create new base": false
     }
   },
-  "active": "e696a2ed0d262cfc",
+  "active": "a1142316248ce8fa",
   "lastOpenFiles": [
-    "CheatSheets/images/sdlc3.png",
-    "CheatSheets/images/sdlc2.png",
-    "CheatSheets/images/sdlc.png",
-    "CheatSheets/images/procedures8.png",
-    "CheatSheets/images/procedures7.png",
-    "CheatSheets/images/procedures7.png",
-    "CheatSheets/images/procedures6.png",
+    "CheatSheets/Information Systems Auditing, Controls and Assurance - Cheatsheet.md",
+    "CheatSheets/images/procedures21.png",
+    "CheatSheets/images/procedures20.png",
+    "CheatSheets/images/procedures19.png",
+    "CheatSheets/images/procedures18.png",
+    "CheatSheets/images/procedures17.png",
+    "CheatSheets/images/procedures16.png",
+    "CheatSheets/images/procedures15.png",
+    "CheatSheets/images/procedures14.png",
+    "CheatSheets/images/procedures13.png",
+    "CheatSheets/images/procedures11.png",
+    "CheatSheets/CyberWarfare Labs - Web Red Team Analyst (WEB-RTA).md",
+    "CheatSheets/llm_prompting.md",
     "CheatSheets/Information Systems Auditing, Controls and Assurance.md",
-    "CheatSheets/images/procedures5.png",
-    "CheatSheets/images/procedures4.png",
-    "CheatSheets/images/procedures3.png",
-    "CheatSheets/images/procedures2.png",
     "CheatSheets/TryHackMe - Attacking LLMs.md",
     "Medium/C-AI MLPen/My C AI MLPen Exam Review.md",
     "Medium/C-AI MLPen/images",
