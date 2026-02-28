@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI/ML Security Threats - Complete Cheatsheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
+    :root {
+        --bg-primary: #1A1915;
+        --bg-surface: #21201C;
+        --bg-elevated: #2A2924;
+        --bg-code: #252420;
+        --accent: #D4A27F;
+        --accent-hover: #E0B595;
+        --accent-dim: #B8896A;
+        --text-primary: #EDEDEC;
+        --text-secondary: #A8A8A4;
+        --text-muted: #706F6C;
+        --border: #3D3D37;
+        --border-subtle: #2E2E29;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Source Serif 4', 'Georgia', serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.8;
+        padding: 48px 24px 80px;
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1.0625rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 48px;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+
+    h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: var(--text-primary);
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin: 56px 0 16px;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 40px 0 12px;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 32px 0 8px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-dim);
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    a:hover {
+        color: var(--accent-hover);
+        border-bottom-color: var(--accent-hover);
+    }
+
+    strong { font-weight: 600; color: var(--text-primary); }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 32px 0;
+        border: 1px solid var(--border);
+    }
+
+    code {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        color: var(--accent);
+        border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+        background: var(--bg-surface);
+        padding: 20px 24px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 28px 0;
+        border: 1px solid var(--border);
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text-primary);
+        font-size: 0.8125rem;
+        line-height: 1.7;
+    }
+
+    blockquote {
+        border-left: 2px solid var(--accent-dim);
+        padding: 4px 0 4px 24px;
+        margin: 28px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    blockquote p { margin-bottom: 8px; }
+
+    ul, ol {
+        margin: 16px 0 20px 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        padding-left: 4px;
+    }
+
+    li::marker {
+        color: var(--text-muted);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 28px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover td { background: var(--bg-surface); }
+
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border-subtle);
+        margin: 48px 0;
+    }
+
+    .meta {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-subtle);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    ::selection {
+        background: rgba(212, 162, 127, 0.25);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+        body { padding: 32px 16px 60px; font-size: 1rem; }
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.25rem; margin-top: 40px; }
+        pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
+    }
+</style>
+
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2026-02-28</span>
+        <span class="meta-item">📂 CheatSheets</span>
+    </div>
+    <article>
+        <h1>AI/ML Security Threats - Complete Cheatsheet</h1>
+
+<hr />
+
+<h2>🧠 PART 1: AI BUILDING BLOCKS</h2>
+
+<h3>AI Hierarchy</h3>
+
+<p><img src="./images/ai9.png" alt="ai9.png" /></p>
+
+<pre><code>AI (Artificial Intelligence) ─ Computers behaving like humans
+ └── ML (Machine Learning) ─ Learning from data without explicit instructions
+      └── DL (Deep Learning) ─ 3+ layer neural networks, processes unlabeled data
+           └── LLMs ─ Transformer-based, generates text (GPT, LLaMA)
+</code></pre>
+
+<hr />
+
+<h3>Machine Learning</h3>
+
+<p><strong>Definition:</strong> A computer's ability to learn from data without being given instructions. Comparable to how the human brain learns. Over time, with more data, algorithms improve accuracy and decisions.</p>
+
+<p><img src="./images/ai1.png" alt="ai1.png" /></p>
+
+<p><strong>ML Lifecycle:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Phase</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1. Problem Definition</td>
+  <td>What to solve? (e.g., is email spam?)</td>
+</tr>
+<tr>
+  <td>2. Data Collection</td>
+  <td>Collect, clean, and prepare data</td>
+</tr>
+<tr>
+  <td>3. Feature Engineering</td>
+  <td>Extract meaningful patterns</td>
+</tr>
+<tr>
+  <td>4. Model Training</td>
+  <td>Train using selected algorithm</td>
+</tr>
+<tr>
+  <td>5. Evaluation &amp; Tuning</td>
+  <td>Optimize performance</td>
+</tr>
+<tr>
+  <td>6. Deployment</td>
+  <td>Production environment (e.g., real-time email classification)</td>
+</tr>
+<tr>
+  <td>7. Monitoring</td>
+  <td>Ongoing accuracy checks, trigger retraining when needed</td>
+</tr>
+</tbody>
+</table>
+
+<p><img src="./images/ai2.png" alt="ai2.png" /></p>
+
+<blockquote>
+  <p>⚠️ <strong>Overfitting:</strong> Model's familiarity with training data causes failure to make generalizations on unseen/raw data</p>
+</blockquote>
+
+<p><strong>ML Algorithm Components:</strong></p>
+
+<p><img src="./images/ai3.png" alt="ai3.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Component</th>
+  <th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Decision Process</td>
+  <td>Makes predictions/classifications based on input data</td>
+</tr>
+<tr>
+  <td>Error Function</td>
+  <td>Evaluates performance and provides feedback</td>
+</tr>
+<tr>
+  <td>Model Optimization</td>
+  <td>Fine-tunes algorithm to minimize errors and improve accuracy</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h3>ML Algorithm Types</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Type</th>
+  <th>Data</th>
+  <th>How It Works</th>
+  <th>Example Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Supervised</strong></td>
+  <td>Labeled</td>
+  <td>Classification or regression tasks</td>
+  <td>House price prediction, spam identification</td>
+</tr>
+<tr>
+  <td><strong>Unsupervised</strong></td>
+  <td>Unlabeled</td>
+  <td>Discovers hidden patterns (clustering, association, dimensionality reduction)</td>
+  <td>Anomaly detection</td>
+</tr>
+<tr>
+  <td><strong>Semi-supervised</strong></td>
+  <td>Small labeled + large unlabeled</td>
+  <td>Labeled data guides learning process</td>
+  <td>—</td>
+</tr>
+<tr>
+  <td><strong>Reinforcement</strong></td>
+  <td>Reward/Penalty</td>
+  <td>Rewards correct decisions, penalizes mistakes</td>
+  <td>Game AI, robotics</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h3>Neural Networks</h3>
+
+<p><img src="./images/ai4.png" alt="ai4.png" /></p>
+
+<p><strong>Human Brain Analogy:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Brain</th>
+  <th>Neural Network</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Neuron (cell for transmitting communications)</td>
+  <td>Node</td>
+</tr>
+<tr>
+  <td>Synapse (connection for electrical/chemical signals)</td>
+  <td>Connection (with weight)</td>
+</tr>
+<tr>
+  <td>Learning by adjusting connection strengths</td>
+  <td>Training adjusts weights based on patterns</td>
+</tr>
+</tbody>
+</table>
+
+<p><img src="./images/ai5.png" alt="ai5.png" /></p>
+
+<p><strong>Layer Structure:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Layer</th>
+  <th>Function</th>
+  <th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Input Layer</strong></td>
+  <td>Receives raw data</td>
+  <td>4x4 pixel image → 16 nodes</td>
+</tr>
+<tr>
+  <td><strong>Hidden Layers</strong></td>
+  <td>Process and refine input</td>
+  <td>Early layers: edges/curves, Deeper layers: combine patterns</td>
+</tr>
+<tr>
+  <td><strong>Output Layer</strong></td>
+  <td>Produces final prediction</td>
+  <td>10 nodes (one per digit 0-9)</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Weight:</strong> Determines importance of each connection. Example: In email classification, body text might have more weight than subject line.</p>
+
+<p><strong>Digit Recognition Example:</strong></p>
+
+<ul>
+<li>Lines may suggest 1 or 7</li>
+<li>Curves increase likelihood of 3, 8, or 0</li>
+<li>Output layer selects most likely number based on highest prediction value</li>
+</ul>
+
+<hr />
+
+<h3>Deep Learning vs Machine Learning</h3>
+
+<p><img src="./images/ai6.png" alt="ai6.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Feature</th>
+  <th>ML</th>
+  <th>DL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Layers</td>
+  <td>≤3</td>
+  <td>&gt;3 (hence "deep")</td>
+</tr>
+<tr>
+  <td>Data type</td>
+  <td>Usually labeled</td>
+  <td>Labeled or unlabeled</td>
+</tr>
+<tr>
+  <td>Human intervention</td>
+  <td>Required</td>
+  <td>Minimal (self-learning)</td>
+</tr>
+<tr>
+  <td>Scalability</td>
+  <td>Limited</td>
+  <td>High ("scalable ML")</td>
+</tr>
+<tr>
+  <td>Feature extraction</td>
+  <td>Manual</td>
+  <td>Automatic</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Why DL Exploded in the Last Decade:</strong></p>
+
+<ol>
+<li>Mass digitization → Large data availability</li>
+<li>GPU advancements → Parallel processing capability</li>
+<li>Neural network research breakthroughs</li>
+</ol>
+
+<hr />
+
+<h2>🤖 PART 2: LLMs (Large Language Models)</h2>
+
+<h3>What is an LLM?</h3>
+
+<p><strong>Definition:</strong> Deep learning-based AI models that can process and generate text by predicting the next word in a sequence.</p>
+
+<p><strong>Example - Next Word Prediction:</strong></p>
+
+<p><img src="./images/ai8.png" alt="ai8.png" /></p>
+
+<pre><code>Input:  "Ever have that feeling where you're not sure if you're awake or ____"
+Output: Model predicts the most likely next word
+</code></pre>
+
+<h3>How LLMs Work</h3>
+
+<p><strong>Phase 1: Pre-training</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Feature</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Data amount</td>
+  <td>GPT-3: Would take a human 2,600 years to read nonstop</td>
+</tr>
+<tr>
+  <td>Parameters</td>
+  <td>Billions (function like puzzle pieces)</td>
+</tr>
+<tr>
+  <td>Process</td>
+  <td>Fine-tuned automatically as model processes text</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Phase 2: Backpropagation</strong></p>
+
+<pre><code>Initial guess: "awake or egg" ❌
+     ↓
+Compare with correct answer
+     ↓
+Adjust parameters (increase correct word probability, decrease incorrect)
+     ↓
+Repeat trillions of times
+     ↓
+Accurately predict both training data and raw unseen data
+</code></pre>
+
+<p><strong>Phase 3: Transformer Neural Networks</strong></p>
+
+<ul>
+<li><strong>Source:</strong> Google's 2017 paper "Attention is All You Need"</li>
+<li><strong>Innovation:</strong> Parallel text processing instead of sequential word-by-word analysis</li>
+<li><strong>Attention Mechanism:</strong> Assigns "attention" to key words, improving contextual understanding</li>
+</ul>
+
+<p><strong>Attention Example:</strong></p>
+
+<pre><code>"The bank approved the loan because it was financially stable."
+                                    ↑
+Transformer determines what "it" refers to: "the bank" or "the loan"?
+→ Calculates attention scores to correctly interpret ambiguous references
+</code></pre>
+
+<p><strong>Phase 4: RLHF (Reinforcement Learning from Human Feedback)</strong></p>
+
+<ul>
+<li>Human reviewers evaluate predictions</li>
+<li>Unhelpful or problematic responses are flagged</li>
+<li>Parameters adjusted accordingly</li>
+</ul>
+
+<p><strong>Phase 5: Deployment &amp; Usage</strong></p>
+
+<ul>
+<li>Query is fed → Trained model predicts next word → Repeat → Complete response</li>
+</ul>
+
+<h3>Generative AI</h3>
+
+<p><img src="./images/ai7.png" alt="ai7.png" /></p>
+
+<p><strong>Definition:</strong> Products built on LLMs that create original text-based content (ChatGPT, LLaMA)</p>
+
+<p><strong>Scope:</strong> Extends beyond text → images, music, and more</p>
+
+<hr />
+
+<h2>🚨 PART 3: AI SECURITY THREATS</h2>
+
+<h3>Two Categories:</h3>
+
+<ol>
+<li><strong>Vulnerabilities in AI Models</strong> - New threats introduced by AI technology</li>
+<li><strong>Enhanced Attacks</strong> - Existing attacks leveraging AI</li>
+</ol>
+
+<h3>Framework: MITRE ATLAS</h3>
+
+<ul>
+<li>AI-focused version of ATT&amp;CK framework</li>
+<li>Link: <a href="https://atlas.mitre.org/matrices/ATLAS">atlas.mitre.org/matrices/ATLAS</a></li>
+</ul>
+
+<hr />
+
+<h3>1️⃣ Vulnerabilities in AI Models</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Vulnerability</th>
+  <th>Description</th>
+  <th>Example Scenario</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Prompt Injection</strong></td>
+  <td>Original instructions to model are overridden</td>
+  <td>RPG chatbot prompt: "Do not disclose any information about hardware/software or training steps" → Attacker overrides for malicious purposes</td>
+</tr>
+<tr>
+  <td><strong>Data Poisoning</strong></td>
+  <td>Attacker manipulates training data/corpus → incorrect or biased output</td>
+  <td>Manipulate spam filter training data → Attacker's spam emails bypass AI filter</td>
+</tr>
+<tr>
+  <td><strong>Model Theft</strong></td>
+  <td>Unauthorized access to AI model → steal IP or use maliciously</td>
+  <td>Query ML model API repeatedly → Use output to train clone model mimicking original</td>
+</tr>
+<tr>
+  <td><strong>Privacy Leakage</strong></td>
+  <td>AI model inadvertently reveals sensitive information from training data</td>
+  <td>Model trained on private medical data (patient details, conditions) → Leaks to attacker/user</td>
+</tr>
+<tr>
+  <td><strong>Model Drift</strong></td>
+  <td>Model's performance drifts over time due to data/environment changes</td>
+  <td>Model trained on historical data performs poorly on new data</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h3>2️⃣ Enhanced Attacks</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Attack</th>
+  <th>Traditional</th>
+  <th>AI-Enhanced</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Malware</strong></td>
+  <td>Manual code writing</td>
+  <td>Instant automatic malware generation</td>
+</tr>
+<tr>
+  <td><strong>Deepfakes</strong></td>
+  <td>Difficult and labor-intensive</td>
+  <td>High-accuracy voice/image replication → Authentication bypass</td>
+</tr>
+<tr>
+  <td><strong>Phishing</strong></td>
+  <td>Often broken English, generic content</td>
+  <td>Fluent, detailed, context-based, personalized emails</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Deepfake Threat Scenario:</strong></p>
+
+<pre><code>Secretary ← Receives voice message/video call from "superior"
+         ← "Forward confidential customer information to this email"
+         ← Actually a deepfake, "customer email" belongs to attacker
+</code></pre>
+
+<p>Real-world example: Deepfake video interviews → Fraudulent job offers</p>
+
+<p><strong>Phishing Enhancement:</strong></p>
+
+<ul>
+<li>Traditional: Poor writing, generic → Detectable by instinct</li>
+<li>AI-powered: Detailed, fluent, context-based, regardless of attacker's writing abilities → Much harder to spot</li>
+<li>Note: Models like GPT have built-in mechanics to stop malicious content, but attackers bypass using model vulnerabilities (prompt engineering)</li>
+</ul>
+
+<hr />
+
+<h2>🛡️ PART 4: DEFENSIVE AI</h2>
+
+<h3>AI Capabilities in Defense</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Capability</th>
+  <th>Application</th>
+  <th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Prediction</strong></td>
+  <td>Phishing detection</td>
+  <td>Trained on countless phishing examples → Recognizes patterns humans miss → Automates blocking</td>
+</tr>
+<tr>
+  <td><strong>Analysis</strong></td>
+  <td>Intrusion Detection</td>
+  <td>Analyze network traffic patterns to identify unusual activity indicating cyber attack</td>
+</tr>
+<tr>
+  <td><strong>Summarization</strong></td>
+  <td>Incident reports</td>
+  <td>Summarize documents/incidents in minutes, draw correlations we may not have picked up on</td>
+</tr>
+<tr>
+  <td><strong>Investigation</strong></td>
+  <td>Log analysis, root cause</td>
+  <td>Query chatbots in natural language → Provide queries for diagnosis, help with incident triage</td>
+</tr>
+<tr>
+  <td><strong>Threat Hunting</strong></td>
+  <td>Attack scenario generation</td>
+  <td>Think of potential avenues attackers would take that humans wouldn't have thought of</td>
+</tr>
+<tr>
+  <td><strong>Content Generation</strong></td>
+  <td>Detection rules, regex</td>
+  <td>Generate technical resources instantly</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h3>🔐 Secure AI - Best Practices</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Practice</th>
+  <th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Securing AI Models</strong></td>
+  <td>Strict access controls, RBAC, MFA to restrict unauthorized access</td>
+</tr>
+<tr>
+  <td><strong>Privacy Protection</strong></td>
+  <td>Encrypt training data (treat as sensitive data)</td>
+</tr>
+<tr>
+  <td><strong>AI Security Standards</strong></td>
+  <td>Implement ISO/IEC 27090 for identifying and mitigating AI-specific threats</td>
+</tr>
+<tr>
+  <td><strong>Model Monitoring</strong></td>
+  <td>Detect unexpected behavior, biases, anomalies indicating security attack</td>
+</tr>
+<tr>
+  <td><strong>Explainability Tools</strong></td>
+  <td>Use SHAP and LIME for monitoring</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p>⚠️ <strong>IBM Report:</strong> Only <strong>24%</strong> of Gen AI initiatives are secured</p>
+</blockquote>
+
+<hr />
+
+<h2>💻 PART 5: PRACTICAL AI PROMPTS (PAYLOADS)</h2>
+
+<h3>1. Log Analysis</h3>
+
+<p><strong>Prompt:</strong></p>
+
+<pre><code>Here's a logline:
+
+Apr 22 11:45:09 ubuntu sshd[1245]: Failed password for invalid user admin from 203.0.113.55 port 56231 ssh2
+
+Can you explain what is happening in this log entry?
+</code></pre>
+
+<hr />
+
+<h3>2. Phishing Email Detection</h3>
+
+<p><strong>Prompt:</strong></p>
+
+<pre><code>Here's a suspicious email. Can you identify if it's a phishing attempt and explain why?
+
+Example Email
+</code></pre>
+
+<p><strong>Sample Phishing Email:</strong></p>
+
+<pre><code>Subject: Urgent: Account Verification Needed
+
+Dear User,
+
+We've detected unusual login activity on your company Microsoft 365 account from a new device in Frankfurt, Germany. For your security, we've temporarily suspended access.
+
+To restore access, please verify your identity within the next 12 hours by visiting the secure link below:
+
+https://microsoft365-support-verify.com/login
+
+If you do not verify your account, it will remain locked and you may lose access to important work files and emails.
+
+Thank you for your cooperation.
+
+Microsoft 365 Support Team
+security@m1crosoft365-security.com
+</code></pre>
+
+<p><strong>Red Flags to Identify:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Indicator</th>
+  <th>Issue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Domain</td>
+  <td><code>microsoft365-support-verify.com</code> (fake)</td>
+</tr>
+<tr>
+  <td>Email address</td>
+  <td><code>m1crosoft365</code> (typosquatting - "1" instead of "i")</td>
+</tr>
+<tr>
+  <td>Urgency</td>
+  <td>"within the next 12 hours"</td>
+</tr>
+<tr>
+  <td>Generic greeting</td>
+  <td>"Dear User"</td>
+</tr>
+<tr>
+  <td>Threat</td>
+  <td>"you may lose access"</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h3>3. Threat Hunting Scenarios</h3>
+
+<p><strong>Prompt:</strong></p>
+
+<pre><code>Can you suggest three realistic threat hunting scenarios that a cyber security analyst should investigate within a corporate network environment?
+</code></pre>
+
+<hr />
+
+<h3>4. Content Generation (Regex)</h3>
+
+<p><strong>Prompt:</strong></p>
+
+<pre><code>Please write a regex pattern that would match failed SSH login attempts in a typical Linux system authentication log.
+</code></pre>
+
+<hr />
+
+<h2>🏁 THM FLAG</h2>
+
+<p><strong>Format:</strong> <code>thm{DoH port/SYN flood timeout/ephemeral port range size}</code></p>
+
+<p><strong>Prompt:</strong></p>
+
+<pre><code>What are these values:
+
+DoH port, SYN flood timeout and ephemeral port range size?
+</code></pre>
+
+<p><strong>Answers:</strong></p>
+
+<table>
+<thead>
+<tr>
+  <th>Value</th>
+  <th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>DoH (DNS over HTTPS) port</td>
+  <td>443</td>
+</tr>
+<tr>
+  <td>SYN flood timeout</td>
+  <td>75 (seconds)</td>
+</tr>
+<tr>
+  <td>Ephemeral port range size</td>
+  <td>16384 (range: 49152-65535)</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Flag:</strong> <code>thm{443/75/16384}</code></p>
+
+<hr />
+
+<h2>📊 QUICK REFERENCE TABLES</h2>
+
+<h3>AI/ML/DL Comparison</h3>
+
+<table>
+<thead>
+<tr>
+  <th></th>
+  <th>AI</th>
+  <th>ML</th>
+  <th>DL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Scope</td>
+  <td>Broadest</td>
+  <td>Subset of AI</td>
+  <td>Subset of ML</td>
+</tr>
+<tr>
+  <td>Learning</td>
+  <td>Can be rule-based</td>
+  <td>From data</td>
+  <td>From data (self-learning)</td>
+</tr>
+<tr>
+  <td>Data requirement</td>
+  <td>Variable</td>
+  <td>Medium</td>
+  <td>Very high</td>
+</tr>
+<tr>
+  <td>Human intervention</td>
+  <td>High</td>
+  <td>Medium</td>
+  <td>Low</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Threat Summary</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Threat Type</th>
+  <th>Target</th>
+  <th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Prompt Injection</td>
+  <td>Model behavior</td>
+  <td>Input validation, guardrails</td>
+</tr>
+<tr>
+  <td>Data Poisoning</td>
+  <td>Training data</td>
+  <td>Data integrity checks</td>
+</tr>
+<tr>
+  <td>Model Theft</td>
+  <td>IP/Model</td>
+  <td>Access control, rate limiting</td>
+</tr>
+<tr>
+  <td>Privacy Leakage</td>
+  <td>Training data</td>
+  <td>Differential privacy, encryption</td>
+</tr>
+<tr>
+  <td>Model Drift</td>
+  <td>Model accuracy</td>
+  <td>Continuous monitoring, retraining</td>
+</tr>
+<tr>
+  <td>AI-enhanced Malware</td>
+  <td>Systems</td>
+  <td>AI-powered detection</td>
+</tr>
+<tr>
+  <td>Deepfakes</td>
+  <td>Authentication</td>
+  <td>Multi-factor verification</td>
+</tr>
+<tr>
+  <td>AI Phishing</td>
+  <td>Users</td>
+  <td>AI-powered email filtering</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Key Statistics</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Stat</th>
+  <th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>GPT-3 training data reading time (human)</td>
+  <td>2,600 years</td>
+</tr>
+<tr>
+  <td>Gen AI initiatives properly secured</td>
+  <td>24%</td>
+</tr>
+<tr>
+  <td>Neural network layers for "deep" classification</td>
+  <td>&gt;3</td>
+</tr>
+</tbody>
+</table>
+
+    </article>
+</body>
+</html>

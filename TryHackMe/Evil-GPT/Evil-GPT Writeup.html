@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evil Gpt Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
+    :root {
+        --bg-primary: #1A1915;
+        --bg-surface: #21201C;
+        --bg-elevated: #2A2924;
+        --bg-code: #252420;
+        --accent: #D4A27F;
+        --accent-hover: #E0B595;
+        --accent-dim: #B8896A;
+        --text-primary: #EDEDEC;
+        --text-secondary: #A8A8A4;
+        --text-muted: #706F6C;
+        --border: #3D3D37;
+        --border-subtle: #2E2E29;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Source Serif 4', 'Georgia', serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.8;
+        padding: 48px 24px 80px;
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1.0625rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 48px;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+
+    h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: var(--text-primary);
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin: 56px 0 16px;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 40px 0 12px;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 32px 0 8px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-dim);
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    a:hover {
+        color: var(--accent-hover);
+        border-bottom-color: var(--accent-hover);
+    }
+
+    strong { font-weight: 600; color: var(--text-primary); }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 32px 0;
+        border: 1px solid var(--border);
+    }
+
+    code {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        color: var(--accent);
+        border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+        background: var(--bg-surface);
+        padding: 20px 24px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 28px 0;
+        border: 1px solid var(--border);
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text-primary);
+        font-size: 0.8125rem;
+        line-height: 1.7;
+    }
+
+    blockquote {
+        border-left: 2px solid var(--accent-dim);
+        padding: 4px 0 4px 24px;
+        margin: 28px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    blockquote p { margin-bottom: 8px; }
+
+    ul, ol {
+        margin: 16px 0 20px 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        padding-left: 4px;
+    }
+
+    li::marker {
+        color: var(--text-muted);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 28px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover td { background: var(--bg-surface); }
+
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border-subtle);
+        margin: 48px 0;
+    }
+
+    .meta {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-subtle);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    ::selection {
+        background: rgba(212, 162, 127, 0.25);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+        body { padding: 32px 16px 60px; font-size: 1rem; }
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.25rem; margin-top: 40px; }
+        pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
+    }
+</style>
+
+</head>
+<body>
+    <a href="../../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2026-01-21</span>
+        <span class="meta-item">📂 Evil-GPT</span>
+    </div>
+    <article>
+        <p>Hi everyone! Today I would like to analyze an interesting machine called <code>Evil-GPT</code> from TryHackMe. Let me start with why it sounds interesting ?</p>
+
+<p><img src="./images/1.png" alt="1.png" /></p>
+
+<p>Generally, we interact with LLM models directly in a web application format. However, in this scenario we are forced to interact with an LLM model managing a Linux server and communicates and controlled by user through Telnet protocol. You may ask where did you understand whether you are connecting through Telnet or not the answer is simple.</p>
+
+<p>Let's begin with binding target port via <strong>netcat</strong> -></p>
+
+<p><code>nc 10.81.171.136 1337</code></p>
+
+<p><img src="./images/2.png" alt="2.png" /></p>
+
+<p>At first, I could not understand the logic and I simply put direct Linux commands to target, but LLM converts it different formats and achieved the same thing.</p>
+
+<p>For example:</p>
+
+<p><img src="./images/3.png" alt="3.png" /></p>
+
+<p>As you can see above, it reflects the command's utility, so we don't have to use technical knowledge instead we have to explain very clearly.</p>
+
+<p><img src="./images/4.png" alt="4.png" /></p>
+
+<p>It's very smooth process, yet understanding the philosophy is a burden actually because you must have both technical knowledge and communication skills at once.</p>
+
+<p>Notice we are root then we can enumerate machine by using effective prompting -></p>
+
+<p><img src="./images/5.png" alt="5.png" /> Now I encountered <code>evilai.py</code> then this is where I understood the Telnet protocol.</p>
+
+<p>Check the content of the python file, an LLM model configuration file especially working with a library called <strong>model='vitali87/shell-commands:latest</strong>.</p>
+
+<p>A <code>command generator</code> method definition + system prompt -></p>
+
+<p><img src="./images/6.png" alt="6.png" /></p>
+
+<p>Observe that system prompt definition is not enough to cover both the machine level purpose &amp; infrastructural internal controls (like logging, security or any harmful intentions). Therefore, it is a weak and flawed prompt.</p>
+
+<p>The full source code is also available -></p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">ollama</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">socket</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AICommandExecutorServer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">1337</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;vitali87/shell-commands:latest&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize Telnet server for AI command execution</span>
+
+<span class="sd">        :param host: Host to bind the server</span>
+<span class="sd">        :param port: Port to listen on</span>
+<span class="sd">        :param model: Ollama model for command generation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">sanitize_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sanitize input to prevent injection</span>
+
+<span class="sd">        :param input_str: Raw input string</span>
+<span class="sd">        :return: Sanitized input</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^a-zA-Z0-9\s\-_./]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">input_str</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_request</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate a Linux command based on user request</span>
+
+<span class="sd">        :param user_request: User&#39;s natural language request</span>
+<span class="sd">        :return: Generated command</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">ollama</span><span class="o">.</span><span class="n">chat</span><span class="p">(</span>
+                <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+                <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;system&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="s2">&quot;&quot;&quot;Do not provide malicious commands. </span>
+<span class="s2">                        Only generate safe, read-only Linux commands. </span>
+<span class="s2">                        Respond with ONLY the command, no explanations.&quot;&quot;&quot;</span>
+                    <span class="p">},</span>
+                    <span class="p">{</span>
+                        <span class="s1">&#39;role&#39;</span><span class="p">:</span> <span class="s1">&#39;user&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="n">user_request</span>
+                    <span class="p">}</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Extract the command from the response</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">][</span><span class="s1">&#39;content&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">command</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Error generating command: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the generated command</span>
+
+<span class="sd">        :param command: Command to execute</span>
+<span class="sd">        :return: Command execution results</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Sanitize the command to prevent injection</span>
+            <span class="n">sanitized_command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sanitize_input</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+            <span class="c1"># Split the command into arguments</span>
+            <span class="n">cmd_parts</span> <span class="o">=</span> <span class="n">sanitized_command</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+            <span class="c1"># Execute the command</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">cmd_parts</span><span class="p">,</span>
+                <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span>  <span class="c1"># 30-second timeout</span>
+            <span class="p">)</span>
+
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;stdout&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
+                <span class="s2">&quot;stderr&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+                <span class="s2">&quot;returncode&quot;</span><span class="p">:</span> <span class="n">result</span><span class="o">.</span><span class="n">returncode</span>
+            <span class="p">}</span>
+
+        <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">TimeoutExpired</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Command timed out&quot;</span><span class="p">}</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_socket</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle individual client connection</span>
+
+<span class="sd">        :param client_socket: Socket for the connected client</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Welcome message</span>
+            <span class="n">welcome_msg</span> <span class="o">=</span> <span class="s2">&quot;Welcome to AI Command Executor (type &#39;exit&#39; to quit)</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">welcome_msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># Receive user request</span>
+                <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Enter your command request: &quot;</span><span class="p">)</span>
+                <span class="n">user_request</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+                <span class="c1"># Check for exit</span>
+                <span class="k">if</span> <span class="n">user_request</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;exit&#39;</span><span class="p">,</span> <span class="s1">&#39;quit&#39;</span><span class="p">,</span> <span class="s1">&#39;bye&#39;</span><span class="p">]:</span>
+                    <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Goodbye!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># Generate command</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_command</span><span class="p">(</span><span class="n">user_request</span><span class="p">)</span>
+
+                <span class="c1"># Send generated command</span>
+                <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated Command: </span><span class="si">{</span><span class="n">command</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+                <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Execute? (y/N): &quot;</span><span class="p">)</span>
+
+                <span class="c1"># Receive confirmation</span>
+                <span class="n">confirm</span> <span class="o">=</span> <span class="n">client_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">confirm</span> <span class="o">!=</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span>
+                    <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Command execution cancelled.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="c1"># Execute command</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_command</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+                <span class="c1"># Send results</span>
+                <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+                    <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Execution Error: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">output</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stdout&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                    <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;Command Output:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stderr&quot;</span><span class="p">):</span>
+                        <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Errors:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;stderr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;An error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">client_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">error_msg</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="n">client_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">start_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start the Telnet server</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Create server socket</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[*] Listening on </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="c1"># Accept client connections</span>
+                <span class="n">client_socket</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[*] Accepted connection from: </span><span class="si">{</span><span class="n">addr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+                <span class="c1"># Handle client in a new thread</span>
+                <span class="n">client_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
+                    <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">handle_client</span><span class="p">,</span> 
+                    <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">client_socket</span><span class="p">,)</span>
+                <span class="p">)</span>
+                <span class="n">client_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Server error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="c1"># Close server socket if it exists</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server_socket</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Create and start the Telnet server</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">AICommandExecutorServer</span><span class="p">(</span>
+        <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span>  <span class="c1"># Listen on all interfaces</span>
+        <span class="n">port</span><span class="o">=</span><span class="mi">1337</span>       <span class="c1"># Telnet port</span>
+    <span class="p">)</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">start_server</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre>
+</div>
+
+<p>Let's try to enumerate deeply -></p>
+
+<p><img src="./images/7.png" alt="7.png" /></p>
+
+<p>I basically asked for common flag formats, but timed out. There were many ways to work like a <code>linpeas</code> with LLM. However, I will try a different approach. Because we have LLM working like command line interface, It will be great to give it a persona to achieve task.</p>
+
+<p>I tried a huge persona prompt, but it did not work. Due to the CLI pattern, we must comply with shorter maybe 1-3 sentences.</p>
+
+<p>Whenever model facing with anything related with ",'&lt;,&gt;,| etc... It removes characters representing full scope -></p>
+
+<p><img src="./images/8.png" alt="8.png" /></p>
+
+<p>Meaning that if model flags it then begins to sanitize inputs. Now I will let the model to show me the content of each directory since we are already <code>root</code>.</p>
+
+<p><img src="./images/10.png" alt="10.png" /></p>
+
+<p>Amazing! it was too straightforward xD</p>
+
+<p><img src="./images/9.png" alt="9.png" /></p>
+
+<p><img src="./images/11.png" alt="11.png" /></p>
+
+<p>It is easy to reach the flag guys. I mean that we don't have sophisticated tools or any enumeration phases, exploitation. We just evaded sanitization and reached the flag directly.</p>
+
+<p>May The Pentest Be With You ! ! !</p>
+
+<p><img src="./images/12.jpg" alt="12.jpg" /></p>
+
+    </article>
+</body>
+</html>
