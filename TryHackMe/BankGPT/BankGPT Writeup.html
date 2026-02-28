@@ -307,5 +307,35 @@ Hence, I crafted a prompt in order to understand logic behind guardrails and spe
 <p><code>THM{support_api_key_123}</code></p>
 
     </article>
+    <script>
+    (function() {
+        const key = 'cb_' + location.pathname;
+        const saved = JSON.parse(localStorage.getItem(key) || '{}');
+        let id = 0;
+        document.querySelectorAll('td').forEach(function(td) {
+            const txt = td.textContent.trim();
+            if (txt === '☐' || txt === '☑') {
+                const cb = document.createElement('input');
+                cb.type = 'checkbox';
+                cb.dataset.id = id;
+                cb.checked = saved[id] || false;
+                cb.style.cssText = 'width:18px;height:18px;accent-color:#D4A27F;cursor:pointer;';
+                cb.addEventListener('change', function() {
+                    const s = JSON.parse(localStorage.getItem(key) || '{}');
+                    s[this.dataset.id] = this.checked;
+                    localStorage.setItem(key, JSON.stringify(s));
+                    const row = this.closest('tr');
+                    if (row) row.style.opacity = this.checked ? '0.45' : '1';
+                });
+                td.textContent = '';
+                td.style.textAlign = 'center';
+                td.appendChild(cb);
+                const row = cb.closest('tr');
+                if (row && cb.checked) row.style.opacity = '0.45';
+                id++;
+            }
+        });
+    })();
+    </script>
 </body>
 </html>
