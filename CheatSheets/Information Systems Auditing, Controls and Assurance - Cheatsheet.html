@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Systems Auditing, Controls and Assurance — Cheatsheet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
+    :root {
+        --bg-primary: #1A1915;
+        --bg-surface: #21201C;
+        --bg-elevated: #2A2924;
+        --bg-code: #252420;
+        --accent: #D4A27F;
+        --accent-hover: #E0B595;
+        --accent-dim: #B8896A;
+        --text-primary: #EDEDEC;
+        --text-secondary: #A8A8A4;
+        --text-muted: #706F6C;
+        --border: #3D3D37;
+        --border-subtle: #2E2E29;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Source Serif 4', 'Georgia', serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.8;
+        padding: 48px 24px 80px;
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1.0625rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 48px;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+
+    h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: var(--text-primary);
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin: 56px 0 16px;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 40px 0 12px;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 32px 0 8px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-dim);
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    a:hover {
+        color: var(--accent-hover);
+        border-bottom-color: var(--accent-hover);
+    }
+
+    strong { font-weight: 600; color: var(--text-primary); }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 32px 0;
+        border: 1px solid var(--border);
+    }
+
+    code {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        color: var(--accent);
+        border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+        background: var(--bg-surface);
+        padding: 20px 24px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 28px 0;
+        border: 1px solid var(--border);
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text-primary);
+        font-size: 0.8125rem;
+        line-height: 1.7;
+    }
+
+    blockquote {
+        border-left: 2px solid var(--accent-dim);
+        padding: 4px 0 4px 24px;
+        margin: 28px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    blockquote p { margin-bottom: 8px; }
+
+    ul, ol {
+        margin: 16px 0 20px 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        padding-left: 4px;
+    }
+
+    li::marker {
+        color: var(--text-muted);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 28px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover td { background: var(--bg-surface); }
+
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border-subtle);
+        margin: 48px 0;
+    }
+
+    .meta {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-subtle);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    ::selection {
+        background: rgba(212, 162, 127, 0.25);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+        body { padding: 32px 16px 60px; font-size: 1rem; }
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.25rem; margin-top: 40px; }
+        pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
+    }
+</style>
+
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2026-02-28</span>
+        <span class="meta-item">📂 CheatSheets</span>
+    </div>
+    <article>
+        <h1>Information Systems Auditing, Controls and Assurance — Cheatsheet</h1>
+
+<hr />
+
+<h2>1. IS Audit Process Overview</h2>
+
+<p>The IS audit process consists of three main phases:</p>
+
+<p><strong>Planning → Fieldwork &amp; Documentation → Reporting &amp; Follow Up</strong></p>
+
+<p><img src="./images/procedures1.png" alt="procedures1.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Phase</th>
+  <th>Step</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Planning</strong></td>
+  <td>1. Understanding of the audit areas/subjects</td>
+  <td>Identify what will be audited</td>
+</tr>
+<tr>
+  <td></td>
+  <td>2. Risk assessment &amp; general audit plan</td>
+  <td>Assess risks and create high-level plan</td>
+</tr>
+<tr>
+  <td></td>
+  <td>3. Detailed audit planning</td>
+  <td>Develop detailed procedures and timelines</td>
+</tr>
+<tr>
+  <td><strong>Fieldwork &amp; Documentation</strong></td>
+  <td>4. Verifying &amp; evaluating controls</td>
+  <td>Verify that controls exist and work properly</td>
+</tr>
+<tr>
+  <td></td>
+  <td>5. Compliance Tests &amp; Substantive Testing</td>
+  <td>Test adherence to policies and verify accuracy of data</td>
+</tr>
+<tr>
+  <td><strong>Reporting &amp; Follow Up</strong></td>
+  <td>6. Reporting (communicating results)</td>
+  <td>Communicate findings to management</td>
+</tr>
+<tr>
+  <td></td>
+  <td>7. Follow up</td>
+  <td>Ensure corrective actions are taken</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>2. Compliance Testing vs Substantive Testing</h2>
+
+<h3>Compliance Testing</h3>
+
+<p>Compliance testing checks whether controls are <strong>operating in accordance with policy</strong>. It uses a <strong>sampling</strong> approach.</p>
+
+<p><strong>Example — Change Management Policy:</strong></p>
+
+<ul>
+<li>Programmer makes code changes</li>
+<li>Supervisor approves the changes</li>
+<li>Auditor selects a sample from the change log (Change 101, 102, ... 108) and checks whether each was properly approved</li>
+</ul>
+
+<p><img src="./images/procedures2.png" alt="procedures2.png" /></p>
+
+<h3>What if Compliance Testing Fails?</h3>
+
+<p>If a sampled change (e.g., Change 104) was <strong>not approved</strong>, then <strong>substantive testing</strong> must be performed on that change.</p>
+
+<p><img src="./images/procedures3.png" alt="procedures3.png" /></p>
+
+<h3>Substantive Testing</h3>
+
+<p>Substantive testing is a <strong>detailed analysis</strong> triggered when compliance testing fails. The auditor dives into the failed record and performs a <strong>line-by-line review</strong>.</p>
+
+<p><strong>Example:</strong></p>
+
+<ul>
+<li>Compliance testing found Change 104 was not approved → "Not Approved"</li>
+<li>Substantive testing: Examine each line of code within Change 104 (Code 1, Code 2, Code 3, Code 4, Code 5)</li>
+<li>Issue identified in Code 3</li>
+</ul>
+
+<p><img src="./images/procedures4.png" alt="procedures4.png" /></p>
+
+<blockquote>
+  <p><strong>Summary:</strong> Compliance test → "Does the control exist?" | Substantive test → "Is the data actually correct?"</p>
+</blockquote>
+
+<hr />
+
+<h2>3. Audit Procedures</h2>
+
+<h3>3.1 Re-performance</h3>
+
+<p>Re-performance means the auditor <strong>independently re-executes a calculation or process</strong> to verify its accuracy.</p>
+
+<p><img src="./images/procedures5.png" alt="procedures5.png" /></p>
+
+<p><strong>Example Scenario:</strong></p>
+
+<ol>
+<li>A Clerk in the Finance Department prepares payroll → pays Staff $10,000/month</li>
+<li>Staff bribes the Clerk: "Add more hours and I'll give you $5,000"</li>
+<li>Clerk inflates total overtime from 10 hours to 60 hours (10 + 50)</li>
+<li>Result: Basic Salary $10,000 + 60 hrs × $200/hr = Total Payment $22,000</li>
+</ol>
+
+<p><img src="./images/procedures6.png" alt="procedures6.png" /></p>
+
+<ol start="5">
+<li><strong>Compliance officer manually recalculates</strong> → Correct payment should be $12,000, not $22,000!</li>
+</ol>
+
+<p><img src="./images/procedures7.png" alt="procedures7.png" /></p>
+
+<blockquote>
+  <p><strong>Key Point:</strong> Re-performance = The auditor performs the calculation from scratch and compares the results.</p>
+</blockquote>
+
+<h3>3.2 Confirmation</h3>
+
+<p>Confirmation means verifying information through <strong>independent third-party sources</strong>.</p>
+
+<p><strong>Example Scenario:</strong></p>
+
+<ol>
+<li>Company A (IT Officer) sends a system development request to Company B (Outsource IT Developer)</li>
+<li>Company B develops and delivers the system</li>
+<li>Company B invoices $2M</li>
+<li>Compliance officer contacts Company B directly: "Did it really cost $2M to develop this system?" — obtaining third-party verification</li>
+</ol>
+
+<p><img src="./images/procedures8.png" alt="procedures8.png" /></p>
+
+<blockquote>
+  <p><strong>Key Point:</strong> Confirmation = 3rd party verification. The auditor verifies information directly from its source.</p>
+</blockquote>
+
+<hr />
+
+<h2>4. Risk in Information Systems</h2>
+
+<h3>4.1 What is Risk?</h3>
+
+<p>Risk is the possibility of having a negative impact.</p>
+
+<p><img src="./images/controls2.png" alt="controls2.png" /></p>
+
+<blockquote>
+  <p>Risk = Fire (threat) | Control = Fire extinguisher (countermeasure)</p>
+</blockquote>
+
+<h3>4.2 Elements of Risk</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Element</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Threats</strong></td>
+  <td>Natural disaster, Man-made threats (internal: fraud, external: hacking), Technical (hardware failure)</td>
+</tr>
+<tr>
+  <td><strong>Impact</strong></td>
+  <td>Measure of damage</td>
+</tr>
+<tr>
+  <td><strong>Probabilities</strong></td>
+  <td>Likelihood of the risk occurring</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p><strong>Key Point:</strong> Internal threats are more dangerous than external ones because insiders know the organization's business processes and can cause greater damage.</p>
+</blockquote>
+
+<h3>4.3 Examples of Risk in IS</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Example</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Gmail Outage</td>
+  <td>Worldwide Gmail service disruption</td>
+</tr>
+<tr>
+  <td>Capital One Data Breach</td>
+  <td>Major data breach exposing customer data</td>
+</tr>
+<tr>
+  <td>Cathay Pacific Ticket Error</td>
+  <td>First class ticket pricing error</td>
+</tr>
+</tbody>
+</table>
+
+<h3>4.4 Recent News of Risks Related to IS</h3>
+
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>Incident</th>
+  <th>Date</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td>Google Outage</td>
+  <td>Jun 2019</td>
+  <td>YouTube, Gmail, Snapchat went down</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>Facebook Data Leak</td>
+  <td>Sep 2019</td>
+  <td>419 million users' data exposed</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>AWS DDoS Attack</td>
+  <td>Oct 2019</td>
+  <td>Sustained DDoS attack on AWS servers</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>Insider Threats Report</td>
+  <td>Oct 2019</td>
+  <td>Workers identified as biggest data security threat</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>5. Risk Assessment</h2>
+
+<h3>Step 1: Define Risk — Impact Scale (Measure of Damage)</h3>
+
+<p><img src="./images/impact.png" alt="impact.png" /></p>
+
+<p><img src="./images/risk.png" alt="risk.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Level</th>
+  <th>Rating</th>
+  <th>People</th>
+  <th>Asset</th>
+  <th>Operation</th>
+  <th>Environment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>5</strong></td>
+  <td><strong>Major</strong></td>
+  <td>Multiple fatalities or permanent total disability</td>
+  <td>Extensive damage</td>
+  <td>Critical failure preventing core activities</td>
+  <td>Massive and long-term impact</td>
+</tr>
+<tr>
+  <td><strong>4</strong></td>
+  <td><strong>Serious</strong></td>
+  <td>Single fatality or permanent total disability</td>
+  <td>Serious &amp; major damage</td>
+  <td>Breakdown of key activities leading to reduction in performance</td>
+  <td>Major and mid-term impact</td>
+</tr>
+<tr>
+  <td><strong>3</strong></td>
+  <td><strong>Moderate</strong></td>
+  <td>Major injury / health effects</td>
+  <td>Local damage</td>
+  <td>Targets not met, reduction in performance</td>
+  <td>Moderate and controllable impact</td>
+</tr>
+<tr>
+  <td><strong>2</strong></td>
+  <td><strong>Minor</strong></td>
+  <td>Minor injury</td>
+  <td>Minor damage</td>
+  <td>Minor delays in operation</td>
+  <td>Minor impact and easy restorable</td>
+</tr>
+<tr>
+  <td><strong>1</strong></td>
+  <td><strong>Negligible</strong></td>
+  <td>Negligible injury</td>
+  <td>Negligible damage</td>
+  <td>Negligible interruption</td>
+  <td>Negligible impact</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Step 2: Define the Probability (Likelihood of Having Risk)</h3>
+
+<p><img src="./images/likelihood.png" alt="likelihood.png" /></p>
+
+<p><img src="./images/risk2.png" alt="risk2.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Level</th>
+  <th>Rating</th>
+  <th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>5</strong></td>
+  <td>Probable</td>
+  <td>The event is expected to occur</td>
+</tr>
+<tr>
+  <td><strong>4</strong></td>
+  <td>Likely</td>
+  <td>The event will probably occur</td>
+</tr>
+<tr>
+  <td><strong>3</strong></td>
+  <td>Possible</td>
+  <td>The event might occur at some time</td>
+</tr>
+<tr>
+  <td><strong>2</strong></td>
+  <td>Unlikely</td>
+  <td>The event could occur but is improbable</td>
+</tr>
+<tr>
+  <td><strong>1</strong></td>
+  <td>Very Unlikely</td>
+  <td>The event could have little or no chance of occurrence</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Step 3 &amp; 4: Risk Matrix (Probability × Impact)</h3>
+
+<p><img src="./images/risk3.png" alt="risk3.png" /></p>
+
+<p><img src="./images/risk4.png" alt="risk4.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th></th>
+  <th>1. Negligible</th>
+  <th>2. Minor</th>
+  <th>3. Moderate</th>
+  <th>4. Serious</th>
+  <th>5. Major</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>1. Very Unlikely</strong></td>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td>4</td>
+  <td>5</td>
+</tr>
+<tr>
+  <td><strong>2. Unlikely</strong></td>
+  <td>2</td>
+  <td>4</td>
+  <td>6</td>
+  <td>8</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td><strong>3. Possible</strong></td>
+  <td>3</td>
+  <td>6</td>
+  <td>9</td>
+  <td>12</td>
+  <td>15</td>
+</tr>
+<tr>
+  <td><strong>4. Likely</strong></td>
+  <td>4</td>
+  <td>8</td>
+  <td>12</td>
+  <td>16</td>
+  <td>20</td>
+</tr>
+<tr>
+  <td><strong>5. Probable</strong></td>
+  <td>5</td>
+  <td>10</td>
+  <td>15</td>
+  <td>20</td>
+  <td>25</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>Risk Levels:</strong></p>
+
+<ul>
+<li><strong>1-6: Low</strong> → Minor issue of little concern with some small disruptions</li>
+<li><strong>7-14: Medium</strong> → Requires attention, inconvenience and risk occur</li>
+<li><strong>15-25: High</strong> → Requires urgent attention, introduce control to reduce risk</li>
+</ul>
+
+<h3>Risk Assessment Example — Cyber Hacking to Online Server</h3>
+
+<p><img src="./images/risk5.png" alt="risk5.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Question</th>
+  <th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>What is the threat?</td>
+  <td>Cyber hacking to online server</td>
+</tr>
+<tr>
+  <td>What is the impact?</td>
+  <td><strong>4. Serious</strong> → Breakdown of key activities leading to reduction in performance</td>
+</tr>
+<tr>
+  <td>What is the probability?</td>
+  <td><strong>4. Likely</strong> → The event will probably occur</td>
+</tr>
+<tr>
+  <td><strong>Risk Score</strong></td>
+  <td><strong>4 × 4 = 16 HIGH</strong></td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>6. Risk Mitigation</h2>
+
+<p>Risk mitigation means reducing risks using <strong>controls</strong>.</p>
+
+<h3>Risk Reduction Through Controls</h3>
+
+<p><img src="./images/risk6.png" alt="risk6.png" /></p>
+
+<p><img src="./images/risk7.png" alt="risk7.png" /></p>
+
+<p><img src="./images/risk8.png" alt="risk8.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Risk %</th>
+  <th>Control</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>100%</td>
+  <td>—</td>
+  <td>No controls in place</td>
+</tr>
+<tr>
+  <td>80%</td>
+  <td>Username + Password</td>
+  <td>Basic authentication</td>
+</tr>
+<tr>
+  <td>60%</td>
+  <td>Username + Password + Firewall</td>
+  <td>Network security added</td>
+</tr>
+<tr>
+  <td>50%</td>
+  <td>Username + Password + Firewall + Encryption</td>
+  <td>Data encryption added</td>
+</tr>
+<tr>
+  <td>40%</td>
+  <td>Username + Password + Firewall + Encryption + Biometrics</td>
+  <td>Biometric authentication added</td>
+</tr>
+<tr>
+  <td>0%</td>
+  <td>Eliminate risk impossible</td>
+  <td>Complete risk elimination is not possible!</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p><strong>Cost Effective Decision:</strong> Senior management typically accepts <strong>60% risk level</strong> (Username + Password + Firewall). As controls increase, so does cost. Management balances control strength against cost.</p>
+</blockquote>
+
+<p><img src="./images/risk9.png" alt="risk9.png" /></p>
+
+<h3>Control Example</h3>
+
+<p><img src="./images/controls1.png" alt="controls1.png" /></p>
+
+<blockquote>
+  <p>IT staff notifies general staff to change their username and password every 3 months. This is a simple <strong>preventive control</strong> example.</p>
+</blockquote>
+
+<h3>Risk Mitigation Options</h3>
+
+<table>
+<thead>
+<tr>
+  <th>#</th>
+  <th>Option</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><strong>Reduce</strong></td>
+  <td>Use controls to lower risk to a level acceptable by senior management</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><strong>Transfer</strong></td>
+  <td>Transfer remaining risk to a third party (e.g., insurance policy)</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><strong>Avoid</strong></td>
+  <td>Avoid the risky activity entirely (e.g., not offering e-banking)</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p><strong>Eliminate ≠ Avoid:</strong>
+  - <strong>Eliminate:</strong> Continue with e-banking, add many controls, and claim "no risk" → <strong>Not possible!</strong>
+  - <strong>Avoid:</strong> Don't do e-banking at all, stick to traditional banking only → Leads to customer loss, <strong>not preferred</strong></p>
+</blockquote>
+
+<hr />
+
+<h2>7. Risk Re-evaluation</h2>
+
+<p>Risk management is a <strong>cyclical process</strong>:</p>
+
+<p><strong>1. Risk Assessment → 2. Risk Mitigation → 3. Risk Re-evaluation → (back to step 1)</strong></p>
+
+<p><img src="./images/risk10.png" alt="risk10.png" /></p>
+
+<h3>When Do We Perform Risk Re-evaluation?</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Trigger Type</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Time Driven</strong></td>
+  <td>Periodically — every six months or once a year</td>
+  <td>Scheduled assessment</td>
+</tr>
+<tr>
+  <td><strong>Event Driven</strong></td>
+  <td>Environmental change, government regulation, natural disaster</td>
+  <td>Japan earthquake (nuclear plant meltdown) → environmental change</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>8. Internal Controls — System Development Life Cycle (SDLC)</h2>
+
+<h3>8.1 Why Develop a New Application?</h3>
+
+<ul>
+<li>New opportunity to new/existing business process</li>
+<li>Problem found in business process</li>
+<li>New opportunity to take advantage of technology (e.g. FinTech)</li>
+<li>Problem with current technology</li>
+</ul>
+
+<h3>8.2 SDLC Phases Overview</h3>
+
+<p><img src="./images/sdlc.png" alt="sdlc.png" /></p>
+
+<p><strong>Phase 1 - Feasibility</strong> → <strong>Phase 2 - Requirements</strong> → <strong>Phase 3A - Design</strong> → <strong>Phase 3B - Selection</strong> → <strong>Phase 4A - Development</strong> → <strong>Phase 4B - Configuration</strong> → <strong>Phase 5 - Implementation</strong> → <strong>Phase 6 - Post Implementation</strong></p>
+
+<p><img src="./images/sdlc2.png" alt="sdlc2.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Phase</th>
+  <th>Name</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Phase 1</td>
+  <td><strong>Feasibility</strong></td>
+  <td>Feasibility study</td>
+</tr>
+<tr>
+  <td>Phase 2</td>
+  <td><strong>Requirements</strong></td>
+  <td>Requirements analysis (<strong>most important phase</strong>)</td>
+</tr>
+<tr>
+  <td>Phase 3A</td>
+  <td><strong>Design</strong></td>
+  <td>System design for in-house development</td>
+</tr>
+<tr>
+  <td>Phase 3B</td>
+  <td><strong>Selection</strong></td>
+  <td>Vendor/package selection for outsourcing</td>
+</tr>
+<tr>
+  <td>Phase 4A</td>
+  <td><strong>Development</strong></td>
+  <td>In-house coding and development</td>
+</tr>
+<tr>
+  <td>Phase 4B</td>
+  <td><strong>Configuration</strong></td>
+  <td>Configuration of outsourced system</td>
+</tr>
+<tr>
+  <td>Phase 5</td>
+  <td><strong>Implementation</strong></td>
+  <td>System go-live</td>
+</tr>
+<tr>
+  <td>Phase 6</td>
+  <td><strong>Post Implementation</strong></td>
+  <td>Post go-live review and evaluation</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p><strong>Note:</strong> If Phase 2 (Requirements) is not done well, the entire system development will be a failure. The most important stakeholders are the <strong>end users</strong> — if they aren't happy with the system, it will be retired quickly regardless of how good the development team thinks it is.</p>
+</blockquote>
+
+<h3>8.3 Phase 1 — Feasibility</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Feasibility Type</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Operational Feasibility</strong></td>
+  <td>Whether the system can operate within the organization — do we have the hardware/software to run it?</td>
+</tr>
+<tr>
+  <td><strong>Technical Feasibility</strong></td>
+  <td>Whether we have the expertise to develop and maintain the system ourselves</td>
+</tr>
+<tr>
+  <td><strong>Economic Feasibility</strong></td>
+  <td>Whether the system provides an economic benefit</td>
+</tr>
+</tbody>
+</table>
+
+<h3>8.4 Phase 2 — Requirements</h3>
+
+<ul>
+<li>Identify &amp; specify business requirements during feasibility study</li>
+<li>Description, user interaction, operation conditions &amp; information criteria</li>
+<li>Focus on <strong>what users need</strong> — the people who use the system day in and day out are the most critical stakeholders</li>
+</ul>
+
+<h3>8.5 Phase 3A (Design) vs Phase 3B (Selection)</h3>
+
+<p><img src="./images/sdlc3.png" alt="sdlc3.png" /></p>
+
+<p><img src="./images/design.png" alt="design.png" /></p>
+
+<blockquote>
+  <p><strong>3A vs 3B Difference:</strong> 3A (Design) is the in-house development path, 3B (Selection) is the outsourcing path. Similarly, 4A (Development) and 4B (Configuration) correspond to these two paths.</p>
+</blockquote>
+
+<h3>8.6 System Acquisition Methods</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Method</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>In-house Development</strong></td>
+  <td>Develop the system internally (Phase 3A → 4A)</td>
+</tr>
+<tr>
+  <td><strong>Outsourcing — Package (as-is)</strong></td>
+  <td>Buy a ready-made package and use it as-is</td>
+</tr>
+<tr>
+  <td><strong>Outsourcing — Modified Package</strong></td>
+  <td>Buy a package and have it customized to fit your needs</td>
+</tr>
+<tr>
+  <td><strong>Outsourcing — Custom Development</strong></td>
+  <td>Have a vendor build a fully custom system (e.g. unique FinTech system)</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p><strong>Warning:</strong> If you outsource the system development, future maintenance (fixing bugs, adding features) cannot be done internally — you won't get the source codes.</p>
+</blockquote>
+
+<h3>8.7 Key Considerations for Outsourcing</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Consideration</th>
+  <th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Software Escrow Agreement</strong></td>
+  <td>Protects source code if the developer goes bankrupt</td>
+</tr>
+<tr>
+  <td><strong>Reliability</strong></td>
+  <td>Vendor reliability (not just cost)</td>
+</tr>
+<tr>
+  <td><strong>Installation Support</strong></td>
+  <td>Whether the vendor helps with system installation</td>
+</tr>
+<tr>
+  <td><strong>User Manuals</strong></td>
+  <td>Whether the vendor helps develop user documentation</td>
+</tr>
+<tr>
+  <td><strong>Training</strong></td>
+  <td>User training — "train the trainers" approach so internal staff can train others</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>9. Development Phase — Testing</h2>
+
+<p><img src="./images/development.png" alt="development.png" /></p>
+
+<p>Testing is the <strong>most important part</strong> of the development phase. Bugs and errors must be found and fixed before implementation.</p>
+
+<h3>9.1 Testing Levels</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Test Type</th>
+  <th>Scope</th>
+  <th>Focus</th>
+  <th>Performed By</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Unit Testing</strong></td>
+  <td>Single module</td>
+  <td>Input/Output correctness</td>
+  <td>Developers</td>
+</tr>
+<tr>
+  <td><strong>Integration Testing</strong></td>
+  <td>Multiple modules together</td>
+  <td>Inter-module communication and interfaces</td>
+  <td>Developers</td>
+</tr>
+<tr>
+  <td><strong>System Testing</strong></td>
+  <td>Entire system</td>
+  <td>End-to-end behavior</td>
+  <td>IT Team</td>
+</tr>
+<tr>
+  <td><strong>Final Acceptance Test (UAT)</strong></td>
+  <td>Business requirements</td>
+  <td>User satisfaction</td>
+  <td><strong>End Users</strong></td>
+</tr>
+</tbody>
+</table>
+
+<h3>9.2 Unit Testing vs Integration Testing</h3>
+
+<p><img src="./images/testvs.png" alt="testvs.png" /></p>
+
+<ul>
+<li><strong>Unit Testing:</strong> Tests a single module in isolation. Give input, observe output. No dependency on other modules.</li>
+<li><strong>Integration Testing:</strong> Tests how two or more modules work together. Module 1's output may be Module 2's input — this interface is what gets tested.</li>
+</ul>
+
+<h3>9.3 System Testing Types</h3>
+
+<table>
+<thead>
+<tr>
+  <th>Test Type</th>
+  <th>Description</th>
+  <th>Key Question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Recovery Testing</strong></td>
+  <td>Deliberately crash the system and measure how fast it can be recovered</td>
+  <td>Can the system recover after failure?</td>
+</tr>
+<tr>
+  <td><strong>Security Testing</strong></td>
+  <td>Test security features using penetration testing and ethical hacking</td>
+  <td>Is the system protected from attacks?</td>
+</tr>
+<tr>
+  <td><strong>Volume Testing</strong></td>
+  <td>Input large amounts of data to see if the system malfunctions</td>
+  <td>Can the system handle large data volumes?</td>
+</tr>
+<tr>
+  <td><strong>Stress Testing</strong></td>
+  <td>Many concurrent users access the system at the same time</td>
+  <td>How does the system behave under extreme load?</td>
+</tr>
+<tr>
+  <td><strong>Performance Testing</strong></td>
+  <td>Speed and efficiency testing (benchmarking — compare two similar systems)</td>
+  <td>How fast and efficient is the system?</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+  <p><strong>Most Important Test:</strong> <strong>Final Acceptance Test (UAT)</strong> — All other tests are performed by IT staff, but UAT is done by <strong>end users</strong>. If users are not satisfied, the system will retire quickly.</p>
+</blockquote>
+
+<h3>9.4 Phase 4B — Configuration (Outsourcing)</h3>
+
+<p>When a system is built by an external vendor or purchased as a package, the configuration phase ensures it is <strong>properly configured</strong> to meet the organization's needs and the auditor's required controls.</p>
+
+<hr />
+
+<h2>10. Input Controls &amp; Data Validation</h2>
+
+<p>Input controls ensure that <strong>valid and authorized information</strong> is input to the system, and that each transaction is <strong>processed only once</strong>.</p>
+
+<h3>10.1 Data Validation &amp; Editing Procedures</h3>
+
+<p>The purpose of data validation is to ensure correct information is input into the system through preprogrammed input formats.</p>
+
+<p><strong>Salary Scenario — Preventive Control:</strong></p>
+
+<p>A finance department clerk inputs salary information into the payroll system. The system has a limit: the maximum salary for an assistant professor is $75,000.</p>
+
+<p><img src="./images/procedures9.png" alt="procedures9.png" /></p>
+
+<p><strong>What happens if a staff member attempts fraud?</strong></p>
+
+<p>If a staff member asks the clerk to input $50,000 more than the allowed amount (offering to split the extra money), the system will <strong>reject</strong> the input because it exceeds the $75,000 limit.</p>
+
+<p><img src="./images/procedures10.png" alt="procedures10.png" /></p>
+
+<p><strong>What if the staff legitimately works overtime?</strong></p>
+
+<p>If a professor teaches extra courses and their legitimate salary exceeds $75,000, the clerk communicates this to the supervisor. The supervisor reviews the information and performs a <strong>supervisor override</strong> — entering their username and password to allow the system to accept the amount.</p>
+
+<p><img src="./images/procedures11.png" alt="procedures11.png" /></p>
+
+<p><strong>What if the employee, clerk, and supervisor collude?</strong></p>
+
+<p>If all three parties collaborate to commit fraud, the preventive control no longer works. At this point, we need a <strong>detective control</strong>: an <strong>audit trail</strong> with <strong>automatic logging</strong>. Every time a supervisor override occurs (an abnormal situation), the system automatically creates a log entry for later review.</p>
+
+<p><img src="./images/procedures13.png" alt="procedures13.png" /></p>
+
+<h3>10.2 Six Data Validation &amp; Editing Controls</h3>
+
+<p><img src="./images/procedures14.png" alt="procedures14.png" /></p>
+
+<h4>1. Sequence Check</h4>
+
+<p>Input should follow sequentially. For example, invoice numbers must be sequential — after invoice 101 comes 102. If 102 is missing, the system flags it.</p>
+
+<p><img src="./images/procedures15.png" alt="procedures15.png" /></p>
+
+<h4>2. Limit Check</h4>
+
+<p>The system does not accept data exceeding a predetermined amount. Example: the salary limit of $75,000 — any input above this is rejected.</p>
+
+<p><img src="./images/procedures16.png" alt="procedures16.png" /></p>
+
+<h4>3. Range Check</h4>
+
+<p>The system allows only a specific range of values. Example: undergraduate students can register for course levels 1000–4000. If they try to register for 5000 or 6000 level courses (postgraduate), the system gives an error. A supervisor override is needed if an exception is warranted.</p>
+
+<p><img src="./images/procedures17.png" alt="procedures17.png" /></p>
+
+<h4>4. Validity Check</h4>
+
+<p>The system only accepts predetermined valid values. Example: only values like Male/Female, UG/PG, Full-time/Part-time are accepted.</p>
+
+<p><img src="./images/procedures18.png" alt="procedures18.png" /></p>
+
+<h4>5. Completeness Check</h4>
+
+<p>Mandatory fields must contain data before submission. Example: submitting an online form without entering the required email field triggers an error message.</p>
+
+<p><img src="./images/procedures19.png" alt="procedures19.png" /></p>
+
+<h4>6. Duplicate Check</h4>
+
+<p>The system ensures the same transaction is not entered more than once. Example: a discount voucher can only be used once — if the same voucher number (or a photocopy) is entered again, the system rejects it.</p>
+
+<p><img src="./images/procedures20.png" alt="procedures20.png" /></p>
+
+<hr />
+
+<h2>11. Output Controls</h2>
+
+<p>Output controls provide assurance that the data delivered to users will be presented, formatted, and delivered in a <strong>consistent and secure manner</strong>.</p>
+
+<p><img src="./images/procedures21.png" alt="procedures21.png" /></p>
+
+<table>
+<thead>
+<tr>
+  <th>Output Type</th>
+  <th>Control Measure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>Soft Copy</strong></td>
+  <td>Encryption to secure digital outputs</td>
+</tr>
+<tr>
+  <td><strong>Hard Copy</strong></td>
+  <td>Lock and key security; confidential documents may need to be printed at a supervisor's printer and collected in person with justification</td>
+</tr>
+<tr>
+  <td><strong>Remote Access</strong></td>
+  <td>Certain critical information cannot be accessed remotely (via VPN) — must be accessed from the office computer only</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+    </article>
+</body>
+</html>
