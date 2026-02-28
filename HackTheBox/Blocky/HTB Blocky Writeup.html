@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Htb Blocky Writeup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
+    :root {
+        --bg-primary: #1A1915;
+        --bg-surface: #21201C;
+        --bg-elevated: #2A2924;
+        --bg-code: #252420;
+        --accent: #D4A27F;
+        --accent-hover: #E0B595;
+        --accent-dim: #B8896A;
+        --text-primary: #EDEDEC;
+        --text-secondary: #A8A8A4;
+        --text-muted: #706F6C;
+        --border: #3D3D37;
+        --border-subtle: #2E2E29;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Source Serif 4', 'Georgia', serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.8;
+        padding: 48px 24px 80px;
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1.0625rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 48px;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+
+    h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: var(--text-primary);
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin: 56px 0 16px;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 40px 0 12px;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 32px 0 8px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-dim);
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    a:hover {
+        color: var(--accent-hover);
+        border-bottom-color: var(--accent-hover);
+    }
+
+    strong { font-weight: 600; color: var(--text-primary); }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 32px 0;
+        border: 1px solid var(--border);
+    }
+
+    code {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        color: var(--accent);
+        border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+        background: var(--bg-surface);
+        padding: 20px 24px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 28px 0;
+        border: 1px solid var(--border);
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text-primary);
+        font-size: 0.8125rem;
+        line-height: 1.7;
+    }
+
+    blockquote {
+        border-left: 2px solid var(--accent-dim);
+        padding: 4px 0 4px 24px;
+        margin: 28px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    blockquote p { margin-bottom: 8px; }
+
+    ul, ol {
+        margin: 16px 0 20px 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        padding-left: 4px;
+    }
+
+    li::marker {
+        color: var(--text-muted);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 28px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover td { background: var(--bg-surface); }
+
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border-subtle);
+        margin: 48px 0;
+    }
+
+    .meta {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-subtle);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    ::selection {
+        background: rgba(212, 162, 127, 0.25);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+        body { padding: 32px 16px 60px; font-size: 1rem; }
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.25rem; margin-top: 40px; }
+        pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
+    }
+</style>
+
+</head>
+<body>
+    <a href="../../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2026-03-01</span>
+        <span class="meta-item">📂 Blocky</span>
+    </div>
+    <article>
+        <p>Begin with attaching IP address to domain:</p>
+
+<p><code>nano /etc/hosts</code></p>
+
+<p><img src="./images/1.png" alt="1.png" /></p>
+
+<p>Firstly, check  80,443,8080  ports + conduct <code>automated reconnaissance</code> </p>
+
+<p><img src="./images/2.png" alt="2.png" /></p>
+
+<p>Looks like Wordpress frontend. On meta part and footer it is observable</p>
+
+<p><img src="./images/3.png" alt="3.png" /></p>
+
+<p>Let's conduct <code>port scan</code> &amp; <code>fuzzing</code> respectively.</p>
+
+<p>use both at the same time -></p>
+
+<p><code>sudo nmap -sV -sC blocky.htb</code></p>
+
+<p><img src="./images/4.png" alt="4.png" /></p>
+
+<p><code>sudo nmap -sV -sC -T4 -p- blocky.htb</code></p>
+
+<p>Faster results in 65535 ports</p>
+
+<p><img src="./images/5.png" alt="5.png" /></p>
+
+<p>No meaningful services.</p>
+
+<p><img src="./images/6.png" alt="6.png" /></p>
+
+<p>To dive into SMB shares  I conducted <code>enum4linux</code> scan.</p>
+
+<p><img src="./images/7.png" alt="7.png" /></p>
+
+<p>There were no juicy findings.</p>
+
+<p>Fuzzing matters ,but let me initially give a chance to <code>wpscan</code></p>
+
+<p>Clear RCE vector plugin can be seen below</p>
+
+<p><img src="./images/8.png" alt="8.png" /></p>
+
+<p>Checking fuzz results:</p>
+
+<p><code>dirsearch -u blocky.htb -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-medium-directories.txt</code></p>
+
+<p>Interesting path -> /plugins</p>
+
+<p><img src="./images/10.png" alt="10.png" /></p>
+
+<p>Apply <code>--enumerate u</code> so as to identify current users available on application:</p>
+
+<p><code>wpscan --url http://blocky.htb --enumerate u</code></p>
+
+<p><img src="./images/11.png" alt="11.png" /></p>
+
+<p>Returning back to java files, I found a generic <code>root:pass</code> combination.</p>
+
+<p><img src="./images/12.png" alt="12.png" /></p>
+
+<p>Upon that finding, I tried on SSH ,but still stucks. However, after a successful fuzzing operation, I saw phpmyadmin login.</p>
+
+<p><img src="./images/13.png" alt="13.png" /></p>
+
+<p>Found user pass as hashed format.</p>
+
+<p><img src="./images/14.png" alt="14.png" /></p>
+
+<p>Lets check via <code>Crackstation</code></p>
+
+<p>Could not determine</p>
+
+<p><img src="./images/15.png" alt="15.png" /></p>
+
+<p>I used <code>hashes.com</code> to identify regarding hash type</p>
+
+<p><img src="./images/16.png" alt="16.png" /></p>
+
+<p>Use <code>hash-identifier "$P$BiVoTj899ItS1EZnMhqeqVbrZI4Oq0/"</code></p>
+
+<p><img src="./images/17.png" alt="17.png" /></p>
+
+<p>Ready to brute via <code>hashcat</code></p>
+
+<p><img src="./images/18.png" alt="18.png" /></p>
+
+<p><code>hashcat -m 400 o.hash /usr/share/wordlists/sqlmap.txt</code></p>
+
+<p>I was not successfuly. Instead, let me try to use password as SSH user <code>notch</code></p>
+
+<p><img src="./images/19.png" alt="19.png" /></p>
+
+<p><a href="https://gtfobins.org/">GFTObins</a> perfectly fine actually or I will figure out through <code>linpeas</code>.</p>
+
+<p>Understand what commands can <code>notch</code> run -></p>
+
+<p><img src="./images/20.png" alt="20.png" /></p>
+
+<p>ITS OK. <code>Notch</code> can run everything as <code>Blocky</code> (AKA ROOT) do.</p>
+
+<p><code>sudo -u#-1 /bin/bash</code> from <a href="https://book.hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html#path">HackTricks</a></p>
+
+<p><img src="./images/21.png" alt="21.png" /></p>
+
+<p>I took <code>root</code> privileges as you can see above.</p>
+
+<p>Find flags -></p>
+
+<p><img src="./images/22.png" alt="22.png" /></p>
+
+<p><img src="./images/23.png" alt="23.png" /></p>
+
+    </article>
+</body>
+</html>

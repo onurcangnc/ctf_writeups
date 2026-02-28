@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 HackTheBox Easy Machines — Çözüm Sıralaması</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
+
+    :root {
+        --bg-primary: #1A1915;
+        --bg-surface: #21201C;
+        --bg-elevated: #2A2924;
+        --bg-code: #252420;
+        --accent: #D4A27F;
+        --accent-hover: #E0B595;
+        --accent-dim: #B8896A;
+        --text-primary: #EDEDEC;
+        --text-secondary: #A8A8A4;
+        --text-muted: #706F6C;
+        --border: #3D3D37;
+        --border-subtle: #2E2E29;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Source Serif 4', 'Georgia', serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.8;
+        padding: 48px 24px 80px;
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1.0625rem;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        margin-bottom: 48px;
+        padding: 6px 0;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    .back-link:hover {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+    }
+
+    h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 24px;
+        color: var(--text-primary);
+        letter-spacing: -0.025em;
+    }
+
+    h2 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.375rem;
+        font-weight: 600;
+        margin: 56px 0 16px;
+        color: var(--text-primary);
+        letter-spacing: -0.015em;
+        line-height: 1.3;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    h3 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin: 40px 0 12px;
+        color: var(--text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    h4 {
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 32px 0 8px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.8125rem;
+    }
+
+    p {
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-dim);
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    a:hover {
+        color: var(--accent-hover);
+        border-bottom-color: var(--accent-hover);
+    }
+
+    strong { font-weight: 600; color: var(--text-primary); }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 32px 0;
+        border: 1px solid var(--border);
+    }
+
+    code {
+        font-family: 'JetBrains Mono', monospace;
+        background: var(--bg-code);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        color: var(--accent);
+        border: 1px solid var(--border-subtle);
+    }
+
+    pre {
+        background: var(--bg-surface);
+        padding: 20px 24px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 28px 0;
+        border: 1px solid var(--border);
+    }
+
+    pre code {
+        background: none;
+        padding: 0;
+        border: none;
+        color: var(--text-primary);
+        font-size: 0.8125rem;
+        line-height: 1.7;
+    }
+
+    blockquote {
+        border-left: 2px solid var(--accent-dim);
+        padding: 4px 0 4px 24px;
+        margin: 28px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+
+    blockquote p { margin-bottom: 8px; }
+
+    ul, ol {
+        margin: 16px 0 20px 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        padding-left: 4px;
+    }
+
+    li::marker {
+        color: var(--text-muted);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 28px 0;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
+    th, td {
+        padding: 12px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tr:hover td { background: var(--bg-surface); }
+
+    hr {
+        border: none;
+        height: 1px;
+        background: var(--border-subtle);
+        margin: 48px 0;
+    }
+
+    .meta {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 40px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-subtle);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    ::selection {
+        background: rgba(212, 162, 127, 0.25);
+        color: var(--text-primary);
+    }
+
+    @media (max-width: 640px) {
+        body { padding: 32px 16px 60px; font-size: 1rem; }
+        h1 { font-size: 1.75rem; }
+        h2 { font-size: 1.25rem; margin-top: 40px; }
+        pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
+    }
+</style>
+
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Index</a>
+    <div class="meta">
+        <span class="meta-item">📅 Updated: 2026-03-01</span>
+        <span class="meta-item">📂 HackTheBox</span>
+    </div>
+    <article>
+        <hr />
+
+<p>tags: [hackthebox, pentest, OSCP, roadmap]</p>
+
+<h2>created: 2026-03-01</h2>
+
+<h1>🎯 HackTheBox Easy Machines — Çözüm Sıralaması</h1>
+
+<blockquote>
+  <p><strong>Onurcan'ın tamamlanmamış easy makineleri</strong>, kolaydan zora sıralanmış.
+  Toplam <strong>126</strong> makine | TJNull + 0xdf + topluluk önerilerine göre sıralanmıştır.</p>
+</blockquote>
+
+<h2>📊 Özet Tablo</h2>
+
+<table>
+<thead>
+<tr>
+  <th>Tier</th>
+  <th style="text-align:center;">Makine Sayısı</th>
+  <th style="text-align:center;">Tahmini Süre</th>
+  <th>Odak Alanı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>🟢 Tier 1</td>
+  <td style="text-align:center;">6</td>
+  <td style="text-align:center;">1-2 gün</td>
+  <td>Temel exploit çalıştırma</td>
+</tr>
+<tr>
+  <td>🟢 Tier 2</td>
+  <td style="text-align:center;">13</td>
+  <td style="text-align:center;">3-5 gün</td>
+  <td>Enumeration + bilinen CVE</td>
+</tr>
+<tr>
+  <td>🟡 Tier 3</td>
+  <td style="text-align:center;">23</td>
+  <td style="text-align:center;">5-7 gün</td>
+  <td>Exploit zincirleme</td>
+</tr>
+<tr>
+  <td>🟠 Tier 4</td>
+  <td style="text-align:center;">34</td>
+  <td style="text-align:center;">8-12 gün</td>
+  <td>Karmaşık privesc &amp; lateral movement</td>
+</tr>
+<tr>
+  <td>🔴 Tier 5</td>
+  <td style="text-align:center;">50</td>
+  <td style="text-align:center;">10-15 gün</td>
+  <td>Gerçekçi senaryolar &amp; yeni makineler</td>
+</tr>
+<tr>
+  <td><strong>TOPLAM</strong></td>
+  <td style="text-align:center;"><strong>126</strong></td>
+  <td style="text-align:center;"><strong>~30-40 gün</strong></td>
+  <td></td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>🟢 TIER 1 — En Kolay (Buradan Başla!)</h2>
+
+<blockquote>
+  <p>Tek exploit ile root. Nmap → exploit → flag. Metodoloji öğrenmek için ideal.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:center;">#</th>
+  <th>Makine</th>
+  <th style="text-align:center;">OS</th>
+  <th style="text-align:center;">Rating</th>
+  <th>Skills</th>
+  <th>Notes</th>
+  <th style="text-align:center;">Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:center;">1</td>
+  <td><strong>Keeper</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>Default credentials, KeePass CVE-2023-32784</td>
+  <td>Request Tracker default creds + KeePass memory dump</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">2</td>
+  <td><strong>Knife</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>PHP 8.1.0-dev backdoor, sudo knife</td>
+  <td>User-Agent header backdoor + GTFOBins knife</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">3</td>
+  <td><strong>Broker</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Apache ActiveMQ CVE-2023-46604, sudo nginx</td>
+  <td>Deserialization RCE + nginx root read</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">4</td>
+  <td><strong>Bashed</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>Web shell discovery, cron job exploitation</td>
+  <td>phpbash webshell zaten mevcut, cron ile privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">5</td>
+  <td><strong>Mirai</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>Default IoT credentials, USB data recovery</td>
+  <td>Raspberry Pi default creds + deleted root.txt recovery</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">6</td>
+  <td><strong>Shocker</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.8</td>
+  <td>Shellshock (CVE-2014-6271), sudo abuse</td>
+  <td>CGI-bin Shellshock + Perl sudo</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>🟢 TIER 2 — Başlangıç</h2>
+
+<blockquote>
+  <p>Basit enumeration + bilinen CVE. Web tarama ve exploit-db kullanımı.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:center;">#</th>
+  <th>Makine</th>
+  <th style="text-align:center;">OS</th>
+  <th style="text-align:center;">Rating</th>
+  <th>Skills</th>
+  <th>Notes</th>
+  <th style="text-align:center;">Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:center;">1</td>
+  <td><strong>Sense</strong></td>
+  <td style="text-align:center;">🐡 OpenBSD</td>
+  <td style="text-align:center;">⭐ 4.0</td>
+  <td>pfSense RCE, directory bruteforce</td>
+  <td>pfSense command injection, direkt root shell</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">2</td>
+  <td><strong>Arctic</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>ColdFusion 8 RCE, Chimichurri privesc</td>
+  <td>Adobe ColdFusion directory traversal + upload</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">3</td>
+  <td><strong>Return</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Printer LDAP config abuse, Server Operators</td>
+  <td>LDAP credential capture + service binary path abuse</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">4</td>
+  <td><strong>Bounty</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>IIS short name, web.config upload, Juicy Potato</td>
+  <td>ASP upload bypass + token impersonation</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">5</td>
+  <td><strong>Devvortex</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Joomla CVE, MySQL creds, apport-cli</td>
+  <td>Joomla info disclosure + MySQL + apport SUID</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">6</td>
+  <td><strong>Nibbles</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Nibbleblog file upload, sudo script abuse</td>
+  <td>CMS arbitrary upload + sudo shell script</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">7</td>
+  <td><strong>Bank</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>DNS zone transfer, file upload bypass</td>
+  <td>Virtual host + upload bypass + SUID dash</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">8</td>
+  <td><strong>Cicada</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>AD enumeration, password spray, SeBackupPrivilege</td>
+  <td>Beginner AD: RID cycling + spray + backup privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">9</td>
+  <td><strong>Irked</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>UnrealIRCd backdoor, steganography, SUID</td>
+  <td>IRC backdoor + steg password + viewuser SUID</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">10</td>
+  <td><strong>Beep</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>Multiple vectors: LFI, Elastix, ShellShock</td>
+  <td>10+ farkli exploit yolu, enum pratigi icin mukemmel</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">11</td>
+  <td><strong>Curling</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.8</td>
+  <td>Joomla, base64 creds, cron/bzip2 abuse</td>
+  <td>Page source creds + hex/bzip2 extraction + cron</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">12</td>
+  <td><strong>Valentine</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.8</td>
+  <td>Heartbleed (CVE-2014-0160), tmux hijack</td>
+  <td>SSL Heartbleed memory leak + tmux session</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">13</td>
+  <td><strong>Bastion</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.9</td>
+  <td>SMB mount, VHD extraction, mRemoteNG creds</td>
+  <td>VHD SAM dump + mRemoteNG password decrypt</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>🟡 TIER 3 — Başlangıç-Orta</h2>
+
+<blockquote>
+  <p>Birden fazla adım, exploit zincirleme, daha detaylı enumeration.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:center;">#</th>
+  <th>Makine</th>
+  <th style="text-align:center;">OS</th>
+  <th style="text-align:center;">Rating</th>
+  <th>Skills</th>
+  <th>Notes</th>
+  <th style="text-align:center;">Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:center;">1</td>
+  <td><strong>GreenHorn</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 2.9</td>
+  <td>Pluck CMS, pixelated password recovery</td>
+  <td>Pluck file upload + depixelation + sudo su</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">2</td>
+  <td><strong>Topology</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.6</td>
+  <td>LaTeX injection, Apache vhost, pspy</td>
+  <td>LaTeX file read + .htpasswd + gnuplot cron</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">3</td>
+  <td><strong>Usage</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>Blind SQL injection, Laravel file upload</td>
+  <td>Boolean-based blind SQLi + admin upload abuse</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">4</td>
+  <td><strong>Networked</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>PHP upload bypass, command injection, cron</td>
+  <td>Double extension + network script injection</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">5</td>
+  <td><strong>Analytics</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>Metabase pre-auth RCE, Docker escape, kernel CVE</td>
+  <td>CVE-2023-38646 + container escape + GameOver(lay)</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">6</td>
+  <td><strong>Postman</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>Redis unauthorized SSH key write, Webmin CVE</td>
+  <td>Redis key injection + Webmin package update RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">7</td>
+  <td><strong>Titanic</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.2</td>
+  <td>Path traversal, Gitea, ImageMagick</td>
+  <td>Web traversal + Gitea creds + ImageMagick metadata</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">8</td>
+  <td><strong>Editorial</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>SSRF, internal API enumeration, Git history</td>
+  <td>SSRF to internal API + git log credential leak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">9</td>
+  <td><strong>Traverxec</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>Nostromo RCE, SSH key, journalctl pager</td>
+  <td>Nostromo CVE + htpasswd + journalctl GTFOBin</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">10</td>
+  <td><strong>Sunday</strong></td>
+  <td style="text-align:center;">☀️ Solaris</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>Finger enumeration, SSH brute, wget sudo</td>
+  <td>Solaris OS, finger user enum + shadow hash + sudo wget</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">11</td>
+  <td><strong>Chemistry</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>Pymatgen CVE, path traversal</td>
+  <td>Python library deserialization + web path traversal</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">12</td>
+  <td><strong>Codify</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>vm2 sandbox escape, bash script password brute</td>
+  <td>Node.js sandbox CVE + bash glob matching brute</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">13</td>
+  <td><strong>Busqueda</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>Python eval() injection, Git credential leak</td>
+  <td>Searchor library RCE + gitconfig password reuse</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">14</td>
+  <td><strong>BoardLight</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Dolibarr CMS RCE, Enlightenment SUID</td>
+  <td>Dolibarr admin + reverse shell + CVE-2022-37706</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">15</td>
+  <td><strong>CozyHosting</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Spring Boot Actuator, OS command injection, hash crack</td>
+  <td>Session hijack + command injection + psql creds</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">16</td>
+  <td><strong>Pilgrimage</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>ImageMagick CVE-2022-44268, Binwalk CVE-2022-4510</td>
+  <td>Arbitrary file read + Binwalk RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">17</td>
+  <td><strong>Sauna</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>AS-REP Roasting, BloodHound, DCSync</td>
+  <td>AD: username enum + ASREPRoast + DCSync chain</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">18</td>
+  <td><strong>OpenAdmin</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>OpenNetAdmin RCE, internal pivot, nano sudo</td>
+  <td>ONA exploit + internal web + nano GTFOBin</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">19</td>
+  <td><strong>Support</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>.NET reversing, LDAP, BloodHound, RBCD</td>
+  <td>AD: .NET decompile + GenericAll + RBCD attack</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">20</td>
+  <td><strong>Forest</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>AS-REP Roasting, BloodHound, WriteDACL, DCSync</td>
+  <td>AD: ASREPRoast + Exchange group abuse + DCSync</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">21</td>
+  <td><strong>FriendZone</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>DNS zone transfer, SMB creds, Python library hijack</td>
+  <td>Zone transfer + LFI + writable Python module</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">22</td>
+  <td><strong>SwagShop</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>Magento SQLi + RCE chain, sudo vi</td>
+  <td>Magento exploit chain + vi shell escape</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">23</td>
+  <td><strong>Help</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.8</td>
+  <td>HelpDeskZ file upload, kernel exploit</td>
+  <td>Upload timestamp prediction + kernel privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>🟠 TIER 4 — Orta Seviye</h2>
+
+<blockquote>
+  <p>Çoklu adım, karmaşık privesc, lateral movement, gerçek dünya teknikleri.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:center;">#</th>
+  <th>Makine</th>
+  <th style="text-align:center;">OS</th>
+  <th style="text-align:center;">Rating</th>
+  <th>Skills</th>
+  <th>Notes</th>
+  <th style="text-align:center;">Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:center;">1</td>
+  <td><strong>Crafty</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 2.4</td>
+  <td>Minecraft Log4j, RunasCs privesc</td>
+  <td>Log4Shell CVE-2021-44228 + RunasCs admin</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">2</td>
+  <td><strong>Safe</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 2.9</td>
+  <td>Binary exploitation, ROP chain, KeePass</td>
+  <td>Buffer overflow + ROP + KeePass database</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">3</td>
+  <td><strong>RouterSpace</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.2</td>
+  <td>APK analysis, command injection, sudo Baron Samedit</td>
+  <td>Android APK + API cmd injection + CVE-2021-3156</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">4</td>
+  <td><strong>Blunder</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.4</td>
+  <td>Bludit brute bypass, sudo CVE-2019-14287</td>
+  <td>X-Forwarded-For bypass + sudo -u#-1 bash</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">5</td>
+  <td><strong>Admirer</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.4</td>
+  <td>Adminer LOAD DATA, Python library hijack</td>
+  <td>Adminer MySQL read + shutil.make_archive override</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">6</td>
+  <td><strong>Backdoor</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.6</td>
+  <td>WordPress plugin LFI, gdbserver RCE</td>
+  <td>Ebook plugin LFI + /proc enum + gdbserver exploit</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">7</td>
+  <td><strong>Haystack</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>Elasticsearch, Kibana LFI, LogStash exec</td>
+  <td>ES data mining + Kibana CVE + LogStash filter RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">8</td>
+  <td><strong>Nest</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 3.9</td>
+  <td>SMB deep enum, .NET decompile, ADS</td>
+  <td>SMB nested creds + VB.NET decrypt + NTFS ADS</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">9</td>
+  <td><strong>TraceBack</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.0</td>
+  <td>Web shell hunting, Lua sudo, motd write</td>
+  <td>Existing webshell + luvit sudo + motd file write</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">10</td>
+  <td><strong>Frolic</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.0</td>
+  <td>Esoteric languages, Playsms RCE, ret2libc</td>
+  <td>Ook/brainfuck decode + PlaySMS + BOF privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">11</td>
+  <td><strong>Teacher</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>Moodle, command injection, MySQL creds</td>
+  <td>Moodle math formula injection + MySQL password</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">12</td>
+  <td><strong>Explore</strong></td>
+  <td style="text-align:center;">🤖 Android</td>
+  <td style="text-align:center;">⭐ 4.2</td>
+  <td>ES File Explorer CVE, ADB port forward</td>
+  <td>Android CVE-2019-6447 + ADB root</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">13</td>
+  <td><strong>LinkVortex</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>Ghost CMS, Git exposure, symlink archive</td>
+  <td>Ghost CVE + .git credential leak + symlink privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">14</td>
+  <td><strong>Alert</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>XSS, LFI via Markdown, group file access</td>
+  <td>Stored XSS + Markdown LFI + website-manager group</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">15</td>
+  <td><strong>Secret</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>JWT secret leak, Git history, SUID coredump</td>
+  <td>Git log JWT secret + command injection + crash dump</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">16</td>
+  <td><strong>ScriptKiddie</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>MSFvenom APK template CVE, command injection</td>
+  <td>CVE-2020-7384 + log script injection</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">17</td>
+  <td><strong>Remote</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>NFS mount, Umbraco RCE, service abuse</td>
+  <td>NFS SDB file + Umbraco admin RCE + UsoSvc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">18</td>
+  <td><strong>Pandora</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>SNMP creds, Pandora FMS SQLi+upload, PATH hijack</td>
+  <td>SNMPv1 walk + PandoraFMS chain + SUID path</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">19</td>
+  <td><strong>Antique</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>SNMP password leak, CUPS CVE</td>
+  <td>SNMP community string + printer service CVE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">20</td>
+  <td><strong>Horizontall</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>Strapi RCE, port forwarding, Laravel RCE</td>
+  <td>Strapi CVE + chisel tunnel + Laravel debug RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">21</td>
+  <td><strong>LaCasaDePapel</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>vsftpd backdoor, DALI certificate, SUID</td>
+  <td>FTP shell + client cert + Psy shell + supervisor</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">22</td>
+  <td><strong>Paper</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>WordPress draft leak, Rocket.Chat bot, Polkit CVE</td>
+  <td>WP ?static=1 + bot file read + CVE-2021-3560</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">23</td>
+  <td><strong>Nunchucks</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>SSTI (Nunjucks), AppArmor bypass</td>
+  <td>Server-side template injection + cap_setuid Perl</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">24</td>
+  <td><strong>Validation</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>SQL injection to RCE, web shell write</td>
+  <td>Second-order SQLi + INTO OUTFILE webshell</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">25</td>
+  <td><strong>Love</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>SSRF, file scanner, AlwaysInstallElevated</td>
+  <td>SSRF internal port + voting admin + MSI privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">26</td>
+  <td><strong>Heist</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Cisco password crack, SID brute, process dump</td>
+  <td>Cisco type 5/7 + lookupsid + Firefox procdump</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">27</td>
+  <td><strong>Precious</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>pdfkit command injection, Ruby deserialization</td>
+  <td>PDFKit CVE + henry .bundle creds + YAML deserialize</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">28</td>
+  <td><strong>NodeBlog</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>NoSQL injection, Node deserialization</td>
+  <td>MongoDB auth bypass + serialize-javascript RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">29</td>
+  <td><strong>Driver</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>SCF file upload, PrintNightmare</td>
+  <td>SCF NTLMv2 capture + CVE-2021-1675</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">30</td>
+  <td><strong>BountyHunter</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>XXE injection, Python script analysis</td>
+  <td>XML external entity + sudo Python ticket validator</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">31</td>
+  <td><strong>Delivery</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>osTicket trick, Mattermost, hashcat rules</td>
+  <td>Email verification bypass + hash rule-based crack</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">32</td>
+  <td><strong>SteamCloud</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>Kubernetes, kubelet API, cloud enum</td>
+  <td>K8s pod listing + kubelet exec + service account</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">33</td>
+  <td><strong>GoodGames</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.8</td>
+  <td>SQL injection, SSTI, Docker escape</td>
+  <td>Flask SQLi + Jinja2 SSTI + Docker mount escape</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">34</td>
+  <td><strong>Writeup</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.9</td>
+  <td>CMS Made Simple SQLi, PATH hijack</td>
+  <td>CMSS blind SQLi + writable PATH + ssh-keygen</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>🔴 TIER 5 — Zor Easy / Yeni Makineler</h2>
+
+<blockquote>
+  <p>Easy etiketi var ama medium gibi hissettirir. İleri seviye exploit chain'ler.</p>
+</blockquote>
+
+<table>
+<thead>
+<tr>
+  <th style="text-align:center;">#</th>
+  <th>Makine</th>
+  <th style="text-align:center;">OS</th>
+  <th style="text-align:center;">Rating</th>
+  <th>Skills</th>
+  <th>Notes</th>
+  <th style="text-align:center;">Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td style="text-align:center;">1</td>
+  <td><strong>ServMon</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 2.2</td>
+  <td>FTP anonymous, NVMS directory traversal, NSClient</td>
+  <td>NVMS LFI + SSH creds + NSClient++ API privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">2</td>
+  <td><strong>Luanne</strong></td>
+  <td style="text-align:center;">🖥️ Other</td>
+  <td style="text-align:center;">⭐ 2.7</td>
+  <td>Lua web injection, htpasswd, doas</td>
+  <td>NetBSD + bozohttpd + Lua library injection</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">3</td>
+  <td><strong>Late</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.1</td>
+  <td>Flask OCR SSTI, cron script append</td>
+  <td>Image-based SSTI + writable linpeas cron script</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">4</td>
+  <td><strong>Omni</strong></td>
+  <td style="text-align:center;">🖥️ Other</td>
+  <td style="text-align:center;">⭐ 3.2</td>
+  <td>Windows IoT SirepRAT, PSCredential decrypt</td>
+  <td>IoT core exploit + DPAPI credential decrypt</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">5</td>
+  <td><strong>Sightless</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.5</td>
+  <td>SQLPad CVE, Chrome debug port, Froxlor</td>
+  <td>CVE-2022-0944 + remote debugging + shadow read</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">6</td>
+  <td><strong>Sea</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.5</td>
+  <td>WonderCMS XSS+RCE, System Monitor command injection</td>
+  <td>CVE-2023-41425 + port forward + log reader RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">7</td>
+  <td><strong>Buff</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 3.5</td>
+  <td>Gym Management RCE, Chisel tunnel, CloudMe BOF</td>
+  <td>PHP upload + port forward + CloudMe buffer overflow</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">8</td>
+  <td><strong>Outbound</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.7</td>
+  <td>Firewall bypass, egress filtering</td>
+  <td>Restrictive egress + creative tunneling + privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">9</td>
+  <td><strong>Spectra</strong></td>
+  <td style="text-align:center;">🖥️ Other</td>
+  <td style="text-align:center;">⭐ 3.7</td>
+  <td>WordPress, autologin creds, initctl</td>
+  <td>ChromeOS + WP config + autologin passwd + init</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">10</td>
+  <td><strong>Nocturnal</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>IDOR, command injection, log file analysis</td>
+  <td>Web app IDOR + cmd injection + log-based privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">11</td>
+  <td><strong>Dog</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>Backdrop CMS, Git credentials, sudo service</td>
+  <td>Backdrop RCE + git creds + sudo service manipulation</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">12</td>
+  <td><strong>UnderPass</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>SNMP enum, daloRADIUS, mosh sudo</td>
+  <td>SNMP user discovery + RADIUS portal + mosh-server</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">13</td>
+  <td><strong>Toolbox</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>SQL injection, Docker Toolbox, boot2docker</td>
+  <td>PostgreSQL SQLi + Docker Toolbox default key</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">14</td>
+  <td><strong>Armageddon</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.8</td>
+  <td>Drupalgeddon2 RCE, snap install privesc</td>
+  <td>CVE-2018-7600 + dirty_sock snap privesc</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">15</td>
+  <td><strong>Planning</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.9</td>
+  <td>Gitea enumeration, token abuse, container escape</td>
+  <td>Gitea repo secrets + service token + Docker escape</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">16</td>
+  <td><strong>RedPanda</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 3.9</td>
+  <td>SSTI (Spring), XXE-like image metadata attack</td>
+  <td>Java SSTI + log poisoning + XML author injection</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">17</td>
+  <td><strong>Code</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.0</td>
+  <td>Code editor sandbox escape, Git hooks</td>
+  <td>Online IDE breakout + Gitea repo + Git hook RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">18</td>
+  <td><strong>Doctor</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.0</td>
+  <td>SSTI (Jinja2), Splunk forwarder RCE</td>
+  <td>Server-side template injection + SplunkWhisperer2</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">19</td>
+  <td><strong>VulnEscape</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>Container escape, vulnerability chaining</td>
+  <td>VIP+ exclusive Windows machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">20</td>
+  <td><strong>Shoppy</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>NoSQL injection, subdomain enum, Docker group</td>
+  <td>Mattermost creds + NoSQLi + Docker socket</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">21</td>
+  <td><strong>Trick</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.1</td>
+  <td>DNS zone transfer, LFI, fail2ban abuse</td>
+  <td>AXFR + vhost + LFI + fail2ban action rewrite</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">22</td>
+  <td><strong>Artificial</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.2</td>
+  <td>AI/ML exploitation, model abuse</td>
+  <td>AI service exploitation + model manipulation</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">23</td>
+  <td><strong>Photobomb</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.2</td>
+  <td>Command injection, PATH/LD_PRELOAD hijack</td>
+  <td>Sinatra auth bypass + convert cmd injection + PATH</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">24</td>
+  <td><strong>Laboratory</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.2</td>
+  <td>GitLab CVE, Ruby deserialization, PATH hijack</td>
+  <td>GitLab arbitrary file read + RCE + SUID docker</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">25</td>
+  <td><strong>9""Tabby</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.2</td>
+  <td>Bilinmiyor - Writeup kontrol et</td>
+  <td>Detay icin IppSec/0xdf writeup bak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">26</td>
+  <td><strong>Editor</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>Web editor exploitation, cron abuse</td>
+  <td>OSCP-like: editor service + cron + privilege escalation</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">27</td>
+  <td><strong>Inject</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.3</td>
+  <td>Spring framework LFI, CVE-2022-22963, cron Ansible</td>
+  <td>Directory traversal + Spring Cloud RCE + Ansible</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">28</td>
+  <td><strong>EscapeTwo</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>AD: MSSQL, NTLM relay, AD CS ESC1</td>
+  <td>MSSQL xp_dirtree + cert template abuse + DCSync</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">29</td>
+  <td><strong>CodePartTwo</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>Code editor advanced, pivot, privesc chain</td>
+  <td>Part 1'in devami, daha karmasik chain</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">30</td>
+  <td><strong>RetroTwo</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>Legacy service exploitation</td>
+  <td>VIP+ exclusive Windows machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">31</td>
+  <td><strong>Wifinetic</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>FTP config files, wireless WPS reaver attack</td>
+  <td>FTP WiFi config + reaver WPS pin brute + root</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">32</td>
+  <td><strong>PC</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.4</td>
+  <td>gRPC enumeration, SQL injection, pyLoad CVE</td>
+  <td>gRPC service + SQLi + CVE-2023-0297 pyLoad RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">33</td>
+  <td><strong>9" "MonitorsTwo</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Bilinmiyor - Writeup kontrol et</td>
+  <td>Detay icin IppSec/0xdf writeup bak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">34</td>
+  <td><strong>Stocker</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>NoSQL auth bypass, PDF SSRF/LFI, path wildcard</td>
+  <td>MongoDB bypass + HTML injection PDF + sudo path</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">35</td>
+  <td><strong>Soccer</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Tiny File Manager, WebSocket SQLi, doas</td>
+  <td>File manager shell + WS blind SQLi + dstat plugin</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">36</td>
+  <td><strong>Squashed</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>NFS no<em>root</em>squash abuse, .Xauthority steal</td>
+  <td>NFS UID spoof + X11 screenshot capture</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">37</td>
+  <td><strong>9" Previse</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.5</td>
+  <td>Bilinmiyor - Writeup kontrol et</td>
+  <td>Detay icin IppSec/0xdf writeup bak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">38</td>
+  <td><strong>9" "TwoMillion</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Bilinmiyor - Writeup kontrol et</td>
+  <td>Detay icin IppSec/0xdf writeup bak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">39</td>
+  <td><strong>Forgotten</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Web app exploitation, credential recovery</td>
+  <td>VIP+ exclusive Linux machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">40</td>
+  <td><strong>Reset</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Service exploitation, credential reset</td>
+  <td>VIP+ exclusive Linux machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">41</td>
+  <td><strong>Retro</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Legacy Windows exploitation</td>
+  <td>VIP+ exclusive Windows machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">42</td>
+  <td><strong>Down</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Service downtime exploitation</td>
+  <td>VIP+ exclusive Linux machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">43</td>
+  <td><strong>9" "PermX</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Bilinmiyor - Writeup kontrol et</td>
+  <td>Detay icin IppSec/0xdf writeup bak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">44</td>
+  <td><strong>MetaTwo</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>WordPress BookingPress SQLi, XXE, PGP decrypt</td>
+  <td>WP plugin SQLi + media XXE + PGP key decrypt</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">45</td>
+  <td><strong>OpenSource</strong></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Git exposure, pin bypass, Gitea hooks</td>
+  <td>Source code review + Werkzeug pin + Git hook RCE</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">46</td>
+  <td><strong>9" "Timelapse</strong></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.6</td>
+  <td>Bilinmiyor - Writeup kontrol et</td>
+  <td>Detay icin IppSec/0xdf writeup bak</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">47</td>
+  <td><strong>Manage</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.7</td>
+  <td>Management interface exploitation</td>
+  <td>VIP+ exclusive Linux machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">48</td>
+  <td><strong>Baby</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.8</td>
+  <td>AD: LDAP anonymous, password reset, WinRM</td>
+  <td>VIP+ exclusive AD beginner machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">49</td>
+  <td><strong>Lock</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🪟 Windows</td>
+  <td style="text-align:center;">⭐ 4.9</td>
+  <td>Windows service exploitation</td>
+  <td>VIP+ exclusive Windows machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+<tr>
+  <td style="text-align:center;">50</td>
+  <td><strong>Data</strong> <code>VIP+</code></td>
+  <td style="text-align:center;">🐧 Linux</td>
+  <td style="text-align:center;">⭐ 4.9</td>
+  <td>Database exploitation, data exfiltration</td>
+  <td>VIP+ exclusive Linux machine</td>
+  <td style="text-align:center;">☐</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h2>💡 Çözüm Stratejisi</h2>
+
+<ol>
+<li><strong>Her makineyi writeup olmadan dene</strong> — En az 2-3 saat uğraş, sonra bak</li>
+<li><strong>Not al</strong> — Her makine için Obsidian'da ayrı sayfa oluştur: <code>HTB-MachineName</code></li>
+<li><strong>Nmap metodolojisi</strong> — <code>nmap -sC -sV -p-</code> ile başla, her zaman full port scan</li>
+<li><strong>Her tier'ı bitirmeden sonrakine geçme</strong> — Temeli sağlam at</li>
+<li><strong>Writeup sonrası tekrar çöz</strong> — 1 hafta sonra writeup'sız tekrar dene</li>
+<li><strong>LinPEAS/WinPEAS her zaman çalıştır</strong> — Privesc checklist olarak kullan</li>
+<li><strong>searchsploit</strong> — Versiyon bulduktan sonra hemen <code>searchsploit &lt;service version&gt;</code></li>
+<li><strong>Günlük 1-2 makine</strong> — Tutarlılık önemli, her gün en az 1 makine</li>
+</ol>
+
+<h2>📚 Faydalı Kaynaklar</h2>
+
+<table>
+<thead>
+<tr>
+  <th>Kaynak</th>
+  <th>Link</th>
+  <th>Açıklama</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>TJNull OSCP Listesi</td>
+  <td><a href="https://docs.google.com/spreadsheets/d/1dwSMIAPIam0PuRBkCiDI88pU3yzrqqHkDtBngUHNCw8/">Google Sheets</a></td>
+  <td>OSCP-like makine listesi</td>
+</tr>
+<tr>
+  <td>0xdf Writeups</td>
+  <td><a href="https://0xdf.gitlab.io">0xdf.gitlab.io</a></td>
+  <td>En kaliteli HTB writeup'ları</td>
+</tr>
+<tr>
+  <td>IppSec YouTube</td>
+  <td><a href="https://youtube.com/ippsec">youtube.com/ippsec</a></td>
+  <td>Video walkthrough'lar</td>
+</tr>
+<tr>
+  <td>HackTricks</td>
+  <td><a href="https://book.hacktricks.xyz">book.hacktricks.xyz</a></td>
+  <td>Pentest cheatsheet</td>
+</tr>
+<tr>
+  <td>GTFOBins</td>
+  <td><a href="https://gtfobins.github.io">gtfobins.github.io</a></td>
+  <td>Linux SUID/sudo binary'leri</td>
+</tr>
+<tr>
+  <td>LOLBAS</td>
+  <td><a href="https://lolbas-project.github.io">lolbas-project.github.io</a></td>
+  <td>Windows LOLBins</td>
+</tr>
+<tr>
+  <td>PayloadsAllTheThings</td>
+  <td><a href="https://github.com/swisskyrepo/PayloadsAllTheThings">GitHub</a></td>
+  <td>Payload koleksiyonu</td>
+</tr>
+</tbody>
+</table>
+
+<h2>🏷️ Tag'ler ile Arama</h2>
+
+<p>Makineleri teknik bazında aramak için:
+- <code>#AD</code> — Active Directory makineleri
+- <code>#SSRF</code> — SSRF exploit içerenler
+- <code>#CVE</code> — Bilinen CVE exploit'leri
+- <code>#BOF</code> — Buffer overflow içerenler
+- <code>#WebApp</code> — Web uygulama exploitation
+- <code>#PrivEsc</code> — İleri seviye privilege escalation</p>
+
+<hr />
+
+<p><em>Son güncelleme: Mart 2026 | Kaynak: HTB + TJNull + 0xdf + topluluk</em></p>
+
+    </article>
+</body>
+</html>
