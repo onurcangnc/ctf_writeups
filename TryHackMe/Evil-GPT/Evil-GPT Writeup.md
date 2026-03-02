@@ -245,13 +245,13 @@ Whenever model facing with anything related with ",'<,>,| etc... It removes char
 
 Meaning that if model flags it then begins to sanitize inputs. Now I will let the model to show me the content of each directory since we are already `root`.
 
-![[10.png]]
+![[TryHackMe/Evil-GPT/images/10.png]]
 
 Amazing! it was too straightforward xD
 
-![[9.png]]
+![[TryHackMe/Evil-GPT/images/9.png]]
 
-![[11.png]]
+![[TryHackMe/Evil-GPT/images/11.png]]
 
 It is easy to reach the flag guys. I mean that we don't have sophisticated tools or any enumeration phases, exploitation. We just evaded sanitization and reached the flag directly.
 

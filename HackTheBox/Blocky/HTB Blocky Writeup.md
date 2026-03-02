@@ -60,57 +60,57 @@ Apply `--enumerate u` so as to identify current users available on application:
 
 Returning back to java files, I found a generic `root:pass` combination.
 
-![[12.png]]
+![[HackTheBox/Blocky/images/12.png]]
 
 Upon that finding, I tried on SSH ,but still stucks. However, after a successful fuzzing operation, I saw phpmyadmin login.
 
-![[13.png]]
+![[HackTheBox/Blocky/images/13.png]]
 
 Found user pass as hashed format.
 
-![[14.png]]
+![[HackTheBox/Blocky/images/14.png]]
 
 Lets check via `Crackstation`
 
 Could not determine
 
-![[15.png]]
+![[HackTheBox/Blocky/images/15.png]]
 
 I used `hashes.com` to identify regarding hash type
 
-![[16.png]]
+![[HackTheBox/Blocky/images/16.png]]
 
 Use `hash-identifier "$P$BiVoTj899ItS1EZnMhqeqVbrZI4Oq0/"`
 
-![[17.png]]
+![[HackTheBox/Blocky/images/17.png]]
 
 Ready to brute via `hashcat`
 
-![[18.png]]
+![[HackTheBox/Blocky/images/18.png]]
 
 `hashcat -m 400 o.hash /usr/share/wordlists/sqlmap.txt`
 
 I was not successfuly. Instead, let me try to use password as SSH user `notch`
 
-![[19.png]]
+![[HackTheBox/Blocky/images/19.png]]
 
 [GFTObins](https://gtfobins.org/) perfectly fine actually or I will figure out through `linpeas`.
 
 Understand what commands can `notch` run ->
 
-![[20.png]]
+![[HackTheBox/Blocky/images/20.png]]
 
 ITS OK. `Notch` can run everything as `Blocky` (AKA ROOT) do.
 
 `sudo -u#-1 /bin/bash` from [HackTricks](https://book.hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html#path)
 
-![[21.png]]
+![[HackTheBox/Blocky/images/21.png]]
 
 I took `root` privileges as you can see above.
 
 Find flags ->
 
-![[22.png]]
+![[HackTheBox/Blocky/images/22.png]]
 
-![[23.png]]
+![[HackTheBox/Blocky/images/23.png]]
 
