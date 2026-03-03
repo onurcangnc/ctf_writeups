@@ -6,13 +6,11 @@ on:
       - main
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -29,22 +27,16 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install markdown2
-
-      - name: Convert Markdown to HTML
+      - name: Generate HTML wrappers
         run: python scripts/convert_md_to_html.py
 
       - name: Debug - List generated files
         run: |
-          echo "=== Generated HTML files ==="
+          echo "=== Generated HTML wrappers ==="
           find . -name "*.html" -type f
           echo ""
-          echo "=== Categories found ==="
-          head -200 index.html | grep -A2 "category-title"
-          echo ""
-          echo "=== Medium exports ==="
-          find ./medium_export -name "*.md" -type f 2>/dev/null || echo "No medium exports found"
+          echo "=== Markdown files ==="
+          find . -name "*.md" -not -path "./.git/*" -type f
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

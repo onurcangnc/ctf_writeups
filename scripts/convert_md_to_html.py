@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Obsidian to HTML Converter
-Converts all Markdown files from Obsidian vault to HTML for GitHub Pages.
-Supports multiple categories/directories, not just CTF writeups.
+Obsidian to HTML Wrapper Generator
+Generates thin HTML wrappers that load .md files client-side via marked.js.
+- Markdown stays untouched as .md
+- CSS + marked.js renders it beautifully in browser
+- XML/HTML in code blocks auto-sanitized for Medium copy-paste
 """
 
-import markdown2
 import os
 import re
-import json
 from pathlib import Path
 from datetime import datetime
 
@@ -23,58 +23,56 @@ CONFIG = {
         "Blog",
         "Projects",
         "Writeups",
-        "Medium"  # Medium articles also displayed on GitHub Pages
+        "Medium"
     ],
     "exclude_files": ["README.md", "TryHackMe.md", "index.md", "_index.md"],
     "exclude_dirs": [".obsidian", ".git", "templates", "attachments", "_templates"],
     "output_file": "index.html",
-    "github_pages_base_url": "https://onurcangnc.github.io/ctf_writeups",
-    "medium_export_dir": "medium_export"
+    "github_pages_base_url": "https://onurcangnc.github.io/ctf_writeups"
 }
 
 # Category icons and descriptions
 CATEGORY_META = {
     "TryHackMe": {
-        "icon": "🎯",
+        "icon": "\U0001f3af",
         "description": "TryHackMe CTF challenge writeups and solutions"
     },
     "HackTheBox": {
-        "icon": "📦",
+        "icon": "\U0001f4e6",
         "description": "HackTheBox machine writeups and walkthroughs"
     },
     "CheatSheets": {
-        "icon": "📋",
+        "icon": "\U0001f4cb",
         "description": "Quick reference guides and command cheat sheets"
     },
     "Notes": {
-        "icon": "📝",
+        "icon": "\U0001f4dd",
         "description": "Technical notes and learning materials"
     },
     "Research": {
-        "icon": "🔬",
+        "icon": "\U0001f52c",
         "description": "Security research and vulnerability analysis"
     },
     "Blog": {
-        "icon": "✍️",
+        "icon": "\u270d\ufe0f",
         "description": "Blog posts and articles"
     },
     "Projects": {
-        "icon": "🚀",
+        "icon": "\U0001f680",
         "description": "Project documentation and guides"
     },
     "Writeups": {
-        "icon": "📄",
+        "icon": "\U0001f4c4",
         "description": "General CTF and challenge writeups"
     },
     "Medium": {
-        "icon": "📰",
+        "icon": "\U0001f4f0",
         "description": "Articles published on Medium"
     }
 }
 
 # Anthropic-inspired CSS for article pages
 PAGE_CSS = """
-<style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
 
     :root {
@@ -161,13 +159,12 @@ PAGE_CSS = """
 
     h4 {
         font-family: 'Inter', sans-serif;
-        font-size: 1rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         margin: 32px 0 8px;
         color: var(--text-secondary);
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        font-size: 0.8125rem;
     }
 
     p {
@@ -297,6 +294,14 @@ PAGE_CSS = """
         gap: 6px;
     }
 
+    .loading {
+        text-align: center;
+        padding: 80px 0;
+        color: var(--text-muted);
+        font-family: 'Inter', sans-serif;
+        font-size: 0.875rem;
+    }
+
     ::selection {
         background: rgba(212, 162, 127, 0.25);
         color: var(--text-primary);
@@ -308,179 +313,52 @@ PAGE_CSS = """
         h2 { font-size: 1.25rem; margin-top: 40px; }
         pre { padding: 16px; margin: 20px -16px; border-radius: 0; border-left: 0; border-right: 0; }
     }
-</style>
 """
-
-def replace_obsidian_links(content: str) -> str:
-    """Convert Obsidian-style links to standard Markdown/HTML."""
-    # Image links: ![[image.png]] -> ![](./images/image.png)
-    content = re.sub(
-        r'!\[\[(.*?)\]\]',
-        lambda m: f'![{os.path.basename(m.group(1))}](./images/{os.path.basename(m.group(1))})',
-        content
-    )
-    
-    # Wiki links: [[Page]] -> Page (just text, no link for now)
-    content = re.sub(r'\[\[([^\]|]+)\]\]', r'\1', content)
-    
-    # Wiki links with alias: [[Page|Alias]] -> Alias
-    content = re.sub(r'\[\[([^\]|]+)\|([^\]]+)\]\]', r'\2', content)
-    
-    return content
-
-
-def replace_obsidian_links_absolute(content: str, md_path: Path) -> str:
-    """Convert Obsidian-style links using absolute GitHub Pages URLs.
-    Used for Medium export and HTML generation."""
-    base_url = f"{CONFIG['github_pages_base_url']}/{md_path.parent}"
-    
-    # Image links: ![[image.png]] -> ![](absolute_url/images/image.png)
-    content = re.sub(
-        r'!\[\[(.*?)\]\]',
-        lambda m: f'![{os.path.basename(m.group(1))}]({base_url}/images/{os.path.basename(m.group(1))})',
-        content
-    )
-    
-    # Also fix already-converted relative paths: ./images/x.png -> absolute
-    content = content.replace('./images/', f'{base_url}/images/')
-    
-    # Wiki links: [[Page]] -> Page
-    content = re.sub(r'\[\[([^\]|]+)\]\]', r'\1', content)
-    
-    # Wiki links with alias: [[Page|Alias]] -> Alias
-    content = re.sub(r'\[\[([^\]|]+)\|([^\]]+)\]\]', r'\2', content)
-    
-    return content
-
-
-def sanitize_xml_for_medium(content: str) -> str:
-    """Replace < and > inside fenced code blocks with unicode lookalikes.
-    Medium's editor parses <tag> inside code fences as HTML, breaking save.
-    Uses ﹤ (U+FE64) and ﹥ (U+FE65) which render visually identical."""
-    
-    def replace_angles_in_block(match):
-        fence = match.group(1)  # opening ```lang
-        code = match.group(2)
-        closing = match.group(3)  # closing ```
-        
-        # Only sanitize if code contains HTML/XML-like tags
-        if re.search(r'<[a-zA-Z/?!]', code):
-            code = code.replace('<', '\uff1c').replace('>', '\uff1e')
-        
-        return f"{fence}{code}{closing}"
-    
-    # Match fenced code blocks: ```...``` (with optional language tag)
-    content = re.sub(
-        r'(```[^\n]*\n)(.*?)(```)',
-        replace_angles_in_block,
-        content,
-        flags=re.DOTALL
-    )
-    
-    return content
-
-
-def generate_medium_markdown(md_path: Path, content: str, title: str):
-    """Generate a clean Medium-compatible markdown file.
-    - Absolute image URLs (GitHub Pages)
-    - No Obsidian syntax
-    - XML/HTML tags in code blocks sanitized for Medium
-    - No frontmatter
-    """
-    # Convert Obsidian links with absolute URLs
-    medium_content = replace_obsidian_links_absolute(content, md_path)
-    
-    # Remove frontmatter if present
-    medium_content = re.sub(r'^---.*?---\s*', '', medium_content, flags=re.DOTALL)
-    
-    # Sanitize XML/HTML inside code blocks so Medium doesn't choke
-    medium_content = sanitize_xml_for_medium(medium_content)
-    
-    # Write to medium_export directory mirroring the source structure
-    export_dir = Path(CONFIG['medium_export_dir']) / md_path.parent
-    export_dir.mkdir(parents=True, exist_ok=True)
-    
-    export_path = export_dir / md_path.with_suffix('.md').name
-    with open(export_path, 'w', encoding='utf-8') as f:
-        f.write(medium_content)
-    
-    print(f"  📰 Medium export: {export_path}")
 
 
 def extract_title(content: str, filename: str) -> str:
     """Extract title from markdown content or filename."""
-    # Try to find H1
     match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
     if match:
         return match.group(1).strip()
-    
-    # Fallback to filename
     return filename.replace('.md', '').replace('-', ' ').replace('_', ' ').title()
+
 
 def extract_description(content: str) -> str:
     """Extract first paragraph as description."""
-    # Remove frontmatter
     content = re.sub(r'^---.*?---\s*', '', content, flags=re.DOTALL)
-    
-    # Remove H1
     content = re.sub(r'^#\s+.+$', '', content, re.MULTILINE)
-    
-    # Get first paragraph
     paragraphs = re.findall(r'^[A-Za-z].+', content, re.MULTILINE)
     if paragraphs:
         desc = paragraphs[0][:150]
         if len(paragraphs[0]) > 150:
             desc += '...'
         return desc
-    
     return "No description available."
 
-def convert_md_to_html(md_path: Path) -> dict:
-    """Convert a markdown file to HTML and return metadata."""
+
+def generate_wrapper_html(md_path: Path) -> dict:
+    """Generate a thin HTML wrapper that loads and renders the .md file client-side."""
     with open(md_path, 'r', encoding='utf-8') as f:
         content = f.read()
-    
-    # Extract metadata before conversion
+
+    # Extract metadata
     title = extract_title(content, md_path.name)
     description = extract_description(content)
-    
-    # Generate Medium-compatible markdown (before any conversion)
-    generate_medium_markdown(md_path, content, title)
-    
-    # Convert Obsidian links with absolute URLs for HTML
-    content = replace_obsidian_links_absolute(content, md_path)
-    
-    # Convert to HTML with extras
-    html_content = markdown2.markdown(
-        content,
-        extras=['fenced-code-blocks', 'tables', 'strike', 'task_list']
-    )
-    
-    # Fix double-encoded HTML entities in code blocks (e.g. &amp;gt; -> &gt;)
-    def fix_double_encoding(match):
-        code = match.group(1)
-        code = code.replace('&amp;gt;', '&gt;')
-        code = code.replace('&amp;lt;', '&lt;')
-        code = code.replace('&amp;amp;', '&amp;')
-        return f'<pre><code>{code}</code></pre>'
-    
-    html_content = re.sub(
-        r'<pre><code>(.*?)</code></pre>',
-        fix_double_encoding,
-        html_content,
-        flags=re.DOTALL
-    )
-    
-    # Get file stats
+
+    # File stats
     stat = md_path.stat()
     modified = datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d')
-    
-    # Calculate relative path to index.html based on directory depth
-    depth = len(md_path.parts) - 1  # -1 for the filename itself
+
+    # Back link to root index
+    depth = len(md_path.parts) - 1
     back_path = '../' * depth + 'index.html' if depth > 0 else 'index.html'
-    
-    # Build full HTML
-    full_html = f"""<!DOCTYPE html>
+
+    # MD filename for fetch
+    md_filename = md_path.name
+
+    # Build thin wrapper HTML
+    wrapper_html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -488,57 +366,91 @@ def convert_md_to_html(md_path: Path) -> dict:
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    {PAGE_CSS}
+    <style>{PAGE_CSS}</style>
 </head>
 <body>
-    <a href="{back_path}" class="back-link">← Back to Index</a>
+    <a href="{back_path}" class="back-link">&larr; Back to Index</a>
     <div class="meta">
-        <span class="meta-item">📅 Updated: {modified}</span>
-        <span class="meta-item">📂 {md_path.parent.name}</span>
+        <span class="meta-item">&#x1f4c5; Updated: {modified}</span>
+        <span class="meta-item">&#x1f4c2; {md_path.parent.name}</span>
     </div>
-    <article>
-        {html_content}
+    <article id="content">
+        <div class="loading">Loading...</div>
     </article>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
     (function() {{
-        const key = 'cb_' + location.pathname;
-        const saved = JSON.parse(localStorage.getItem(key) || '{{}}');
-        let id = 0;
-        document.querySelectorAll('td').forEach(function(td) {{
-            const txt = td.textContent.trim();
-            if (txt === '\u2610' || txt === '\u2611') {{
-                const cb = document.createElement('input');
-                cb.type = 'checkbox';
-                cb.dataset.id = id;
-                cb.checked = saved[id] || false;
-                cb.style.cssText = 'width:18px;height:18px;accent-color:#D4A27F;cursor:pointer;';
-                cb.addEventListener('change', function() {{
-                    const s = JSON.parse(localStorage.getItem(key) || '{{}}');
-                    s[this.dataset.id] = this.checked;
-                    localStorage.setItem(key, JSON.stringify(s));
-                    const row = this.closest('tr');
-                    if (row) row.style.opacity = this.checked ? '0.45' : '1';
+        fetch('./{md_filename}')
+            .then(function(r) {{ return r.text(); }})
+            .then(function(md) {{
+                // Convert Obsidian image links: ![[image.png]] -> ![image.png](./images/image.png)
+                md = md.replace(/!\\[\\[(.*?)\\]\\]/g, function(_, name) {{
+                    var basename = name.split('/').pop();
+                    return '![' + basename + '](./images/' + basename + ')';
                 }});
-                td.textContent = '';
-                td.style.textAlign = 'center';
-                td.appendChild(cb);
-                const row = cb.closest('tr');
-                if (row && cb.checked) row.style.opacity = '0.45';
-                id++;
-            }}
-        }});
+                // Convert Obsidian wiki links with alias: [[Page|Alias]] -> Alias
+                md = md.replace(/\\[\\[([^\\]|]+)\\|([^\\]]+)\\]\\]/g, '$2');
+                // Convert Obsidian wiki links: [[Page]] -> Page
+                md = md.replace(/\\[\\[([^\\]|]+)\\]\\]/g, '$1');
+
+                // Render markdown with marked.js
+                document.getElementById('content').innerHTML = marked.parse(md);
+
+                // Medium-safe: replace < > with unicode fullwidth ONLY in code blocks
+                // that contain HTML/XML-like tags (keeps terminal commands intact)
+                document.querySelectorAll('pre code').forEach(function(block) {{
+                    if (/<[a-zA-Z\\/?!]/.test(block.textContent)) {{
+                        block.textContent = block.textContent
+                            .replace(/</g, '\\uff1c')
+                            .replace(/>/g, '\\uff1e');
+                    }}
+                }});
+
+                // Checkbox support for tables
+                var key = 'cb_' + location.pathname;
+                var saved = JSON.parse(localStorage.getItem(key) || '{{}}');
+                var id = 0;
+                document.querySelectorAll('td').forEach(function(td) {{
+                    var txt = td.textContent.trim();
+                    if (txt === '\\u2610' || txt === '\\u2611') {{
+                        var cb = document.createElement('input');
+                        cb.type = 'checkbox';
+                        cb.dataset.id = id;
+                        cb.checked = saved[id] || false;
+                        cb.style.cssText = 'width:18px;height:18px;accent-color:#D4A27F;cursor:pointer;';
+                        cb.addEventListener('change', function() {{
+                            var s = JSON.parse(localStorage.getItem(key) || '{{}}');
+                            s[this.dataset.id] = this.checked;
+                            localStorage.setItem(key, JSON.stringify(s));
+                            var row = this.closest('tr');
+                            if (row) row.style.opacity = this.checked ? '0.45' : '1';
+                        }});
+                        td.textContent = '';
+                        td.style.textAlign = 'center';
+                        td.appendChild(cb);
+                        var row = cb.closest('tr');
+                        if (row && cb.checked) row.style.opacity = '0.45';
+                        id++;
+                    }}
+                }});
+            }})
+            .catch(function(err) {{
+                document.getElementById('content').innerHTML =
+                    '<p style="color: var(--accent);">Failed to load: ' + err.message + '</p>';
+            }});
     }})();
     </script>
 </body>
 </html>"""
-    
-    # Write HTML file
+
+    # Write wrapper HTML (same name as .md but .html extension)
     html_path = md_path.with_suffix('.html')
     with open(html_path, 'w', encoding='utf-8') as f:
-        f.write(full_html)
-    
-    print(f"✓ Converted: {md_path} -> {html_path}")
-    
+        f.write(wrapper_html)
+
+    print(f"  \u2713 Wrapper: {md_path} -> {html_path}")
+
     return {
         'title': title,
         'description': description,
@@ -547,46 +459,44 @@ def convert_md_to_html(md_path: Path) -> dict:
         'category': md_path.parts[0] if len(md_path.parts) > 1 else 'Uncategorized'
     }
 
+
 def discover_documents() -> dict:
     """Discover all markdown files organized by category."""
     categories = {}
-    
+
     for base_dir in CONFIG['base_dirs']:
         if not os.path.exists(base_dir):
             continue
-            
+
         docs = []
         for root, dirs, files in os.walk(base_dir):
-            # Filter excluded directories
             dirs[:] = [d for d in dirs if d not in CONFIG['exclude_dirs']]
-            
+
             for file in files:
                 if file.endswith('.md') and file not in CONFIG['exclude_files']:
                     md_path = Path(root) / file
                     try:
-                        doc = convert_md_to_html(md_path)
+                        doc = generate_wrapper_html(md_path)
                         docs.append(doc)
                     except Exception as e:
-                        print(f"✗ Error converting {md_path}: {e}")
-        
+                        print(f"  \u2717 Error: {md_path}: {e}")
+
         if docs:
             categories[base_dir] = docs
-    
+
     return categories
+
 
 def generate_index_html(categories: dict):
     """Generate the main index.html with all categories."""
-    
-    # Calculate totals
     total_docs = sum(len(docs) for docs in categories.values())
     total_categories = len(categories)
-    
-    # Build category sections
+
     category_sections = []
-    
+
     for cat_name, docs in sorted(categories.items()):
-        meta = CATEGORY_META.get(cat_name, {"icon": "📁", "description": "Documents"})
-        
+        meta = CATEGORY_META.get(cat_name, {"icon": "\U0001f4c1", "description": "Documents"})
+
         cards = []
         for doc in sorted(docs, key=lambda x: x['modified'], reverse=True):
             card = f"""
@@ -608,12 +518,12 @@ def generate_index_html(categories: dict):
                 {''.join(cards)}
             </div>
         </section>"""
-        
+
         category_sections.append(section)
-    
-    # Read template and inject content
+
+    # Read template or use inline
     template_path = Path(__file__).parent / 'index_template.html'
-    
+
     if template_path.exists():
         with open(template_path, 'r', encoding='utf-8') as f:
             html = f.read()
@@ -621,22 +531,22 @@ def generate_index_html(categories: dict):
         html = html.replace('id="total-docs">0', f'id="total-docs">{total_docs}')
         html = html.replace('id="total-categories">0', f'id="total-categories">{total_categories}')
     else:
-        # Use inline template
         html = generate_inline_index(category_sections, total_docs, total_categories)
-    
+
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html)
-    
-    print(f"\n✓ Generated index.html with {total_docs} documents in {total_categories} categories")
+
+    print(f"\n\u2713 Generated index.html with {total_docs} documents in {total_categories} categories")
+
 
 def generate_inline_index(sections: list, total_docs: int, total_categories: int) -> str:
-    """Generate index HTML inline without template file — Anthropic editorial style."""
+    """Generate index HTML inline \u2014 Anthropic editorial style."""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Onurcan Genc — Knowledge Base</title>
+    <title>Onurcan Genc \u2014 Knowledge Base</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
@@ -676,7 +586,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             padding: 64px 32px;
         }}
 
-        /* ── Header ── */
         header {{
             margin-bottom: 72px;
         }}
@@ -742,7 +651,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             color: var(--text-secondary);
         }}
 
-        /* ── Stats ── */
         .stats {{
             display: flex;
             gap: 40px;
@@ -776,7 +684,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             align-self: stretch;
         }}
 
-        /* ── Categories ── */
         .category {{
             margin-bottom: 56px;
         }}
@@ -807,7 +714,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             margin-left: auto;
         }}
 
-        /* ── Cards ── */
         .cards-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -872,7 +778,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             color: var(--text-muted);
         }}
 
-        /* ── Footer ── */
         footer {{
             margin-top: 80px;
             padding-top: 32px;
@@ -902,7 +807,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
 
         .footer-links a:hover {{ color: var(--accent); }}
 
-        /* ── Responsive ── */
         @media (max-width: 640px) {{
             .container {{ padding: 40px 20px; }}
             .header-top {{ flex-direction: column; gap: 16px; align-items: flex-start; }}
@@ -912,7 +816,6 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             footer {{ flex-direction: column; gap: 16px; align-items: flex-start; }}
         }}
 
-        /* ── Animations ── */
         @keyframes fadeIn {{
             from {{ opacity: 0; transform: translateY(12px); }}
             to {{ opacity: 1; transform: translateY(0); }}
@@ -939,7 +842,7 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
                 <div class="wordmark">onurcangnc</div>
                 <nav class="nav-links">
                     <a href="https://github.com/onurcangnc" target="_blank">GitHub</a>
-                    <a href="https://medium.com/@onurcangnc" target="_blank">Medium</a>
+                    <a href="https://medium.com/@onurcangencbilkent" target="_blank">Medium</a>
                     <a href="https://linkedin.com/in/onurcangnc" target="_blank">LinkedIn</a>
                 </nav>
             </div>
@@ -972,7 +875,7 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
             <p class="copyright">Built with Obsidian + GitHub Actions</p>
             <nav class="footer-links">
                 <a href="https://github.com/onurcangnc" target="_blank">GitHub</a>
-                <a href="https://medium.com/@onurcangnc" target="_blank">Medium</a>
+                <a href="https://medium.com/@onurcangencbilkent" target="_blank">Medium</a>
                 <a href="https://linkedin.com/in/onurcangnc" target="_blank">LinkedIn</a>
             </nav>
         </footer>
@@ -980,18 +883,15 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
 </body>
 </html>"""
 
+
 if __name__ == '__main__':
-    print("🚀 Starting Obsidian to HTML conversion...\n")
-    
-    # Ensure medium_export directory exists
-    Path(CONFIG['medium_export_dir']).mkdir(parents=True, exist_ok=True)
-    
+    print("\U0001f680 Starting Obsidian to HTML wrapper generation...\n")
     categories = discover_documents()
 
     if categories:
         generate_index_html(categories)
     else:
-        print("⚠ No markdown files found in configured directories.")
+        print("\u26a0 No markdown files found in configured directories.")
         print(f"  Checked: {', '.join(CONFIG['base_dirs'])}")
 
-    print("\n✅ Done!")
+    print("\n\u2705 Done!")
