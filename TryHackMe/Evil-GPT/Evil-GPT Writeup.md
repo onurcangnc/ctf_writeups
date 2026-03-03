@@ -241,7 +241,7 @@ I tried a huge persona prompt, but it did not work. Due to the CLI pattern, we m
 
 Whenever model facing with anything related with ",'<,>,| etc... It removes characters representing full scope ->
 
-![[8.png]]
+![[TryHackMe/Evil-GPT/images/8.png]]
 
 Meaning that if model flags it then begins to sanitize inputs. Now I will let the model to show me the content of each directory since we are already `root`.
 
