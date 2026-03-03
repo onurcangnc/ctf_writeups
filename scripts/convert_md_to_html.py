@@ -353,18 +353,48 @@ def replace_obsidian_links_absolute(content: str, md_path: Path) -> str:
     return content
 
 
+def sanitize_xml_for_medium(content: str) -> str:
+    """Replace < and > inside fenced code blocks with unicode lookalikes.
+    Medium's editor parses <tag> inside code fences as HTML, breaking save.
+    Uses ﹤ (U+FE64) and ﹥ (U+FE65) which render visually identical."""
+    
+    def replace_angles_in_block(match):
+        fence = match.group(1)  # opening ```lang
+        code = match.group(2)
+        closing = match.group(3)  # closing ```
+        
+        # Only sanitize if code contains HTML/XML-like tags
+        if re.search(r'<[a-zA-Z/?!]', code):
+            code = code.replace('<', '\uff1c').replace('>', '\uff1e')
+        
+        return f"{fence}{code}{closing}"
+    
+    # Match fenced code blocks: ```...``` (with optional language tag)
+    content = re.sub(
+        r'(```[^\n]*\n)(.*?)(```)',
+        replace_angles_in_block,
+        content,
+        flags=re.DOTALL
+    )
+    
+    return content
+
+
 def generate_medium_markdown(md_path: Path, content: str, title: str):
     """Generate a clean Medium-compatible markdown file.
     - Absolute image URLs (GitHub Pages)
     - No Obsidian syntax
-    - No HTML/script artifacts
-    - Clean code blocks
+    - XML/HTML tags in code blocks sanitized for Medium
+    - No frontmatter
     """
     # Convert Obsidian links with absolute URLs
     medium_content = replace_obsidian_links_absolute(content, md_path)
     
     # Remove frontmatter if present
     medium_content = re.sub(r'^---.*?---\s*', '', medium_content, flags=re.DOTALL)
+    
+    # Sanitize XML/HTML inside code blocks so Medium doesn't choke
+    medium_content = sanitize_xml_for_medium(medium_content)
     
     # Write to medium_export directory mirroring the source structure
     export_dir = Path(CONFIG['medium_export_dir']) / md_path.parent
@@ -375,6 +405,7 @@ def generate_medium_markdown(md_path: Path, content: str, title: str):
         f.write(medium_content)
     
     print(f"  📰 Medium export: {export_path}")
+
 
 def extract_title(content: str, filename: str) -> str:
     """Extract title from markdown content or filename."""
@@ -425,15 +456,12 @@ def convert_md_to_html(md_path: Path) -> dict:
         extras=['fenced-code-blocks', 'tables', 'strike', 'task_list']
     )
     
-    # Fix double-encoded HTML entities inside <pre><code> blocks
-    # markdown2 encodes > to &gt;, but if source already has &gt; it becomes &amp;gt;
-    # Medium and browsers choke on these double-encoded entities
+    # Fix double-encoded HTML entities in code blocks (e.g. &amp;gt; -> &gt;)
     def fix_double_encoding(match):
         code = match.group(1)
         code = code.replace('&amp;gt;', '&gt;')
         code = code.replace('&amp;lt;', '&lt;')
         code = code.replace('&amp;amp;', '&amp;')
-        code = code.replace('&amp;quot;', '&quot;')
         return f'<pre><code>{code}</code></pre>'
     
     html_content = re.sub(
