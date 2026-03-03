@@ -372,6 +372,11 @@ def convert_md_to_html(md_path: Path) -> dict:
         extras=['fenced-code-blocks', 'tables', 'strike', 'task_list']
     )
     
+    # Convert relative image paths to absolute GitHub Pages URLs
+    # This ensures images work when copy-pasted to Medium or other platforms
+    base_url = f"https://onurcangnc.github.io/ctf_writeups/{md_path.parent}"
+    html_content = html_content.replace('./images/', f'{base_url}/images/')
+    
     # Get file stats
     stat = md_path.stat()
     modified = datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d')
