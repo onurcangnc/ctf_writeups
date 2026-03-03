@@ -27,7 +27,9 @@ CONFIG = {
     ],
     "exclude_files": ["README.md", "TryHackMe.md", "index.md", "_index.md"],
     "exclude_dirs": [".obsidian", ".git", "templates", "attachments", "_templates"],
-    "output_file": "index.html"
+    "output_file": "index.html",
+    "github_pages_base_url": "https://onurcangnc.github.io/ctf_writeups",
+    "medium_export_dir": "medium_export"
 }
 
 # Category icons and descriptions
@@ -326,6 +328,54 @@ def replace_obsidian_links(content: str) -> str:
     
     return content
 
+
+def replace_obsidian_links_absolute(content: str, md_path: Path) -> str:
+    """Convert Obsidian-style links using absolute GitHub Pages URLs.
+    Used for Medium export and HTML generation."""
+    base_url = f"{CONFIG['github_pages_base_url']}/{md_path.parent}"
+    
+    # Image links: ![[image.png]] -> ![](absolute_url/images/image.png)
+    content = re.sub(
+        r'!\[\[(.*?)\]\]',
+        lambda m: f'![{os.path.basename(m.group(1))}]({base_url}/images/{os.path.basename(m.group(1))})',
+        content
+    )
+    
+    # Also fix already-converted relative paths: ./images/x.png -> absolute
+    content = content.replace('./images/', f'{base_url}/images/')
+    
+    # Wiki links: [[Page]] -> Page
+    content = re.sub(r'\[\[([^\]|]+)\]\]', r'\1', content)
+    
+    # Wiki links with alias: [[Page|Alias]] -> Alias
+    content = re.sub(r'\[\[([^\]|]+)\|([^\]]+)\]\]', r'\2', content)
+    
+    return content
+
+
+def generate_medium_markdown(md_path: Path, content: str, title: str):
+    """Generate a clean Medium-compatible markdown file.
+    - Absolute image URLs (GitHub Pages)
+    - No Obsidian syntax
+    - No HTML/script artifacts
+    - Clean code blocks
+    """
+    # Convert Obsidian links with absolute URLs
+    medium_content = replace_obsidian_links_absolute(content, md_path)
+    
+    # Remove frontmatter if present
+    medium_content = re.sub(r'^---.*?---\s*', '', medium_content, flags=re.DOTALL)
+    
+    # Write to medium_export directory mirroring the source structure
+    export_dir = Path(CONFIG['medium_export_dir']) / md_path.parent
+    export_dir.mkdir(parents=True, exist_ok=True)
+    
+    export_path = export_dir / md_path.with_suffix('.md').name
+    with open(export_path, 'w', encoding='utf-8') as f:
+        f.write(medium_content)
+    
+    print(f"  📰 Medium export: {export_path}")
+
 def extract_title(content: str, filename: str) -> str:
     """Extract title from markdown content or filename."""
     # Try to find H1
@@ -363,19 +413,17 @@ def convert_md_to_html(md_path: Path) -> dict:
     title = extract_title(content, md_path.name)
     description = extract_description(content)
     
-    # Convert Obsidian links
-    content = replace_obsidian_links(content)
+    # Generate Medium-compatible markdown (before any conversion)
+    generate_medium_markdown(md_path, content, title)
+    
+    # Convert Obsidian links with absolute URLs for HTML
+    content = replace_obsidian_links_absolute(content, md_path)
     
     # Convert to HTML with extras
     html_content = markdown2.markdown(
         content,
         extras=['fenced-code-blocks', 'tables', 'strike', 'task_list']
     )
-    
-    # Convert relative image paths to absolute GitHub Pages URLs
-    # This ensures images work when copy-pasted to Medium or other platforms
-    base_url = f"https://onurcangnc.github.io/ctf_writeups/{md_path.parent}"
-    html_content = html_content.replace('./images/', f'{base_url}/images/')
     
     # Get file stats
     stat = md_path.stat()
@@ -888,6 +936,10 @@ def generate_inline_index(sections: list, total_docs: int, total_categories: int
 
 if __name__ == '__main__':
     print("🚀 Starting Obsidian to HTML conversion...\n")
+    
+    # Ensure medium_export directory exists
+    Path(CONFIG['medium_export_dir']).mkdir(parents=True, exist_ok=True)
+    
     categories = discover_documents()
 
     if categories:

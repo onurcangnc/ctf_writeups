@@ -42,6 +42,9 @@ jobs:
           echo ""
           echo "=== Categories found ==="
           head -200 index.html | grep -A2 "category-title"
+          echo ""
+          echo "=== Medium exports ==="
+          find ./medium_export -name "*.md" -type f 2>/dev/null || echo "No medium exports found"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -61,4 +64,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
