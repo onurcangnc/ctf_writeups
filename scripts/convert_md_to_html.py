@@ -425,6 +425,24 @@ def convert_md_to_html(md_path: Path) -> dict:
         extras=['fenced-code-blocks', 'tables', 'strike', 'task_list']
     )
     
+    # Fix double-encoded HTML entities inside <pre><code> blocks
+    # markdown2 encodes > to &gt;, but if source already has &gt; it becomes &amp;gt;
+    # Medium and browsers choke on these double-encoded entities
+    def fix_double_encoding(match):
+        code = match.group(1)
+        code = code.replace('&amp;gt;', '&gt;')
+        code = code.replace('&amp;lt;', '&lt;')
+        code = code.replace('&amp;amp;', '&amp;')
+        code = code.replace('&amp;quot;', '&quot;')
+        return f'<pre><code>{code}</code></pre>'
+    
+    html_content = re.sub(
+        r'<pre><code>(.*?)</code></pre>',
+        fix_double_encoding,
+        html_content,
+        flags=re.DOTALL
+    )
+    
     # Get file stats
     stat = md_path.stat()
     modified = datetime.fromtimestamp(stat.st_mtime).strftime('%Y-%m-%d')
