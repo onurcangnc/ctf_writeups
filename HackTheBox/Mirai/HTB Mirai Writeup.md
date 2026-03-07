@@ -4,7 +4,7 @@ Start by adding the machine IP to `/etc/hosts`. This avoids having to copy-paste
 nano /etc/hosts
 ```
 
-![/etc/hosts with mirai.htb mapped to the target IP](images/1.png)
+![/etc/hosts with mirai.htb mapped to the target IP](HackTheBox/Mirai/images/1.png)
 
 ---
 
@@ -16,7 +16,7 @@ nano /etc/hosts
 nmap -sC -sV -T4 -Pn mirai.htb
 ```
 
-![Fast nmap scan results showing open ports](images/2.png)
+![Fast nmap scan results showing open ports](HackTheBox/Mirai/images/2.png)
 
 Port `22` (SSH), `53` (DNS), `80` (HTTP), and a few others are open. The HTTP service title is already blocked by Pi-hole an early hint about what's running on this machine.
 
@@ -26,7 +26,7 @@ Port `22` (SSH), `53` (DNS), `80` (HTTP), and a few others are open. The HTTP se
 nmap -Pn --min-rate 10000 -sV -p- mirai.htb
 ```
 
-![Full port scan results confirming all open ports](images/4.png)
+![Full port scan results confirming all open ports](HackTheBox/Mirai/images/4.png)
 
 Six ports total. Nothing beyond what the initial scan revealed. The interesting services remain SSH on 22 and HTTP on 80.
 
@@ -36,7 +36,7 @@ Six ports total. Nothing beyond what the initial scan revealed. The interesting 
 
 Browsing to `http://mirai.htb` returns a **Pi-hole** block page rather than a normal web application.
 
-![Pi-hole "Website Blocked" page at mirai.htb](images/3.png)
+![Pi-hole "Website Blocked" page at mirai.htb](HackTheBox/Mirai/images/3.png)
 
 [Pi-hole](https://pi-hole.net/) is an open-source DNS sinkhole commonly deployed on Raspberry Pi hardware to block ads and trackers at the network level. Seeing this immediately suggests the underlying OS is Raspbian and that the device is a Raspberry Pi a major clue for what comes later.
 
@@ -46,19 +46,19 @@ Running Gobuster against the hostname fails initially. Pi-hole's non-standard HT
 gobuster dir -u http://mirai.htb -w /usr/share/wordlists/dirb/common.txt -t 30
 ```
 
-![Gobuster error when scanning by hostname](images/5.png)
+![Gobuster error when scanning by hostname](HackTheBox/Mirai/images/5.png)
 
 Switching to the raw IP address resolves the issue.
 
-![Gobuster finds /admin via raw IP](images/6.png)
+![Gobuster finds /admin via raw IP](HackTheBox/Mirai/images/6.png)
 
 The `/admin` directory is discovered. Navigating there reveals the Pi-hole admin dashboard fully accessible without authentication.
 
-![Pi-hole admin dashboard accessible without credentials](images/7.png)
+![Pi-hole admin dashboard accessible without credentials](HackTheBox/Mirai/images/7.png)
 
 Clicking through to the login page exposes the running Pi-hole version: **v3.1.4**.
 
-![Pi-hole login page revealing version v3.1.4](images/8.png)
+![Pi-hole login page revealing version v3.1.4](HackTheBox/Mirai/images/8.png)
 
 ### Exploit Research
 
@@ -69,11 +69,11 @@ Searching for known vulnerabilities against Pi-hole v3.1.4 surfaces a few promis
 
 Both require valid credentials. Before attempting anything complex, the obvious first step is checking Pi-hole's well-known default credentials.
 
-![Searching for Pi-hole default credentials](images/9.png)
+![Searching for Pi-hole default credentials](HackTheBox/Mirai/images/9.png)
 
 The Pi-hole community documentation confirms the default system login is `pi` / `raspberry`. Trying this against the web interface, however, fails.
 
-![Wrong password error on Pi-hole web login](images/10.png)
+![Wrong password error on Pi-hole web login](HackTheBox/Mirai/images/10.png)
 
 At this point it becomes clear that the Pi-hole dashboard was already accessible without a password we were already viewing the `/admin` panel as an unauthenticated guest. The web interface is not the intended entry point. The real attack surface is the SSH service on port 22.
 
@@ -87,7 +87,7 @@ Raspberry Pi OS ships with a well-known default account: username `pi` with pass
 ssh pi@mirai.htb
 ```
 
-![Successful SSH login as pi@mirai.htb](images/11.png)
+![Successful SSH login as pi@mirai.htb](HackTheBox/Mirai/images/11.png)
 
 It works. We're logged in as `pi` on a Raspberry Pi running Raspbian exactly what the Mirai botnet exploited at massive scale in 2016.
 
@@ -101,7 +101,7 @@ The user flag is sitting on the Desktop. No binary exploitation or privilege esc
 /home/pi/Desktop/user.txt
 ```
 
-![Desktop contents and user flag location](images/12.png)
+![Desktop contents and user flag location](HackTheBox/Mirai/images/12.png)
 
 Running `sudo -l` here reveals something critical: the `pi` user can execute **all commands** as root with **no password required** (`NOPASSWD: ALL`). Privilege escalation to root is completely trivial.
 
@@ -140,13 +140,13 @@ chmod +x linpeas.sh
 ./linpeas.sh
 ```
 
-![Downloading linpeas.sh to the target via curl](images/13.png)
+![Downloading linpeas.sh to the target via curl](HackTheBox/Mirai/images/13.png)
 
-![linpeas banner on startup](images/14.png)
+![linpeas banner on startup](HackTheBox/Mirai/images/14.png)
 
 Linpeas flags multiple critical CVEs for this kernel version. More relevant for our immediate goal, it surfaces mount and disk information that points toward the USB device.
 
-![linpeas CVE findings tagged as critical](images/15.png)
+![linpeas CVE findings tagged as critical](HackTheBox/Mirai/images/15.png)
 
 ### Step 2: Locate the USB Device
 
@@ -156,7 +156,7 @@ find / -name "usbstick"
 
 [find command reference](https://www.tecmint.com/35-practical-examples-of-linux-find-command/)
 
-![find command output showing /media/usbstick](images/16.png)
+![find command output showing /media/usbstick](HackTheBox/Mirai/images/16.png)
 
 The mount point `/media/usbstick` is confirmed. Inside is a note from James:
 
@@ -177,7 +177,7 @@ The files are gone at the filesystem level, but the raw data on the underlying b
 fdisk -l
 ```
 
-![fdisk output showing disk partitions and identifiers](images/17.png)
+![fdisk output showing disk partitions and identifiers](HackTheBox/Mirai/images/17.png)
 
 ```bash
 lsblk
@@ -185,7 +185,7 @@ lsblk
 
 https://devconnected.com/how-to-list-disks-on-linux/
 
-![lsblk confirming /dev/sdb is the 10MB USB stick](images/18.png)
+![lsblk confirming /dev/sdb is the 10MB USB stick](HackTheBox/Mirai/images/18.png)
 
 `lsblk` confirms that `/dev/sdb` is the 10 MB USB stick mounted at `/media/usbstick`. This is the device to target.
 
@@ -201,6 +201,6 @@ The `strings` command extracts all printable ASCII sequences from any binary sou
 /usr/bin/strings -a /dev/sdb
 ```
 
-![strings command recovering the root flag from /dev/sdb](images/19.png)
+![strings command recovering the root flag from /dev/sdb](HackTheBox/Mirai/images/19.png)
 
 The root flag is recovered directly from the raw device data.
