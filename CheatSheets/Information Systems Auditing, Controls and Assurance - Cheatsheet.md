@@ -1,4 +1,3 @@
-# Information Systems Auditing, Controls and Assurance — Cheatsheet
 
 ---
 
