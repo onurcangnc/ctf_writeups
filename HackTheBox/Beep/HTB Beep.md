@@ -106,6 +106,6 @@ sudo nmap --interactive
 
 ![[HackTheBox/Beep/images/15.png]]
 
-`cat /root/root.txt`
+`cat /root/root.txt`.
 
 ![[HackTheBox/Beep/images/16.png]]
