@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages + Ghost
 
 on:
   push:
@@ -21,11 +21,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
+      - name: Install Ghost sync dependencies
+        run: pip install PyJWT requests markdown
 
       - name: Generate HTML wrappers
         run: python scripts/convert_md_to_html.py
@@ -38,6 +43,22 @@ jobs:
           echo "=== Markdown files ==="
           find . -name "*.md" -not -path "./.git/*" -type f
 
+      # ─── Ghost Sync ─────────────────────────────────────────────
+      - name: Restore Ghost sync cache
+        uses: actions/cache@v4
+        with:
+          path: .ghost_sync_cache.json
+          key: ghost-sync-${{ hashFiles('**/*.md') }}
+          restore-keys: |
+            ghost-sync-
+
+      - name: Sync writeups to Ghost
+        env:
+          GHOST_URL: ${{ secrets.GHOST_URL }}
+          GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+        run: python scripts/ghost_sync.py
+
+      # ─── GitHub Pages Deploy ────────────────────────────────────
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
