@@ -35,18 +35,10 @@ GHOST_URL = os.environ.get("GHOST_URL", "https://blog.onurcangenc.com.tr")
 GHOST_ADMIN_KEY = os.environ.get("GHOST_ADMIN_API_KEY", "")
 
 BASE_DIRS = [
-    "TryHackMe",
     "HackTheBox",
-    "CheatSheets",
-    "Notes",
-    "Research",
-    "Blog",
-    "Projects",
-    "Writeups",
-    "Medium",
 ]
 
-EXCLUDE_FILES = ["README.md", "TryHackMe.md", "index.md", "_index.md"]
+EXCLUDE_FILES = ["README.md", "TryHackMe.md", "index.md", "_index.md", "HTB_Easy_Machines_Roadmap.md"]
 EXCLUDE_DIRS = [".obsidian", ".git", "templates", "attachments", "_templates", ".github", "scripts"]
 
 # Track uploaded images to avoid re-uploading
@@ -79,9 +71,29 @@ def ghost_session(admin_key: str) -> requests.Session:
     s = requests.Session()
     s.headers.update({
         "Authorization": f"Ghost {token}",
-        "Accept-Version": "v5.0",
     })
     return s
+
+
+def get_owner_id(session: requests.Session) -> str | None:
+    """Fetch the Owner user ID from Ghost — needed for integration post creation."""
+    url = f"{GHOST_URL}/ghost/api/admin/users/?filter=role:Owner"
+    r = session.get(url)
+    if r.status_code == 200:
+        users = r.json().get("users", [])
+        if users:
+            print(f"  Owner: {users[0]['name']} (id: {users[0]['id']})")
+            return users[0]["id"]
+    # Fallback: try to get any user
+    url = f"{GHOST_URL}/ghost/api/admin/users/"
+    r = session.get(url)
+    if r.status_code == 200:
+        users = r.json().get("users", [])
+        if users:
+            print(f"  Author: {users[0]['name']} (id: {users[0]['id']})")
+            return users[0]["id"]
+    print("  ⚠ Could not fetch owner ID")
+    return None
 
 
 # ─── Cache Management ────────────────────────────────────────────────────────
@@ -292,10 +304,11 @@ def create_post(
     excerpt: str,
     tags: list[dict],
     feature_image: str = None,
+    author_id: str = None,
 ) -> bool:
     """Create a new Ghost post. Skips if already exists."""
 
-    url = f"{GHOST_URL}/ghost/api/admin/posts/"
+    url = f"{GHOST_URL}/ghost/api/admin/posts/?source=html"
 
     post_data = {
         "title": title,
@@ -308,6 +321,9 @@ def create_post(
 
     if feature_image:
         post_data["feature_image"] = feature_image
+
+    if author_id:
+        post_data["authors"] = [{"id": author_id}]
 
     r = session.post(url, json={"posts": [post_data]})
     if r.status_code == 201:
@@ -378,7 +394,7 @@ def should_sync(md_path: Path, cache: dict) -> bool:
     return True
 
 
-def sync_writeup(md_path: Path, session: requests.Session, cache: dict) -> str:
+def sync_writeup(md_path: Path, session: requests.Session, cache: dict, author_id: str = None) -> str:
     """Sync a single writeup to Ghost. Returns 'created', 'skipped', or 'failed'."""
     print(f"\n📄 Processing: {md_path}")
 
@@ -420,7 +436,7 @@ def sync_writeup(md_path: Path, session: requests.Session, cache: dict) -> str:
     html = markdown_to_ghost_html(processed_content)
 
     # Create post
-    success = create_post(session, title, slug, html, excerpt, tags, feature_image_url)
+    success = create_post(session, title, slug, html, excerpt, tags, feature_image_url, author_id)
 
     if success:
         cache["posts"][str(md_path)] = {
@@ -458,6 +474,9 @@ def main():
         sys.exit(1)
     print(f"  Connected to: {r.json()['site']['title']}")
 
+    # Get owner user ID (required for integration post creation)
+    owner_id = get_owner_id(session)
+
     # Discover writeups
     writeups = discover_writeups()
     print(f"\n📂 Found {len(writeups)} writeups")
@@ -473,7 +492,7 @@ def main():
             skipped_unchanged += 1
             continue
 
-        result = sync_writeup(md_path, session, cache)
+        result = sync_writeup(md_path, session, cache, owner_id)
         if result == "created":
             created += 1
         elif result == "skipped":
