@@ -128,10 +128,7 @@ def upload_image(session: requests.Session, image_path: Path, cache: dict) -> st
 # ─── Markdown Processing ─────────────────────────────────────────────────────
 
 def extract_title(content: str, filename: str) -> str:
-    match = re.search(r"^#\s+(.+)$", content, re.MULTILINE)
-    if match:
-        return match.group(1).strip()
-    return filename.replace(".md", "").replace("-", " ").replace("_", " ").title()
+    return filename.replace(".md", "").replace("-", " ").replace("_", " ")
 
 
 def extract_description(content: str) -> str:
