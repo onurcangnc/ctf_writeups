@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages + Ghost
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -21,44 +21,33 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install Ghost sync dependencies
+      - name: Install dependencies
         run: pip install PyJWT requests markdown
 
       - name: Generate HTML wrappers
         run: python scripts/convert_md_to_html.py
 
-      - name: Debug - List generated files
-        run: |
-          echo "=== Generated HTML wrappers ==="
-          find . -name "*.html" -type f
-          echo ""
-          echo "=== Markdown files ==="
-          find . -name "*.md" -not -path "./.git/*" -type f
-
-      # ─── Ghost Sync ─────────────────────────────────────────────
-      - name: Restore Ghost sync cache
-        uses: actions/cache@v4
-        with:
-          path: .ghost_sync_cache.json
-          key: ghost-sync-${{ hashFiles('**/*.md') }}
-          restore-keys: |
-            ghost-sync-
-
-      - name: Sync writeups to Ghost
+      - name: Ghost — upload images & generate import
         env:
           GHOST_URL: ${{ secrets.GHOST_URL }}
           GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
-        run: python scripts/ghost_sync.py
+          GHOST_CONTENT_API_KEY: ${{ secrets.GHOST_CONTENT_API_KEY }}
+        run: python scripts/ghost_import_generator.py
 
-      # ─── GitHub Pages Deploy ────────────────────────────────────
+      - name: Upload Ghost import JSON
+        if: ${{ hashFiles('ghost_import.json') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghost-import
+          path: ghost_import.json
+          retention-days: 30
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
