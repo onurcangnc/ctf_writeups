@@ -112,11 +112,11 @@ The note warns against downloading the entire backup file as it slows down the V
 
 The total size is `5.05 GB`, so let's check if there is an alternative method to access the files on the `Backups` share without downloading them entirely.
 
-![[15.png]]
+![[HackTheBox/Bastion/images/15.png]]
 
 I noticed the file listed in the `spider_plus` module log:
 
-![[16.png]]
+![[HackTheBox/Bastion/images/16.png]]
 
 I found a valuable resource about `.vhd` (Virtual Hard Disk) files:
 
@@ -152,11 +152,11 @@ mount -t cifs -o username='guest',password='' //10.129.136.29/Backups /mnt/remot
 
 Now it works!
 
-![[17.png]]
+![[HackTheBox/Bastion/images/17.png]]
 
 I can see the disk image file on the `bastion_smb` share:
 
-![[18.png]]
+![[HackTheBox/Bastion/images/18.png]]
 
 Let's use the command recommended in the Medium article:
 
@@ -166,7 +166,7 @@ guestmount --add /mnt/remote/path/to/vhdfile.vhd --inspector --ro /mnt/vhd -v
 
 I identified the relevant disk file inside the `L4mpje-PC` backup directory:
 
-![[19.png]]
+![[HackTheBox/Bastion/images/19.png]]
 
 ```bash
 guestmount --add /mnt/bastion_smb/WindowsImageBackup/L4mpje-PC/'Backup 2019-02-22 124351'/9b9cfbc4-369e-11e9-a17c-806e6f6e6963.vhd --inspector --ro /mnt/vhd -v
@@ -198,7 +198,7 @@ The files are located at:
 
 Let's extract them:
 
-![[20.png]]
+![[HackTheBox/Bastion/images/20.png]]
 
 ```bash
 
@@ -207,11 +207,11 @@ cp SAM SYSTEM SECURITY /home/kali
 python secrets.py -sam SAM -security SECURITY -system SYSTEM local
 ```
 
-![[21.png]]
+![[HackTheBox/Bastion/images/21.png]]
 
 I also ran `impacket-secretsdump` directly, as I encountered an error during the initial SAM hash extraction.
 
-![[22.png]]
+![[HackTheBox/Bastion/images/22.png]]
 
 With the dumped credentials in hand, I'll try authenticating via `SSH`.
 
@@ -223,11 +223,11 @@ pass: `bureaulampje`
 
 Get flag from `C:\Users\L4mpje\Desktop\`
 
-![[23.png]]
+![[HackTheBox/Bastion/images/23.png]]
 
 I could not find any obvious privilege escalation vector. Before running `winPEAS`, I decided to check for non-default installed programs.
 
-![[24.png]]
+![[HackTheBox/Bastion/images/24.png]]
 
 `mRemoteNG` is a remote connection manager application:
 
@@ -239,12 +239,12 @@ https://yurisk.info/2025/02/16/mremoteng-initial-set-up-and-usage/
 
 `C:\Users\<User>\AppData\Roaming\mRemoteNG\confCons.xml`
 
-![[25.png]]
+![[HackTheBox/Bastion/images/25.png]]
 
 
 The configuration file contains what appears to be an encrypted password:
 
-![[26.png]]
+![[HackTheBox/Bastion/images/26.png]]
 
 The password is indeed encrypted. I found a decryption tool on GitHub:
 
