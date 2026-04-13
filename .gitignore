@@ -1,5 +1,7 @@
-# Hassas veriler - Medium auth cookies
+# Hassas veriler
 .medium_cookies.json
+.ghost_image_cache.json
+ghost_import.json
 
 # Python
 __pycache__/
