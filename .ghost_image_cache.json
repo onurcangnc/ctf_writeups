@@ -602,5 +602,45 @@
   "HackTheBox/Curling/images/27.png": {
     "hash": "f06cd161ff4b614ec37f136d4ff12cee",
     "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/27-3.png"
+  },
+  "HackTheBox/GreenHorn/images/1.png": {
+    "hash": "0cba037a57b791bacf17a52792fa6a31",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/1-19.png"
+  },
+  "HackTheBox/GreenHorn/images/2.png": {
+    "hash": "d30f7063859902f9cbeec4c7eef7bbda",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/2-18.png"
+  },
+  "HackTheBox/GreenHorn/images/3.png": {
+    "hash": "de9d178a15657a4d242d24b5af87e1b7",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/3-19.png"
+  },
+  "HackTheBox/GreenHorn/images/4.png": {
+    "hash": "7626febddad16ceaee7904f3bd2d7e3f",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/4-19.png"
+  },
+  "HackTheBox/GreenHorn/images/5.png": {
+    "hash": "050a7cfaa1079502896207f3339a7a44",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/5-19.png"
+  },
+  "HackTheBox/GreenHorn/images/7.png": {
+    "hash": "1e47ea8ea8e4993bd64570cb1a73cad3",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/7-18.png"
+  },
+  "HackTheBox/GreenHorn/images/6.png": {
+    "hash": "16323e537ed81cb9b6dfef6444461164",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/6-17.png"
+  },
+  "HackTheBox/GreenHorn/images/8.png": {
+    "hash": "3b6c90ba5dd78f24ae6a6ef6ab6cdbf6",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/8-17.png"
+  },
+  "HackTheBox/GreenHorn/images/10.png": {
+    "hash": "aa4f63a9a2add4dcbfed45ca06915770",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/10-17.png"
+  },
+  "HackTheBox/GreenHorn/images/11.png": {
+    "hash": "f3fcca86ac1e85ec34df9f393de12273",
+    "url": "https://blog.onurcangenc.com.tr/content/images/2026/04/11-17.png"
   }
 }

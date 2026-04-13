@@ -34,6 +34,7 @@ jobs:
         run: python scripts/convert_md_to_html.py
 
       - name: Ghost — upload images & generate import
+        continue-on-error: true
         env:
           GHOST_URL: ${{ secrets.GHOST_URL }}
           GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}

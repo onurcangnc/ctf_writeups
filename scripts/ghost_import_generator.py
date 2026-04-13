@@ -5,12 +5,8 @@ Ghost Import Generator
 Reads HackTheBox writeups, uploads images to Ghost via API,
 generates a Ghost-compatible import JSON.
 
-Usage:
-  1. Run this script locally in your ctf_writeups repo root
-  2. It uploads images to Ghost (API works for images)
-  3. Generates ghost_import.json
-  4. Go to Ghost Admin → Settings → Labs → Import → upload ghost_import.json
-  5. Done — posts + images live in Ghost, independent of GitHub
+If Ghost Admin API is unreachable (e.g. Cloudflare blocking CI),
+falls back to GitHub raw URLs for images and still generates the artifact.
 
 Requirements:
   pip install PyJWT requests markdown
@@ -40,14 +36,10 @@ except ImportError:
 # ─── Configuration ───────────────────────────────────────────────────────────
 
 GHOST_URL = os.environ.get("GHOST_URL", "https://blog.onurcangenc.com.tr")
-GHOST_ADMIN_KEY = os.environ.get(
-    "GHOST_ADMIN_API_KEY",
-    "REDACTED_ADMIN_KEY",
-)
-GHOST_CONTENT_KEY = os.environ.get(
-    "GHOST_CONTENT_API_KEY",
-    "REDACTED_CONTENT_KEY",
-)
+GHOST_ADMIN_KEY = os.environ.get("GHOST_ADMIN_API_KEY", "")
+GHOST_CONTENT_KEY = os.environ.get("GHOST_CONTENT_API_KEY", "")
+
+GITHUB_RAW_BASE = "https://raw.githubusercontent.com/onurcangnc/ctf_writeups/main"
 
 BASE_DIR = "HackTheBox"
 EXCLUDE_FILES = ["README.md", "index.md", "_index.md", "HTB_Easy_Machines_Roadmap.md"]
@@ -72,6 +64,7 @@ def api_session() -> requests.Session:
     token = create_token(GHOST_ADMIN_KEY)
     s = requests.Session()
     s.headers["Authorization"] = f"Ghost {token}"
+    s.headers["User-Agent"] = "CTFWriteups-GhostSync/1.0 (GitHub-Actions)"
     return s
 
 
@@ -97,7 +90,13 @@ def file_hash(path: str) -> str:
     return h.hexdigest()
 
 
-# ─── Image Upload ────────────────────────────────────────────────────────────
+# ─── Image Handling ─────────────────────────────────────────────────────────
+
+def github_raw_url(image_path: Path) -> str:
+    """Generate a GitHub raw URL for an image."""
+    relative = image_path.as_posix()
+    return f"{GITHUB_RAW_BASE}/{relative}"
+
 
 def upload_image(session: requests.Session, image_path: Path, cache: dict) -> str:
     path_str = str(image_path)
@@ -125,6 +124,17 @@ def upload_image(session: requests.Session, image_path: Path, cache: dict) -> st
     return None
 
 
+def resolve_image_url(image_path: Path, session, cache: dict, use_ghost: bool) -> str:
+    """Upload to Ghost if possible, otherwise use GitHub raw URL."""
+    if use_ghost:
+        url = upload_image(session, image_path, cache)
+        if url:
+            return url
+    url = github_raw_url(image_path)
+    print(f"    🔗 GitHub URL: {image_path.name}")
+    return url
+
+
 # ─── Markdown Processing ─────────────────────────────────────────────────────
 
 def extract_title(content: str, filename: str) -> str:
@@ -148,8 +158,8 @@ def slugify(text: str) -> str:
     return slug.strip("-")
 
 
-def process_images(content: str, md_path: Path, session: requests.Session, cache: dict) -> str:
-    """Replace image references with Ghost URLs."""
+def process_images(content: str, md_path: Path, session, cache: dict, use_ghost: bool) -> str:
+    """Replace image references with Ghost or GitHub URLs."""
     writeup_dir = md_path.parent
 
     def replace_md_image(match):
@@ -161,7 +171,12 @@ def process_images(content: str, md_path: Path, session: requests.Session, cache
         if not img.exists():
             img = (writeup_dir / "images" / Path(ref).name).resolve()
         if img.exists():
-            url = upload_image(session, img, cache)
+            # Get a relative path from repo root for GitHub URLs
+            try:
+                rel = img.relative_to(Path.cwd())
+            except ValueError:
+                rel = img
+            url = resolve_image_url(rel, session, cache, use_ghost)
             if url:
                 return f"![{alt}]({url})"
         print(f"    ⚠ Not found: {ref}")
@@ -178,7 +193,11 @@ def process_images(content: str, md_path: Path, session: requests.Session, cache
                 img = p
                 break
         if img.exists():
-            url = upload_image(session, img, cache)
+            try:
+                rel = img.relative_to(Path.cwd())
+            except ValueError:
+                rel = img
+            url = resolve_image_url(rel, session, cache, use_ghost)
             if url:
                 return f"![{name}]({url})"
         return match.group(0)
@@ -272,16 +291,25 @@ def normalize_title(title: str) -> str:
     return t
 
 
-def fetch_existing_titles(session: requests.Session) -> set:
-    """Fetch all existing post titles from Ghost via Content API (read-only, no 403)."""
+def fetch_existing_titles() -> set:
+    """Fetch all existing post titles from Ghost via Content API (no auth needed)."""
+    if not GHOST_CONTENT_KEY:
+        return set()
+
     titles = set()
     page = 1
 
     while True:
-        r = requests.get(
-            f"{GHOST_URL}/ghost/api/content/posts/",
-            params={"key": GHOST_CONTENT_KEY, "fields": "title", "limit": 100, "page": page},
-        )
+        try:
+            r = requests.get(
+                f"{GHOST_URL}/ghost/api/content/posts/",
+                params={"key": GHOST_CONTENT_KEY, "fields": "title", "limit": 100, "page": page},
+                timeout=10,
+            )
+        except requests.RequestException as e:
+            print(f"  ⚠ Could not fetch existing posts: {e}")
+            return titles
+
         if r.status_code != 200:
             print(f"  ⚠ Could not fetch existing posts: {r.status_code}")
             return titles
@@ -310,18 +338,29 @@ def main():
     print(f"  Ghost URL: {GHOST_URL}")
     print(f"  Scanning: {BASE_DIR}/\n")
 
-    session = api_session()
-
-    # Test connection
-    r = session.get(f"{GHOST_URL}/ghost/api/admin/site/")
-    if r.status_code != 200:
-        print(f"❌ Cannot connect to Ghost: {r.status_code}")
+    if not GHOST_ADMIN_KEY or not GHOST_CONTENT_KEY:
+        print("❌ GHOST_ADMIN_API_KEY and GHOST_CONTENT_API_KEY must be set as environment variables.")
         sys.exit(1)
-    print(f"  Connected: {r.json()['site']['title']}\n")
 
-    # Fetch existing posts for duplicate detection
+    # Try Ghost Admin API — fall back to GitHub raw URLs if blocked
+    use_ghost = False
+    session = None
+    try:
+        session = api_session()
+        r = session.get(f"{GHOST_URL}/ghost/api/admin/site/", timeout=10)
+        if r.status_code == 200:
+            use_ghost = True
+            print(f"  ✓ Connected to Ghost: {r.json()['site']['title']}")
+        else:
+            print(f"  ⚠ Ghost Admin API returned {r.status_code} — using GitHub raw URLs for images")
+    except requests.RequestException as e:
+        print(f"  ⚠ Ghost Admin API unreachable ({e}) — using GitHub raw URLs for images")
+
+    print()
+
+    # Fetch existing posts for duplicate detection (Content API — usually not blocked)
     print("  Loading existing posts...")
-    existing_titles = fetch_existing_titles(session)
+    existing_titles = fetch_existing_titles()
 
     image_cache = load_image_cache()
     posts = []
@@ -368,10 +407,11 @@ def main():
                 tags.insert(1, parts[1])
 
             print(f"  Title: {title}")
-            print(f"  Uploading images...")
+            print(f"  Processing images...")
 
-            processed = process_images(content, md_path, session, image_cache)
-            save_image_cache(image_cache)
+            processed = process_images(content, md_path, session, image_cache, use_ghost)
+            if use_ghost:
+                save_image_cache(image_cache)
 
             html = md_to_html(processed)
 
@@ -382,8 +422,13 @@ def main():
                 for ext in ["*.png", "*.jpg", "*.jpeg"]:
                     imgs = sorted(images_dir.glob(ext))
                     if imgs:
-                        feature_image = upload_image(session, imgs[0], image_cache)
-                        save_image_cache(image_cache)
+                        try:
+                            rel = imgs[0].relative_to(Path.cwd())
+                        except ValueError:
+                            rel = imgs[0]
+                        feature_image = resolve_image_url(rel, session, image_cache, use_ghost)
+                        if use_ghost:
+                            save_image_cache(image_cache)
                         break
 
             posts.append({
@@ -406,14 +451,16 @@ def main():
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(import_data, f, indent=2, ensure_ascii=False)
 
+    mode = "Ghost-hosted" if use_ghost else "GitHub raw"
     print(f"\n{'='*50}")
     print(f"✅ Generated: {output_file}")
     print(f"   New posts: {len(posts)}")
     print(f"   Skipped:   {skipped} (already on Ghost)")
+    print(f"   Images:    {mode} URLs")
     print(f"\n📋 Next steps:")
     print(f"   1. Ghost Admin → Settings → Labs → Import")
     print(f"   2. Upload {output_file}")
-    print(f"   3. Done! All posts with Ghost-hosted images.")
+    print(f"   3. Done!")
 
 
 if __name__ == "__main__":
