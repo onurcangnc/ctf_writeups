@@ -387,17 +387,8 @@ def main():
             # Extract machine name from folder: HackTheBox/Valentine/... → "valentine"
             machine_name = normalize_title(parts[1]) if len(parts) >= 2 else normalize_title(title)
 
-            # Check if already on Ghost — match on machine name in any Ghost title
-            match = None
-            for ghost_title in existing_titles:
-                if machine_name and machine_name in ghost_title:
-                    match = ghost_title
-                    break
-
-            if match:
-                print(f"⊘ Skipping (already on Ghost): {title}  [{machine_name} ≈ '{match}']")
-                skipped += 1
-                continue
+            # Note: existence check moved to publish_to_ghost (POST vs PUT)
+            # Mod 2: always queue, publish_to_ghost decides create vs update
 
             print(f"\n📄 {md_path}")
             excerpt = extract_description(content)
@@ -442,10 +433,10 @@ def main():
             print()
 
     if not posts:
-        print(f"\n⚠ No new writeups to import. ({skipped} already on Ghost)")
+        print(f"\n⚠ No writeups found.")
         sys.exit(0)
 
-    # Generate import JSON
+    # Generate import JSON (backup, manual fallback)
     import_data = build_ghost_import(posts)
     output_file = "ghost_import.json"
     with open(output_file, "w", encoding="utf-8") as f:
@@ -454,13 +445,108 @@ def main():
     mode = "Ghost-hosted" if use_ghost else "GitHub raw"
     print(f"\n{'='*50}")
     print(f"✅ Generated: {output_file}")
-    print(f"   New posts: {len(posts)}")
-    print(f"   Skipped:   {skipped} (already on Ghost)")
-    print(f"   Images:    {mode} URLs")
-    print(f"\n📋 Next steps:")
-    print(f"   1. Ghost Admin → Settings → Labs → Import")
-    print(f"   2. Upload {output_file}")
-    print(f"   3. Done!")
+    print(f"   Posts: {len(posts)}")
+    print(f"   Images: {mode} URLs")
+
+    # Mod 2: Auto-publish (create or update) via Ghost Admin API
+    if use_ghost:
+        print(f"\n📤 Syncing {len(posts)} posts to Ghost (create/update)...")
+        created, updated, failed = publish_to_ghost(posts, session)
+        print(f"\n{'='*50}")
+        print(f"✅ Sync complete")
+        print(f"   Created: {created}")
+        print(f"   Updated: {updated}")
+        print(f"   Failed:  {failed}")
+        if failed > 0:
+            print(f"\n⚠ {failed} posts failed — check {output_file} for backup")
+        else:
+            print(f"\n✓ All posts live. ghost_import.json kept as backup.")
+    else:
+        print(f"\n⚠ Ghost connection unavailable — manual import required:")
+        print(f"   1. Ghost Admin → Settings → Labs → Import")
+        print(f"   2. Upload {output_file}")
+
+
+def find_existing_post(slug: str, session: requests.Session) -> dict | None:
+    """Ghost'ta bu slug ile post var mı? Varsa post object döner (id + updated_at)."""
+    try:
+        r = session.get(
+            f"{GHOST_URL}/ghost/api/admin/posts/slug/{slug}/",
+            params={"fields": "id,updated_at,title"},
+            timeout=15,
+        )
+        if r.status_code == 200:
+            posts_list = r.json().get("posts", [])
+            return posts_list[0] if posts_list else None
+    except Exception:
+        pass
+    return None
+
+
+def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
+    """Her post'u Ghost'a POST (yeni) veya PUT (mevcut) et.
+
+    Returns: (created, updated, failed)
+    """
+    created = 0
+    updated = 0
+    failed = 0
+
+    for p in posts:
+        slug = p["slug"]
+        tag_objs = [{"name": t} for t in p.get("tags", [])]
+        post_data = {
+            "title": p["title"],
+            "slug": slug,
+            "html": p["html"],
+            "custom_excerpt": (p.get("excerpt", "") or "")[:300],
+            "tags": tag_objs,
+            "status": "published",
+        }
+        if p.get("feature_image"):
+            post_data["feature_image"] = p["feature_image"]
+
+        existing = find_existing_post(slug, session)
+
+        try:
+            if existing:
+                # PUT (update) — Ghost concurrency check via updated_at
+                post_data["updated_at"] = existing["updated_at"]
+                r = session.put(
+                    f"{GHOST_URL}/ghost/api/admin/posts/{existing['id']}/?source=html",
+                    json={"posts": [post_data]},
+                    timeout=60,
+                )
+                if r.status_code == 200:
+                    updated_post = r.json()["posts"][0]
+                    print(f"  ↻ Updated: {p['title']} → {updated_post.get('url', '')}")
+                    updated += 1
+                else:
+                    print(f"  ✗ Update failed ({r.status_code}): {p['title']}")
+                    print(f"    {r.text[:200]}")
+                    failed += 1
+            else:
+                # POST (create)
+                r = session.post(
+                    f"{GHOST_URL}/ghost/api/admin/posts/?source=html",
+                    json={"posts": [post_data]},
+                    timeout=60,
+                )
+                if r.status_code in (200, 201):
+                    new_post = r.json()["posts"][0]
+                    print(f"  ✓ Created: {p['title']} → {new_post.get('url', '')}")
+                    created += 1
+                else:
+                    print(f"  ✗ Create failed ({r.status_code}): {p['title']}")
+                    print(f"    {r.text[:200]}")
+                    failed += 1
+        except Exception as e:
+            print(f"  ✗ Exception: {p['title']} → {e}")
+            failed += 1
+
+        time.sleep(1)  # Ghost rate limit: 100 req/5min
+
+    return created, updated, failed
 
 
 if __name__ == "__main__":
