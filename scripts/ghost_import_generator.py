@@ -467,19 +467,69 @@ def main():
         print(f"   2. Upload {output_file}")
 
 
-def find_existing_post(slug: str, session: requests.Session) -> dict | None:
-    """Ghost'ta bu slug ile post var mı? Varsa post object döner (id + updated_at)."""
+def _extract_machine_name(title: str) -> str:
+    """Extract the unique machine identifier from a writeup title.
+
+    Examples:
+      "HTB Topology"               -> "Topology"
+      "HTB Bashed Writeup"         -> "Bashed"
+      "HTB Devvortex: from Joomla" -> "Devvortex"
+      "Topology"                   -> "Topology"
+    """
+    parts = re.split(r"[\s:—-]+", title.strip())
+    parts = [p for p in parts if p]
+    if not parts:
+        return ""
+    # Skip leading "HTB" prefix if present
+    if parts[0].upper() == "HTB" and len(parts) > 1:
+        return parts[1]
+    return parts[0]
+
+
+def find_existing_post(slug: str, title: str, session: requests.Session) -> dict | None:
+    """Ghost'ta bu post var mı? 2 aşamalı match:
+       1) Direkt slug match (htb-topology = htb-topology)
+       2) Title fuzzy match — machine name title'da geçiyor mu (htb-bashed-writeup-from-...)
+       Returns: post object (id, updated_at, title, slug) veya None
+    """
+    # 1) Direct slug match
     try:
         r = session.get(
             f"{GHOST_URL}/ghost/api/admin/posts/slug/{slug}/",
-            params={"fields": "id,updated_at,title"},
+            params={"fields": "id,updated_at,title,slug"},
             timeout=15,
         )
         if r.status_code == 200:
             posts_list = r.json().get("posts", [])
-            return posts_list[0] if posts_list else None
+            if posts_list:
+                return posts_list[0]
     except Exception:
         pass
+
+    # 2) Title fuzzy match — machine name in title
+    machine = _extract_machine_name(title)
+    if not machine or len(machine) < 3:
+        return None
+    try:
+        # NQL: title contains 'Bashed' (case-insensitive in Ghost)
+        r = session.get(
+            f"{GHOST_URL}/ghost/api/admin/posts/",
+            params={
+                "filter": f"title:~'{machine}'",
+                "fields": "id,updated_at,title,slug",
+                "limit": 5,
+            },
+            timeout=15,
+        )
+        if r.status_code == 200:
+            posts_list = r.json().get("posts", [])
+            for p in posts_list:
+                # Strict: machine adı title'da gerçekten var (büyük/küçük harf duyarsız)
+                if machine.lower() in (p.get("title", "") or "").lower():
+                    return p
+    except Exception:
+        pass
+
     return None
 
 
@@ -506,12 +556,16 @@ def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
         if p.get("feature_image"):
             post_data["feature_image"] = p["feature_image"]
 
-        existing = find_existing_post(slug, session)
+        existing = find_existing_post(slug, p["title"], session)
 
         try:
             if existing:
-                # PUT (update) — Ghost concurrency check via updated_at
+                # Existing post bulundu — slug match veya title fuzzy match
+                # PUT için MEVCUT slug'u koru (Ghost'taki canonical URL kalsın)
+                post_data["slug"] = existing.get("slug", slug)
                 post_data["updated_at"] = existing["updated_at"]
+
+                match_type = "slug" if existing.get("slug") == slug else f"title→{existing.get('slug')}"
                 r = session.put(
                     f"{GHOST_URL}/ghost/api/admin/posts/{existing['id']}/?source=html",
                     json={"posts": [post_data]},
@@ -519,7 +573,7 @@ def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
                 )
                 if r.status_code == 200:
                     updated_post = r.json()["posts"][0]
-                    print(f"  ↻ Updated: {p['title']} → {updated_post.get('url', '')}")
+                    print(f"  ↻ Updated [{match_type}]: {p['title']} → {updated_post.get('url', '')}")
                     updated += 1
                 else:
                     print(f"  ✗ Update failed ({r.status_code}): {p['title']}")
