@@ -450,13 +450,14 @@ def main():
 
     # Mod 2: Auto-publish (create or update) via Ghost Admin API
     if use_ghost:
-        print(f"\n📤 Syncing {len(posts)} posts to Ghost (create/update)...")
-        created, updated, failed = publish_to_ghost(posts, session)
+        print(f"\n📤 Syncing {len(posts)} posts to Ghost (create/update/skip)...")
+        created, updated, unchanged, failed = publish_to_ghost(posts, session)
         print(f"\n{'='*50}")
         print(f"✅ Sync complete")
-        print(f"   Created: {created}")
-        print(f"   Updated: {updated}")
-        print(f"   Failed:  {failed}")
+        print(f"   Created:   {created}")
+        print(f"   Updated:   {updated}")
+        print(f"   Unchanged: {unchanged}")
+        print(f"   Failed:    {failed}")
         if failed > 0:
             print(f"\n⚠ {failed} posts failed — check {output_file} for backup")
         else:
@@ -490,13 +491,13 @@ def find_existing_post(slug: str, title: str, session: requests.Session) -> dict
     """Ghost'ta bu post var mı? 2 aşamalı match:
        1) Direkt slug match (htb-topology = htb-topology)
        2) Title fuzzy match — machine name title'da geçiyor mu (htb-bashed-writeup-from-...)
-       Returns: post object (id, updated_at, title, slug) veya None
+       Returns: post object (id, updated_at, title, slug, html) veya None
     """
     # 1) Direct slug match
     try:
         r = session.get(
             f"{GHOST_URL}/ghost/api/admin/posts/slug/{slug}/",
-            params={"fields": "id,updated_at,title,slug"},
+            params={"fields": "id,updated_at,title,slug", "formats": "html"},
             timeout=15,
         )
         if r.status_code == 200:
@@ -517,6 +518,7 @@ def find_existing_post(slug: str, title: str, session: requests.Session) -> dict
             params={
                 "filter": f"title:~'{machine}'",
                 "fields": "id,updated_at,title,slug",
+                "formats": "html",
                 "limit": 5,
             },
             timeout=15,
@@ -533,13 +535,21 @@ def find_existing_post(slug: str, title: str, session: requests.Session) -> dict
     return None
 
 
-def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
-    """Her post'u Ghost'a POST (yeni) veya PUT (mevcut) et.
+def _content_hash(html: str) -> str:
+    """Normalize HTML and hash — whitespace/tag-attribute-order-insensitive."""
+    import hashlib
+    normalized = re.sub(r"\s+", " ", html or "").strip()
+    return hashlib.md5(normalized.encode("utf-8")).hexdigest()
 
-    Returns: (created, updated, failed)
+
+def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
+    """Her post'u Ghost'a POST (yeni), PUT (değişmiş) veya skip (aynı) et.
+
+    Returns: (created, updated, unchanged, failed)
     """
     created = 0
     updated = 0
+    unchanged = 0
     failed = 0
 
     for p in posts:
@@ -560,6 +570,14 @@ def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
 
         try:
             if existing:
+                # Diff check — içerik aynıysa PUT atma (Ghost'un updated_at'i
+                # değişmesin, Google'a "unstable content" sinyali gitmesin)
+                if _content_hash(existing.get("html", "")) == _content_hash(p["html"]):
+                    print(f"  ⊘ Unchanged: {p['title']}")
+                    unchanged += 1
+                    time.sleep(0.3)
+                    continue
+
                 # Existing post bulundu — slug match veya title fuzzy match
                 # PUT için MEVCUT slug'u koru (Ghost'taki canonical URL kalsın)
                 post_data["slug"] = existing.get("slug", slug)
@@ -600,7 +618,7 @@ def publish_to_ghost(posts: list, session: requests.Session) -> tuple:
 
         time.sleep(1)  # Ghost rate limit: 100 req/5min
 
-    return created, updated, failed
+    return created, updated, unchanged, failed
 
 
 if __name__ == "__main__":
