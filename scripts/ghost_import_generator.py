@@ -125,13 +125,18 @@ def upload_image(session: requests.Session, image_path: Path, cache: dict) -> st
 
 
 def resolve_image_url(image_path: Path, session, cache: dict, use_ghost: bool) -> str:
-    """Upload to Ghost if possible, otherwise use GitHub raw URL."""
-    if use_ghost:
-        url = upload_image(session, image_path, cache)
-        if url:
-            return url
-    url = github_raw_url(image_path)
-    print(f"    🔗 GitHub URL: {image_path.name}")
+    """Upload to Ghost. NEVER fall back to GitHub raw — image rot risk."""
+    if not use_ghost:
+        raise RuntimeError(
+            f"Ghost API unavailable but resolve_image_url was called for {image_path.name}. "
+            "This should never happen — pipeline must abort earlier."
+        )
+    url = upload_image(session, image_path, cache)
+    if not url:
+        raise RuntimeError(
+            f"Failed to upload {image_path.name} to Ghost after retries. "
+            "Refusing to fall back to GitHub raw URL — re-run workflow."
+        )
     return url
 
 
@@ -342,19 +347,33 @@ def main():
         print("❌ GHOST_ADMIN_API_KEY and GHOST_CONTENT_API_KEY must be set as environment variables.")
         sys.exit(1)
 
-    # Try Ghost Admin API — fall back to GitHub raw URLs if blocked
+    # Ghost Admin API erişimi ZORUNLU — fail-fast.
+    # Erişilemezse GitHub raw URL'lerine düşmek yerine workflow'u durdur.
+    # Sebep: kullanıcı GitHub repo'dan image silerse broken image'lar oluşuyor.
     use_ghost = False
     session = None
-    try:
-        session = api_session()
-        r = session.get(f"{GHOST_URL}/ghost/api/admin/site/", timeout=10)
-        if r.status_code == 200:
-            use_ghost = True
-            print(f"  ✓ Connected to Ghost: {r.json()['site']['title']}")
-        else:
-            print(f"  ⚠ Ghost Admin API returned {r.status_code} — using GitHub raw URLs for images")
-    except requests.RequestException as e:
-        print(f"  ⚠ Ghost Admin API unreachable ({e}) — using GitHub raw URLs for images")
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            session = api_session()
+            r = session.get(f"{GHOST_URL}/ghost/api/admin/site/", timeout=15)
+            if r.status_code == 200:
+                use_ghost = True
+                print(f"  ✓ Connected to Ghost: {r.json()['site']['title']}")
+                break
+            last_error = f"HTTP {r.status_code}"
+            print(f"  ⚠ Attempt {attempt}/3: Ghost Admin API returned {r.status_code}")
+        except requests.RequestException as e:
+            last_error = str(e)
+            print(f"  ⚠ Attempt {attempt}/3: Ghost Admin API unreachable ({e})")
+        if attempt < 3:
+            time.sleep(5 * attempt)
+
+    if not use_ghost:
+        print(f"\n❌ FATAL: Ghost Admin API unreachable after 3 attempts ({last_error}).")
+        print(f"   Refusing to publish with GitHub raw URLs (image rot risk).")
+        print(f"   Re-run this workflow once Ghost is reachable.")
+        sys.exit(1)
 
     print()
 
@@ -462,10 +481,23 @@ def main():
             print(f"\n⚠ {failed} posts failed — check {output_file} for backup")
         else:
             print(f"\n✓ All posts live. ghost_import.json kept as backup.")
+
+        # Post-publish audit: hiçbir post raw.githubusercontent URL'i
+        # içermemeli. Varsa workflow fail — sessiz image rot riski.
+        leaks = []
+        for p in posts:
+            if "raw.githubusercontent.com" in (p.get("html") or ""):
+                leaks.append(p["title"])
+        if leaks:
+            print(f"\n❌ FATAL: {len(leaks)} post(s) still reference raw.githubusercontent.com:")
+            for t in leaks:
+                print(f"   - {t}")
+            print("   Image rot guaranteed. Re-run workflow.")
+            sys.exit(1)
     else:
-        print(f"\n⚠ Ghost connection unavailable — manual import required:")
-        print(f"   1. Ghost Admin → Settings → Labs → Import")
-        print(f"   2. Upload {output_file}")
+        # use_ghost=False bu noktaya ulaşmaz (yukarıda fail-fast var)
+        print(f"\n❌ FATAL: use_ghost is False at publish stage — pipeline misconfigured.")
+        sys.exit(1)
 
 
 def _extract_machine_name(title: str) -> str:
